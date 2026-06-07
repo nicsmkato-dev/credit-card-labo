@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://nicsmkato-dev.github.io/credit-card-labo/sitemap.xml
