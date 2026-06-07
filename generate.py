@@ -44,6 +44,55 @@ def card_by_id(data, cid):
     return None
 
 
+def hero_card_svg():
+    """ヒーロー用のオリジナル・クレジットカードSVGイラスト（著作権フリー）"""
+    return """
+<svg class="hero-svg" viewBox="0 0 460 380" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="クレジットカードのイラスト">
+  <defs>
+    <linearGradient id="cardBack" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5c6bc0"/><stop offset="1" stop-color="#3949ab"/>
+    </linearGradient>
+    <linearGradient id="cardFront" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8a3d"/><stop offset="1" stop-color="#f4511e"/>
+    </linearGradient>
+    <linearGradient id="chip" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe082"/><stop offset="1" stop-color="#ffb300"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".35"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- 後ろのカード -->
+  <g transform="rotate(-14 230 190)">
+    <rect x="70" y="70" width="300" height="190" rx="22" fill="url(#cardBack)"/>
+    <rect x="70" y="70" width="300" height="190" rx="22" fill="url(#shine)"/>
+    <rect x="98" y="118" width="46" height="34" rx="6" fill="url(#chip)"/>
+    <path d="M98 135 h46 M121 118 v34" stroke="#b8860b" stroke-width="1.2" opacity=".5"/>
+    <circle cx="330" cy="105" r="16" fill="#ffffff" opacity=".25"/>
+    <circle cx="312" cy="105" r="16" fill="#ffffff" opacity=".18"/>
+    <rect x="98" y="180" width="150" height="9" rx="4" fill="#ffffff" opacity=".55"/>
+    <rect x="98" y="200" width="90" height="7" rx="3" fill="#ffffff" opacity=".35"/>
+  </g>
+  <!-- 手前のカード -->
+  <g transform="rotate(8 230 210)">
+    <rect x="110" y="150" width="300" height="190" rx="22" fill="url(#cardFront)"/>
+    <rect x="110" y="150" width="300" height="190" rx="22" fill="url(#shine)"/>
+    <rect x="138" y="198" width="48" height="36" rx="6" fill="url(#chip)"/>
+    <path d="M138 216 h48 M162 198 v36" stroke="#b8860b" stroke-width="1.3" opacity=".55"/>
+    <text x="138" y="290" fill="#ffffff" font-family="monospace" font-size="20" letter-spacing="3" opacity=".95">•••• •••• •••• 8021</text>
+    <text x="138" y="320" fill="#ffffff" font-family="sans-serif" font-size="13" opacity=".9" letter-spacing="1">CREDIT CARD LABO</text>
+    <circle cx="372" cy="200" r="17" fill="#ffffff" opacity=".85"/>
+    <circle cx="352" cy="200" r="17" fill="#ffd54f" opacity=".85"/>
+  </g>
+  <!-- 浮遊するコイン -->
+  <g>
+    <circle cx="60" cy="70" r="20" fill="#ffd54f"/><text x="60" y="77" text-anchor="middle" font-size="18" fill="#a15c00" font-weight="bold">¥</text>
+    <circle cx="410" cy="320" r="16" fill="#ffd54f"/><text x="410" y="326" text-anchor="middle" font-size="15" fill="#a15c00" font-weight="bold">P</text>
+    <circle cx="40" cy="300" r="13" fill="#ffe082"/><text x="40" y="305" text-anchor="middle" font-size="12" fill="#a15c00" font-weight="bold">%</text>
+  </g>
+</svg>"""
+
+
 # ---------- 共通パーツ ----------
 def head(site, title, description, depth=0):
     prefix = "" if depth == 0 else "../"
@@ -54,6 +103,9 @@ def head(site, title, description, depth=0):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{description}">
   <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{prefix}style.css">
 </head>
 <body>"""
@@ -169,11 +221,24 @@ def build_index(data):
     # ヒーロー
     html += f"""
 <section class="hero">
+  <div class="hero-bg"></div>
   <div class="container">
-    <p class="hero-label">{year_month()} 最新版</p>
-    <h1>あなたに最適な<br>クレジットカードを見つけよう</h1>
-    <p class="hero-sub">ポイント還元率・年会費・特典を徹底比較。<br>{len(cards)}枚以上のカードから本当におすすめの1枚を紹介します。</p>
-    <a href="#ranking" class="btn-primary">ランキングを見る</a>
+    <div class="hero-grid">
+      <div class="hero-text">
+        <p class="hero-label">✨ {year_month()} 最新版</p>
+        <h1>あなたに最適な<br><span class="hl">クレジットカード</span>を<br>見つけよう</h1>
+        <p class="hero-sub">ポイント還元率・年会費・特典を徹底比較。<br>{len(cards)}枚以上のカードから本当におすすめの1枚を紹介します。</p>
+        <div class="hero-actions">
+          <a href="#ranking" class="btn-primary">ランキングを見る</a>
+          <a href="#comparison" class="btn-ghost">比較表を見る</a>
+        </div>
+        <div class="hero-trust">
+          <span>🔒 年会費無料カード多数</span>
+          <span>📊 編集部が徹底比較</span>
+        </div>
+      </div>
+      <div class="hero-visual">{hero_card_svg()}</div>
+    </div>
   </div>
 </section>"""
 
