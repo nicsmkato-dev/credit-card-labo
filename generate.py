@@ -297,7 +297,8 @@ def build_index(data):
     html += """
 <section class="purpose-section" id="purpose">
   <div class="container">
-    <h2 class="section-title">目的別おすすめクレジットカード</h2>
+    <h2 class="section-title">目的・特徴から選ぶ</h2>
+    <p class="section-sub">あなたの使い方やほしい特典から、ぴったりのクレジットカードを探せます。</p>
     <div class="purpose-grid">"""
     for pp in data["purposes"]:
         html += f"""

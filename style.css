@@ -112,6 +112,8 @@ img, svg { max-width: 100%; }
 .card-logo-placeholder.gray   { background: linear-gradient(135deg, #e65100, #ff9800); }
 .card-logo-placeholder.green  { background: linear-gradient(135deg, #b71c1c, #e53935); }
 .card-logo-placeholder.teal   { background: linear-gradient(135deg, #00897b, #4db6ac); }
+.card-logo-placeholder.amber  { background: linear-gradient(135deg, #b8860b, #ffd700); color: #5a4500; text-shadow: 0 1px 2px rgba(255,255,255,.3); }
+.card-logo-placeholder.platinum { background: linear-gradient(135deg, #2c3038, #6b7280); }
 .card-logo-placeholder.big { width: 168px; height: 105px; font-size: 0.95rem; }
 
 .card-title-area h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 4px; }

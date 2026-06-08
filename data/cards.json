@@ -292,6 +292,188 @@
       ],
       "review": "JAカードはJAバンクの利用者向けに三菱UFJニコスが発行するクレジットカードです。年1回以上の利用で翌年の年会費が無料になり、JAバンクの口座と一体で管理できるのが便利。地域に根ざした使いやすさが魅力です。",
       "target": "JAバンクを利用している人・地域密着のカードを求める人"
+    },
+    {
+      "id": "smbc-gold-nl",
+      "name": "三井住友カード ゴールド（NL）",
+      "brand_label": "三井住友 GOLD",
+      "color": "amber",
+      "stars": 5,
+      "catch": "年間100万円利用で翌年以降ずっと年会費無料！ラウンジ・保険付きゴールド",
+      "annual_fee": "5,500円（年100万円利用で永年無料）",
+      "reward": "0.5%〜7%",
+      "reward_highlight": true,
+      "bonus": "最大10,000円相当＋継続特典",
+      "international": "VISA / Master",
+      "feature": "100万円利用で年会費無料",
+      "affiliate_url": "https://www.smbc-card.com/",
+      "merits": [
+        "年間100万円利用すれば翌年以降の年会費が永年無料になる",
+        "年間100万円利用ごとに10,000ポイントの継続特典",
+        "国内主要空港のラウンジが無料・旅行傷害保険も付帯"
+      ],
+      "demerits": [
+        "年100万円に届かないと年会費5,500円がかかる",
+        "通常還元率は0.5%"
+      ],
+      "review": "三井住友カード ゴールド（NL）は、年間100万円の利用で翌年以降の年会費が永年無料になる人気のゴールドカードです。達成ごとに10,000ポイントがもらえ、空港ラウンジや旅行保険などゴールドならではの特典も充実。年100万円使う人なら実質無料でステータスと特典を得られます。",
+      "target": "年間100万円ほど使う人・ワンランク上の特典が欲しい人"
+    },
+    {
+      "id": "jcb-gold",
+      "name": "JCBゴールド",
+      "brand_label": "JCB GOLD",
+      "color": "amber",
+      "stars": 4,
+      "catch": "手厚い旅行保険と空港ラウンジ！初年度年会費無料のゴールド",
+      "annual_fee": "11,000円（オンライン入会で初年度無料）",
+      "reward": "0.5%〜",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "JCB",
+      "feature": "手厚い旅行保険・ラウンジ",
+      "affiliate_url": "https://www.jcb.co.jp/",
+      "merits": [
+        "最高1億円の充実した海外旅行傷害保険が付帯",
+        "国内・ハワイの空港ラウンジが無料",
+        "条件達成で上位の「JCBゴールド ザ・プレミア」への招待も"
+      ],
+      "demerits": [
+        "2年目以降は年会費11,000円がかかる",
+        "国際ブランドがJCBのみ"
+      ],
+      "review": "JCBゴールドはJCBプロパーの王道ゴールドカードで、最高1億円の旅行保険や空港ラウンジなど安心・快適な特典が魅力です。オンライン入会なら初年度年会費無料。使い込めば上位カードへの招待も狙え、ステータスを育てたい人に向いています。",
+      "target": "旅行保険を重視する人・JCBでステータスを育てたい人"
+    },
+    {
+      "id": "smbc-platinum",
+      "name": "三井住友カード プラチナプリファード",
+      "brand_label": "PLATINUM",
+      "color": "platinum",
+      "stars": 4,
+      "catch": "ポイント特化のプラチナ！高い還元率と継続特典が魅力",
+      "annual_fee": "33,000円",
+      "reward": "1.0%〜",
+      "reward_highlight": true,
+      "bonus": "新規最大40,000ポイント＋継続特典",
+      "international": "VISA",
+      "feature": "ポイント特化プラチナ",
+      "affiliate_url": "https://www.smbc-card.com/",
+      "merits": [
+        "通常還元率1%、対象店舗ではさらに高還元のポイント特化型",
+        "年間利用額に応じて最大40,000ポイントの継続特典",
+        "コンシェルジュや空港ラウンジなどプラチナ特典も"
+      ],
+      "demerits": [
+        "年会費33,000円と高め（使ってこそ元が取れる）",
+        "国際ブランドはVISAのみ"
+      ],
+      "review": "三井住友カード プラチナプリファードは「ポイント特化」のプラチナカードです。高い還元率と年間利用額に応じた継続特典で、たくさん使う人ほどお得。コンシェルジュやラウンジなどプラチナの体験も得られます。年会費以上に使う人向けの1枚です。",
+      "target": "年間支出が多くポイントを最大化したい人・プラチナ特典が欲しい人"
+    },
+    {
+      "id": "jal-card",
+      "name": "JALカード",
+      "brand_label": "JAL CARD",
+      "color": "gold",
+      "stars": 4,
+      "catch": "JALマイルが貯まる！搭乗ボーナスでマイラーの定番",
+      "annual_fee": "2,200円（初年度無料）",
+      "reward": "JALマイル",
+      "reward_highlight": false,
+      "bonus": "入会・搭乗ボーナスマイル",
+      "international": "VISA / Master / JCB",
+      "feature": "JALマイルが貯まる",
+      "affiliate_url": "https://www.jal.co.jp/jmb/jalcard/",
+      "merits": [
+        "毎日のショッピングでJALマイルが貯まる",
+        "入会時・毎年初回搭乗時にボーナスマイルがもらえる",
+        "ショッピングマイル・プレミアム加入でマイル還元率が2倍"
+      ],
+      "demerits": [
+        "2年目以降は年会費2,200円がかかる",
+        "マイルを使わない人にはメリットが小さい"
+      ],
+      "review": "JALカードはJALマイルを効率よく貯められるマイラー定番のカードです。入会・搭乗ボーナスマイルに加え、ショッピングでもマイルが貯まります。飛行機によく乗る人や特典航空券を狙う人に最適。初年度年会費無料で始めやすいのも魅力です。",
+      "target": "JAL便によく乗る人・マイルを貯めて特典航空券を狙う人"
+    },
+    {
+      "id": "ana-card",
+      "name": "ANAカード（一般）",
+      "brand_label": "ANA CARD",
+      "color": "bronze",
+      "stars": 4,
+      "catch": "ANAマイルが貯まる！フライトボーナスでマイルを効率よく",
+      "annual_fee": "2,200円（初年度無料）",
+      "reward": "ANAマイル",
+      "reward_highlight": false,
+      "bonus": "入会・継続マイル",
+      "international": "VISA / Master / JCB",
+      "feature": "ANAマイルが貯まる",
+      "affiliate_url": "https://www.ana.co.jp/ja/jp/amc/reference/anacard/",
+      "merits": [
+        "入会時・毎年のカード継続でボーナスマイルがもらえる",
+        "フライトごとに区間マイル＋ボーナスマイルが加算",
+        "ショッピングでもANAマイルが貯まる"
+      ],
+      "demerits": [
+        "2年目以降は年会費2,200円がかかる",
+        "ANA便を使わないとマイルの魅力が薄い"
+      ],
+      "review": "ANAカードはANAマイルを貯めたい人の定番カードです。入会・継続ボーナスマイルやフライトボーナスでマイルが効率よく貯まり、特典航空券への近道に。初年度年会費無料で、ANA便をよく使う人なら持っておきたい1枚です。",
+      "target": "ANA便によく乗る人・マイルで特典航空券を狙う人"
+    },
+    {
+      "id": "view-card",
+      "name": "ビックカメラSuicaカード",
+      "brand_label": "VIEW Suica",
+      "color": "teal",
+      "stars": 4,
+      "catch": "Suicaチャージで1.5%還元！実質年会費無料のSuica一体型カード",
+      "annual_fee": "524円（年1回利用で翌年無料）",
+      "reward": "0.5%〜11.5%",
+      "reward_highlight": true,
+      "bonus": "入会特典あり",
+      "international": "VISA / JCB",
+      "feature": "Suica付き・チャージで高還元",
+      "affiliate_url": "https://www.jreast.co.jp/card/",
+      "merits": [
+        "Suicaオートチャージで1.5%分のJRE POINTが貯まる",
+        "ビックカメラでの利用は最大11.5%還元",
+        "年1回の利用で翌年の年会費が無料（実質無料）"
+      ],
+      "demerits": [
+        "年1回も使わないと年会費524円がかかる",
+        "JR東日本エリア以外ではSuicaの恩恵が小さい"
+      ],
+      "review": "ビックカメラSuicaカードはSuica一体型のビューカードで、Suicaチャージで1.5%還元と高水準。ビックカメラでは最大11.5%還元になり、年1回の利用で翌年の年会費が無料になるため実質無料で持てます。電車移動と家電購入が多い人に最適です。",
+      "target": "電車をよく使う人・Suicaをお得にチャージしたい人"
+    },
+    {
+      "id": "smbc-business",
+      "name": "三井住友カード ビジネスオーナーズ",
+      "brand_label": "BUSINESS",
+      "color": "gray",
+      "stars": 4,
+      "catch": "年会費永年無料の法人・個人事業主向けカード！経費管理がラクに",
+      "annual_fee": "永年無料",
+      "reward": "0.5%〜1.5%",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "VISA / Master",
+      "feature": "法人・個人事業主向け",
+      "affiliate_url": "https://www.smbc-card.com/",
+      "merits": [
+        "年会費永年無料で個人事業主・法人代表者が持てる",
+        "登記簿謄本や決算書なしで申し込める手軽さ",
+        "対象の三井住友カードと2枚持ちで還元率が最大1.5%に"
+      ],
+      "demerits": [
+        "従業員カードの追加に上限がある",
+        "大規模法人向けの高機能カードではない"
+      ],
+      "review": "三井住友カード ビジネスオーナーズは年会費永年無料の法人・個人事業主向けカードです。決算書不要で申し込みやすく、事業の経費をまとめて管理できます。対象の個人カードとの2枚持ちで還元率がアップするのも魅力。開業したての方にもおすすめです。",
+      "target": "個人事業主・法人代表者・開業したての人"
     }
   ],
   "purposes": [
@@ -300,7 +482,14 @@
     { "id": "shopping", "icon": "🛒", "title": "ネットショッピング", "desc": "楽天・Amazon・ECサイトでお得なカード", "card_ids": ["rakuten-card", "recruit-card", "jcb-card-w"], "intro": "ネットショッピングをよく利用する方には、各ECサイトでポイント高還元になるカードがおすすめです。" },
     { "id": "cashback", "icon": "💴", "title": "高還元重視", "desc": "ポイント還元率の高さで選ぶカード", "card_ids": ["smbc-card", "recruit-card", "mufg-card"], "intro": "とにかくお得さを重視する方には、ポイント還元率の高いカードがおすすめです。" },
     { "id": "student", "icon": "🎓", "title": "学生向け", "desc": "学生でも作れる・学生限定特典があるカード", "card_ids": ["jcb-card-w", "rakuten-card", "epos-card"], "intro": "学生の方でも作りやすく、学生ならではの特典が受けられるカードを紹介します。" },
-    { "id": "daily", "icon": "🛍️", "title": "普段使い", "desc": "コンビニ・スーパーで毎日お得なカード", "card_ids": ["smbc-card", "aeon-card", "mufg-card"], "intro": "毎日の買い物で着実にポイントを貯めたい方におすすめのカードです。" }
+    { "id": "daily", "icon": "🛍️", "title": "普段使い", "desc": "コンビニ・スーパーで毎日お得なカード", "card_ids": ["smbc-card", "aeon-card", "mufg-card"], "intro": "毎日の買い物で着実にポイントを貯めたい方におすすめのカードです。" },
+    { "id": "nenkaihi-free", "icon": "💴", "title": "年会費無料カード", "desc": "ずっと無料で持てる定番カード", "card_ids": ["smbc-card", "rakuten-card", "recruit-card"], "intro": "維持費をかけずに持てる、年会費が永年無料のカードを集めました。初めての方にもおすすめです。" },
+    { "id": "instant", "icon": "⚡", "title": "即日発行できるカード", "desc": "急いでカードが必要なときに", "card_ids": ["epos-card", "smbc-card", "jcb-card-w"], "intro": "申し込んだその日から使える、発行スピードの速いカードを紹介します。" },
+    { "id": "gold", "icon": "👑", "title": "ゴールドカード", "desc": "ラウンジ・保険付きのワンランク上", "card_ids": ["smbc-gold-nl", "jcb-gold"], "intro": "空港ラウンジや手厚い保険など、ワンランク上の特典が魅力のゴールドカードです。" },
+    { "id": "platinum", "icon": "💎", "title": "プラチナカード", "desc": "コンシェルジュなど最上級の特典", "card_ids": ["smbc-platinum"], "intro": "コンシェルジュや高い還元率など、最上級のサービスを備えたプラチナカードです。" },
+    { "id": "mile", "icon": "✈️", "title": "マイルが貯まるカード", "desc": "JAL・ANAマイルを貯めたい人に", "card_ids": ["jal-card", "ana-card"], "intro": "フライトやショッピングでマイルが貯まる、旅行好きにおすすめのカードです。" },
+    { "id": "suica", "icon": "🚃", "title": "Suica付きカード", "desc": "チャージでお得・交通系も1枚に", "card_ids": ["view-card"], "intro": "Suica一体型で、チャージや電車移動がお得になるカードです。" },
+    { "id": "business", "icon": "🏢", "title": "法人・ビジネスカード", "desc": "経費管理に便利な事業者向け", "card_ids": ["smbc-business"], "intro": "個人事業主・法人向けに、経費管理がラクになるビジネスカードを紹介します。" }
   ],
   "articles": [
     {
