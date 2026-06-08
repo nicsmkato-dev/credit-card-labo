@@ -20,7 +20,7 @@
       "bonus": "最大5,000ポイント",
       "international": "VISA / Master / JCB / AMEX",
       "feature": "楽天市場でお得",
-      "affiliate_url": "#",
+      "affiliate_url": "https://www.rakuten-card.co.jp/",
       "merits": [
         "楽天市場でのお買い物は還元率3%以上",
         "楽天ポイントは楽天Payや楽天市場でそのまま使える",
@@ -46,7 +46,7 @@
       "bonus": "—",
       "international": "VISA",
       "feature": "即日発行・旅行保険",
-      "affiliate_url": "#",
+      "affiliate_url": "https://www.eposcard.co.jp/",
       "merits": [
         "最短即日でカード発行・当日から使える",
         "海外旅行傷害保険が年会費無料で自動付帯",
@@ -72,7 +72,7 @@
       "bonus": "最大8,000円相当",
       "international": "VISA / Master",
       "feature": "コンビニで7%還元",
-      "affiliate_url": "#",
+      "affiliate_url": "https://www.smbc-card.com/",
       "merits": [
         "セブン-イレブン・ローソン・マクドナルドで最大7%ポイント還元",
         "カード番号がカード表面に記載されないナンバーレス仕様",
@@ -98,7 +98,7 @@
       "bonus": "—",
       "international": "VISA / Master / JCB",
       "feature": "PayPay連携",
-      "affiliate_url": "#",
+      "affiliate_url": "https://www.paypay-card.co.jp/",
       "merits": [
         "PayPayと連携でチャージ不要・スマホ1つで決済",
         "Yahoo!ショッピング・LOHACOでポイント最大5%",
@@ -124,7 +124,7 @@
       "bonus": "—",
       "international": "VISA / Master",
       "feature": "ドコモユーザー向け",
-      "affiliate_url": "#",
+      "affiliate_url": "https://dcard.docomo.ne.jp/",
       "merits": [
         "ドコモのスマホ・光回線料金が最大4.5%還元",
         "dポイントクラブ加盟店でポイント2重取り",
@@ -150,7 +150,7 @@
       "bonus": "最大10,000円相当",
       "international": "JCB",
       "feature": "39歳以下限定・高還元",
-      "affiliate_url": "#",
+      "affiliate_url": "https://www.jcb.co.jp/",
       "merits": [
         "入会時39歳以下なら40歳以降もずっと年会費無料",
         "いつでもポイント2倍（還元率1%〜）",
@@ -176,7 +176,7 @@
       "bonus": "最大5,000円相当",
       "international": "VISA / Master / JCB",
       "feature": "イオンで5%OFFの日あり",
-      "affiliate_url": "#",
+      "affiliate_url": "https://www.aeon.co.jp/",
       "merits": [
         "毎月20日・30日「お客さま感謝デー」で5%OFF",
         "イオンシネマの映画料金が割引",
