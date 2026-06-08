@@ -194,7 +194,7 @@ def card_block(card, rank=None, depth=0):
       <div class="card-body">
         <div class="card-header-row">
           <div class="card-logo-area">
-            <div class="card-logo-placeholder {card['color']}">{card['brand_label']}</div>
+            <div class="card-logo-placeholder {card['color']}"><span class="cc-num">•••• •••• •••• ••••</span><span class="cc-brand">{card['brand_label']}</span><span class="cc-mark"></span></div>
           </div>
           <div class="card-title-area">
             <h3>{card['name']}</h3>
@@ -377,7 +377,7 @@ def build_card_pages(data):
   <div class="container container-narrow">
     <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <span>{c['name']}</span></nav>
     <div class="detail-hero {c['color']}">
-      <div class="card-logo-placeholder {c['color']} big">{c['brand_label']}</div>
+      <div class="card-logo-placeholder {c['color']} big"><span class="cc-num">•••• •••• •••• ••••</span><span class="cc-brand">{c['brand_label']}</span><span class="cc-mark"></span></div>
       <div>
         <h1>{c['name']}</h1>
         <div class="stars">{stars_html(c['stars'])}</div>

@@ -92,11 +92,18 @@ img, svg { max-width: 100%; }
 /* リアルなクレジットカード風ビジュアル */
 .card-logo-placeholder {
   position: relative; width: 140px; height: 88px; border-radius: 12px; overflow: hidden;
-  display: flex; align-items: flex-end; padding: 10px 12px;
-  font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 700; font-size: 0.82rem;
-  color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.35); line-height: 1.25;
+  font-family: 'Zen Kaku Gothic New', sans-serif; color: #fff;
   box-shadow: 0 6px 16px rgba(0,0,0,.22);
 }
+.card-logo-placeholder .cc-num { position: absolute; left: 12px; bottom: 30px; font-family: monospace; font-size: 0.6rem; letter-spacing: 1.5px; color: rgba(255,255,255,.85); text-shadow: 0 1px 2px rgba(0,0,0,.4); }
+.card-logo-placeholder .cc-brand { position: absolute; left: 12px; right: 36px; bottom: 9px; font-weight: 700; font-size: 0.78rem; line-height: 1.2; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.45); }
+.card-logo-placeholder .cc-mark { position: absolute; right: 11px; bottom: 9px; width: 30px; height: 18px; }
+.card-logo-placeholder .cc-mark::before, .card-logo-placeholder .cc-mark::after { content: ''; position: absolute; top: 0; width: 18px; height: 18px; border-radius: 50%; }
+.card-logo-placeholder .cc-mark::before { left: 0; background: rgba(255,255,255,.9); }
+.card-logo-placeholder .cc-mark::after { right: 0; background: rgba(255,255,255,.5); }
+.card-logo-placeholder.amber .cc-num, .card-logo-placeholder.amber .cc-brand { color: #5a4500; text-shadow: 0 1px 2px rgba(255,255,255,.3); }
+.card-logo-placeholder.amber .cc-mark::before { background: rgba(90,69,0,.75); }
+.card-logo-placeholder.amber .cc-mark::after { background: rgba(90,69,0,.4); }
 .card-logo-placeholder::before { /* ICチップ */
   content: ''; position: absolute; top: 12px; left: 12px; width: 26px; height: 20px;
   border-radius: 4px; background: linear-gradient(135deg, #ffe082, #ffb300);
@@ -114,7 +121,11 @@ img, svg { max-width: 100%; }
 .card-logo-placeholder.teal   { background: linear-gradient(135deg, #00897b, #4db6ac); }
 .card-logo-placeholder.amber  { background: linear-gradient(135deg, #b8860b, #ffd700); color: #5a4500; text-shadow: 0 1px 2px rgba(255,255,255,.3); }
 .card-logo-placeholder.platinum { background: linear-gradient(135deg, #2c3038, #6b7280); }
-.card-logo-placeholder.big { width: 168px; height: 105px; font-size: 0.95rem; }
+.card-logo-placeholder.big { width: 168px; height: 105px; }
+.card-logo-placeholder.big .cc-num { font-size: 0.72rem; bottom: 38px; }
+.card-logo-placeholder.big .cc-brand { font-size: 0.95rem; bottom: 12px; }
+.card-logo-placeholder.big .cc-mark { width: 36px; height: 22px; bottom: 12px; }
+.card-logo-placeholder.big .cc-mark::before, .card-logo-placeholder.big .cc-mark::after { width: 22px; height: 22px; }
 
 .card-title-area h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 4px; }
 .stars { color: #ffb300; font-size: 1.05rem; letter-spacing: 2px; margin-bottom: 8px; }
