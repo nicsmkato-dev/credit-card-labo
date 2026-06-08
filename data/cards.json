@@ -86,56 +86,56 @@
       "target": "コンビニをよく使う人・つみたて投資をしたい人"
     },
     {
-      "id": "paypay-card",
-      "name": "PayPayカード",
-      "brand_label": "PayPay Card",
+      "id": "mufg-card",
+      "name": "三菱UFJカード",
+      "brand_label": "MUFG Card",
       "color": "gray",
       "stars": 4,
-      "catch": "PayPayユーザー必携！Yahoo!ショッピングでポイント最大5%還元",
+      "catch": "対象のコンビニ・飲食店で最大15%還元！年会費無料の高還元カード",
       "annual_fee": "永年無料",
-      "reward": "1.0%〜5.0%",
-      "reward_highlight": false,
-      "bonus": "—",
-      "international": "VISA / Master / JCB",
-      "feature": "PayPay連携",
-      "affiliate_url": "https://www.paypay-card.co.jp/",
+      "reward": "0.5%〜15%",
+      "reward_highlight": true,
+      "bonus": "最大10,000円相当",
+      "international": "VISA / Master / JCB / AMEX",
+      "feature": "対象店舗で最大15%還元",
+      "affiliate_url": "https://www.cr.mufg.jp/",
       "merits": [
-        "PayPayと連携でチャージ不要・スマホ1つで決済",
-        "Yahoo!ショッピング・LOHACOでポイント最大5%",
-        "貯まったPayPayポイントをそのままPayPayで使える"
+        "対象のコンビニ・飲食店でスマホのタッチ決済をすると最大15%相当を還元",
+        "年会費は永年無料でメインカードにしやすい",
+        "ナンバーレスを選べて大手銀行系の安心感とセキュリティ"
       ],
       "demerits": [
-        "PayPayを使わない人にはメリットが薄い",
-        "ポイントの用途がPayPay経済圏中心"
+        "通常還元率は0.5%とやや控えめ",
+        "最大15%還元は対象店舗・利用方法・上限などの条件あり"
       ],
-      "review": "PayPayカードはPayPayアプリと直接連携できる唯一のクレジットカードです。PayPayへのチャージなしで後払い決済ができ、Yahoo!ショッピングやLOHACOでは高還元。PayPayをメイン決済にしている人なら必携の1枚です。",
-      "target": "PayPayをメインで使う人・Yahoo!ショッピング利用者"
+      "review": "三菱UFJカードは三菱UFJフィナンシャル・グループが発行する年会費永年無料のカードです。対象のコンビニや飲食店でスマホのタッチ決済を使うと最大15%相当のポイントが還元され、普段使いでザクザク貯まります。大手銀行系ならではの安心感とセキュリティの高さも魅力です。",
+      "target": "コンビニ・飲食店をよく使う人・大手銀行系の安心感を求める人"
     },
     {
-      "id": "d-card",
-      "name": "dカード",
-      "brand_label": "dカード",
+      "id": "recruit-card",
+      "name": "リクルートカード",
+      "brand_label": "Recruit Card",
       "color": "green",
       "stars": 4,
-      "catch": "ドコモユーザーならポイント爆増！ドコモ料金の還元率アップ",
+      "catch": "いつでも還元率1.2%！年会費無料で業界最高水準の常時高還元",
       "annual_fee": "永年無料",
-      "reward": "1.0%〜4.5%",
-      "reward_highlight": false,
-      "bonus": "—",
-      "international": "VISA / Master",
-      "feature": "ドコモユーザー向け",
-      "affiliate_url": "https://dcard.docomo.ne.jp/",
+      "reward": "1.2%〜",
+      "reward_highlight": true,
+      "bonus": "最大6,000円分",
+      "international": "VISA / Master / JCB",
+      "feature": "常時還元率1.2%",
+      "affiliate_url": "https://recruit-card.jp/",
       "merits": [
-        "ドコモのスマホ・光回線料金が最大4.5%還元",
-        "dポイントクラブ加盟店でポイント2重取り",
-        "ドコモ携帯の紛失・盗難補償あり"
+        "年会費無料なのに、いつでもどこでも還元率1.2%の高水準",
+        "貯まったリクルートポイントはPontaポイントやdポイントに交換できる",
+        "電子マネーへのチャージでもポイントが貯まる"
       ],
       "demerits": [
-        "ドコモ以外のユーザーは恩恵が小さい",
-        "ETCカードは初年度無料・翌年以降は条件付き"
+        "リクルート系サービスを使わないとポイントの実感が薄い",
+        "一部の電子マネーチャージは還元の上限あり"
       ],
-      "review": "dカードはドコモユーザーに最適化されたカードで、スマホ料金や光回線の支払いで高還元が受けられます。dポイント加盟店ではポイントの2重取りも可能。通常還元率も1%と高く、ドコモを使っているなら作らない理由がありません。",
-      "target": "ドコモユーザー・dポイントを貯めたい人"
+      "review": "リクルートカードは年会費無料ながら、いつでも還元率1.2%という業界最高水準の常時高還元が魅力のカードです。貯まったリクルートポイントはPontaポイントやdポイントに等価交換できるので使い道が広く、メインカードとして1枚持っておくと着実にポイントが貯まります。",
+      "target": "とにかく高い還元率を重視する人・メインカードを探している人"
     },
     {
       "id": "jcb-card-w",
@@ -193,10 +193,10 @@
   "purposes": [
     { "id": "beginner", "icon": "🌱", "title": "初めての1枚", "desc": "審査が通りやすく、使いやすいカードを厳選", "card_ids": ["rakuten-card", "epos-card", "jcb-card-w"], "intro": "クレジットカードを初めて作る方には、審査が比較的やさしく、年会費無料で使いやすいカードがおすすめです。" },
     { "id": "travel", "icon": "✈️", "title": "旅行・出張向け", "desc": "マイルが貯まる・空港ラウンジ・旅行保険付き", "card_ids": ["epos-card", "rakuten-card", "smbc-card"], "intro": "旅行や出張が多い方には、旅行傷害保険が付帯し、空港ラウンジなどの特典があるカードがおすすめです。" },
-    { "id": "shopping", "icon": "🛒", "title": "ネットショッピング", "desc": "楽天・Amazon・Yahoo!ショッピングでお得なカード", "card_ids": ["rakuten-card", "paypay-card", "jcb-card-w"], "intro": "ネットショッピングをよく利用する方には、各ECサイトでポイント高還元になるカードがおすすめです。" },
-    { "id": "cashback", "icon": "💴", "title": "高還元重視", "desc": "ポイント還元率の高さで選ぶカード", "card_ids": ["smbc-card", "jcb-card-w", "paypay-card"], "intro": "とにかくお得さを重視する方には、ポイント還元率の高いカードがおすすめです。" },
+    { "id": "shopping", "icon": "🛒", "title": "ネットショッピング", "desc": "楽天・Amazon・ECサイトでお得なカード", "card_ids": ["rakuten-card", "recruit-card", "jcb-card-w"], "intro": "ネットショッピングをよく利用する方には、各ECサイトでポイント高還元になるカードがおすすめです。" },
+    { "id": "cashback", "icon": "💴", "title": "高還元重視", "desc": "ポイント還元率の高さで選ぶカード", "card_ids": ["smbc-card", "recruit-card", "mufg-card"], "intro": "とにかくお得さを重視する方には、ポイント還元率の高いカードがおすすめです。" },
     { "id": "student", "icon": "🎓", "title": "学生向け", "desc": "学生でも作れる・学生限定特典があるカード", "card_ids": ["jcb-card-w", "rakuten-card", "epos-card"], "intro": "学生の方でも作りやすく、学生ならではの特典が受けられるカードを紹介します。" },
-    { "id": "daily", "icon": "🛍️", "title": "普段使い", "desc": "コンビニ・スーパーで毎日お得なカード", "card_ids": ["smbc-card", "aeon-card", "d-card"], "intro": "毎日の買い物で着実にポイントを貯めたい方におすすめのカードです。" }
+    { "id": "daily", "icon": "🛍️", "title": "普段使い", "desc": "コンビニ・スーパーで毎日お得なカード", "card_ids": ["smbc-card", "aeon-card", "mufg-card"], "intro": "毎日の買い物で着実にポイントを貯めたい方におすすめのカードです。" }
   ],
   "articles": [
     {

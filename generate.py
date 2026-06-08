@@ -267,6 +267,24 @@ def build_index(data):
   </div>
 </section>"""
 
+    # ランキング選定基準（E-E-A-T・信頼性）
+    html += """
+<section class="criteria-section">
+  <div class="container">
+    <h2 class="section-title">ランキングの選定基準</h2>
+    <p class="section-sub">当サイト編集部は、以下の6つの観点を独自に点数化して総合的にランキングを作成しています。</p>
+    <div class="criteria-grid">
+      <div class="criteria-item"><span class="criteria-num">01</span><h3>年会費</h3><p>永年無料か、年会費に見合う特典があるかを評価します。</p></div>
+      <div class="criteria-item"><span class="criteria-num">02</span><h3>ポイント還元率</h3><p>通常還元率と、店舗ごとの上乗せ還元のお得さを評価します。</p></div>
+      <div class="criteria-item"><span class="criteria-num">03</span><h3>特典・付帯保険</h3><p>旅行保険・ショッピング保険・優待などの充実度を評価します。</p></div>
+      <div class="criteria-item"><span class="criteria-num">04</span><h3>セキュリティ</h3><p>ナンバーレスや不正利用補償など、安心して使えるかを評価します。</p></div>
+      <div class="criteria-item"><span class="criteria-num">05</span><h3>入会キャンペーン</h3><p>新規入会で受け取れる特典・ポイントの大きさを評価します。</p></div>
+      <div class="criteria-item"><span class="criteria-num">06</span><h3>使いやすさ・評判</h3><p>発行スピードや対応ブランド、利用者の評判を評価します。</p></div>
+    </div>
+    <p class="criteria-note">※掲載カードは金融庁の登録を受けた発行会社のクレジットカードを対象に、編集部が調査・比較しています。情報は各公式サイトでも必ずご確認ください。</p>
+  </div>
+</section>"""
+
     # 目的別
     html += """
 <section class="purpose-section" id="purpose">

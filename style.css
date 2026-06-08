@@ -134,6 +134,15 @@ img, svg { max-width: 100%; }
 .btn-detail { display: inline-block; border: 2px solid #c5cae9; color: #283593; font-size: 0.9rem; font-weight: 700; padding: 12px 24px; border-radius: 50px; transition: background .2s, border-color .2s; }
 .btn-detail:hover { background: #283593; color: #fff; border-color: #283593; }
 
+/* ===== ランキング選定基準 ===== */
+.criteria-section { padding: 80px 0; background: #fff; }
+.criteria-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.criteria-item { position: relative; background: linear-gradient(135deg, #f5f6fb, #eef0fa); border-radius: 18px; padding: 28px 24px 24px; border: 1px solid #ebedf7; }
+.criteria-num { display: inline-block; font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 1.6rem; background: linear-gradient(120deg, #283593, #ff6f00); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 6px; }
+.criteria-item h3 { font-size: 1.08rem; font-weight: 700; margin-bottom: 8px; }
+.criteria-item p { font-size: 0.88rem; color: #5a6080; }
+.criteria-note { font-size: 0.8rem; color: #8a90a8; margin-top: 26px; text-align: center; line-height: 1.8; }
+
 /* ===== 目的別 ===== */
 .purpose-section { padding: 84px 0; background: #fff; }
 .purpose-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
@@ -221,6 +230,7 @@ img, svg { max-width: 100%; }
 }
 @media (max-width: 768px) {
   .points-grid { grid-template-columns: 1fr; }
+  .criteria-grid { grid-template-columns: 1fr; }
   .purpose-grid { grid-template-columns: repeat(2, 1fr); }
   .guide-grid { grid-template-columns: 1fr; }
   .article-grid { grid-template-columns: 1fr; }
