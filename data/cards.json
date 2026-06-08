@@ -526,6 +526,136 @@
       ],
       "review": "ダイナースクラブカードは世界初のクレジットカードブランドとして知られるハイステータスカードです。利用可能枠に一律の制限がなく、空港ラウンジやコース料理1名無料の「エグゼクティブ ダイニング」などグルメ・トラベル特典が充実。上質な体験を求める大人に選ばれる1枚です。",
       "target": "ステータスとグルメ・旅行特典を重視する人・大きな決済をする人"
+    },
+    {
+      "id": "amex-green",
+      "name": "アメリカン・エキスプレス・グリーン・カード",
+      "brand_label": "AMEX GREEN",
+      "color": "teal",
+      "stars": 4,
+      "catch": "月会費制で持ちやすいアメックスの入門カード！空港ラウンジも無料",
+      "annual_fee": "月会費1,100円",
+      "reward": "1.0%〜",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "AMEX",
+      "feature": "月会費制・アメックス入門",
+      "affiliate_url": "https://www.americanexpress.com/ja-jp/",
+      "merits": [
+        "月会費1,100円から持てる、はじめてのアメックスに最適",
+        "国内外の空港ラウンジが無料（同伴者1名も無料）",
+        "手厚い旅行傷害保険やアメックスならではの優待が使える"
+      ],
+      "demerits": [
+        "月会費制のため年間では13,200円相当かかる",
+        "AMEXブランドのため一部店舗で使えないことがある"
+      ],
+      "review": "アメリカン・エキスプレス・グリーン・カードは、月会費制で気軽に持てるアメックスの入門カードです。月1,100円ながら空港ラウンジや旅行保険、アメックスの優待が使え、ステータスを手頃に体験できます。まずアメックスを試したい人にぴったりの1枚です。",
+      "target": "はじめてアメックスを持ちたい人・手頃にステータスを試したい人"
+    },
+    {
+      "id": "marriott-amex",
+      "name": "マリオットボンヴォイ・アメリカン・エキスプレス・カード",
+      "brand_label": "Marriott AMEX",
+      "color": "amber",
+      "stars": 5,
+      "catch": "毎年1泊分の無料宿泊特典＆上級会員資格！ホテル好きの定番",
+      "annual_fee": "23,100円",
+      "reward": "1.0%（ポイント）",
+      "reward_highlight": false,
+      "bonus": "継続で無料宿泊特典",
+      "international": "AMEX",
+      "feature": "ホテル無料宿泊＆上級会員",
+      "affiliate_url": "https://www.americanexpress.com/ja-jp/",
+      "merits": [
+        "毎年の継続で1泊分の無料宿泊特典がもらえる",
+        "マリオットボンヴォイのゴールドエリート会員資格が付帯",
+        "貯めたポイントは40以上の航空会社のマイルにも移行できる"
+      ],
+      "demerits": [
+        "年会費23,100円（無料宿泊特典で十分元が取れることが多い）",
+        "AMEXブランドのため使えない店舗もある"
+      ],
+      "review": "マリオットボンヴォイ・アメックスは、ホテル好きに絶大な人気を誇る提携カードです。毎年の継続で1泊分の無料宿泊特典がもらえ、年会費以上の価値になることも。マリオットのゴールド会員資格やマイル移行など、旅行をお得に楽しみたい人に最適です。",
+      "target": "ホテル・旅行が好きな人・無料宿泊特典を活用したい人"
+    },
+    {
+      "id": "ana-amex",
+      "name": "ANAアメリカン・エキスプレス・カード",
+      "brand_label": "ANA AMEX",
+      "color": "bronze",
+      "stars": 4,
+      "catch": "ANAマイルが貯まるアメックス！入会・継続ボーナスマイルも",
+      "annual_fee": "7,700円",
+      "reward": "ANAマイル",
+      "reward_highlight": false,
+      "bonus": "入会・継続1,000マイル",
+      "international": "AMEX",
+      "feature": "ANAマイル＋アメックス特典",
+      "affiliate_url": "https://www.americanexpress.com/ja-jp/",
+      "merits": [
+        "入会時・毎年の継続で1,000マイルのボーナス",
+        "ANA便の搭乗でフライトボーナスマイルが貯まる",
+        "空港ラウンジなどアメックスの旅行特典も使える"
+      ],
+      "demerits": [
+        "年会費7,700円がかかる",
+        "マイルを使わない人にはメリットが薄い"
+      ],
+      "review": "ANAアメリカン・エキスプレス・カードは、ANAマイルとアメックスの旅行特典を両取りできる提携カードです。入会・継続ボーナスマイルやフライトボーナスでマイルが貯まり、空港ラウンジなども利用可能。ANA便と旅行を楽しむ人に向いた1枚です。",
+      "target": "ANAマイルを貯めたい人・旅行特典も欲しい人"
+    },
+    {
+      "id": "hilton-amex",
+      "name": "ヒルトン・オナーズ・アメリカン・エキスプレス・カード",
+      "brand_label": "Hilton AMEX",
+      "color": "platinum",
+      "stars": 4,
+      "catch": "ヒルトンの上級会員資格＆高還元！ホテルステイをお得に",
+      "annual_fee": "16,500円",
+      "reward": "1.0%〜（ヒルトンで高還元）",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "AMEX",
+      "feature": "ヒルトン上級会員・高還元",
+      "affiliate_url": "https://www.americanexpress.com/ja-jp/",
+      "merits": [
+        "ヒルトン・オナーズのゴールドステータスが自動付帯",
+        "ヒルトン系列での利用はポイント高還元",
+        "空港ラウンジなどアメックスの旅行特典も利用できる"
+      ],
+      "demerits": [
+        "年会費16,500円がかかる",
+        "ヒルトンを使わない人にはメリットが小さい"
+      ],
+      "review": "ヒルトン・オナーズ・アメックスは、ヒルトンの上級会員資格（ゴールドステータス）が自動で付くホテル系カードです。ヒルカ系列での高還元や朝食・部屋のアップグレード特典など、ホテルステイを格上げできます。ヒルトンをよく使う人におすすめです。",
+      "target": "ヒルトン系列をよく使う人・ホテルを快適に過ごしたい人"
+    },
+    {
+      "id": "ana-diners",
+      "name": "ANAダイナースカード",
+      "brand_label": "ANA Diners",
+      "color": "platinum",
+      "stars": 4,
+      "catch": "ANAマイルとダイナースのステータスを両立！マイル移行上限なし",
+      "annual_fee": "29,700円",
+      "reward": "ANAマイル",
+      "reward_highlight": false,
+      "bonus": "入会・継続マイル",
+      "international": "Diners Club",
+      "feature": "ANAマイル＋ハイステータス",
+      "affiliate_url": "https://www.diners.co.jp/",
+      "merits": [
+        "ポイントをANAマイルへ上限なしで移行できる",
+        "入会・継続ボーナスやフライトボーナスでマイルが貯まる",
+        "ダイナースの空港ラウンジ・グルメ特典も利用できる"
+      ],
+      "demerits": [
+        "年会費29,700円と高め",
+        "Diners Clubブランドのため使えない店舗もある"
+      ],
+      "review": "ANAダイナースカードは、ANAマイルとダイナースのハイステータスを両立できる提携カードです。マイル移行に上限がなく、ガッツリ貯めて特典航空券を狙う人に有利。空港ラウンジやグルメ特典などダイナースならではの上質な体験も魅力です。",
+      "target": "ANAマイルを大量に貯めたい人・ステータスも重視する人"
     }
   ],
   "purposes": [
@@ -539,8 +669,9 @@
     { "id": "instant", "icon": "⚡", "title": "即日発行できるカード", "desc": "急いでカードが必要なときに", "card_ids": ["epos-card", "smbc-card", "jcb-card-w"], "intro": "申し込んだその日から使える、発行スピードの速いカードを紹介します。" },
     { "id": "gold", "icon": "👑", "title": "ゴールドカード", "desc": "ラウンジ・保険付きのワンランク上", "card_ids": ["smbc-gold-nl", "jcb-gold", "amex-gold"], "intro": "空港ラウンジや手厚い保険など、ワンランク上の特典が魅力のゴールドカードです。" },
     { "id": "platinum", "icon": "💎", "title": "プラチナカード", "desc": "コンシェルジュなど最上級の特典", "card_ids": ["smbc-platinum", "diners-club"], "intro": "コンシェルジュや高い還元率など、最上級のサービスを備えたプラチナカードです。" },
-    { "id": "status", "icon": "✨", "title": "ステータスカード", "desc": "アメックス・ダイナースなど憧れの1枚", "card_ids": ["amex-gold", "diners-club", "smbc-platinum"], "intro": "持つだけで一目置かれる、ステータスと上質な特典を備えたハイクラスカードです。" },
-    { "id": "mile", "icon": "✈️", "title": "マイルが貯まるカード", "desc": "JAL・ANAマイルを貯めたい人に", "card_ids": ["jal-card", "ana-card"], "intro": "フライトやショッピングでマイルが貯まる、旅行好きにおすすめのカードです。" },
+    { "id": "status", "icon": "✨", "title": "ステータスカード", "desc": "アメックス・ダイナースなど憧れの1枚", "card_ids": ["amex-gold", "amex-green", "diners-club", "marriott-amex", "smbc-platinum"], "intro": "持つだけで一目置かれる、ステータスと上質な特典を備えたハイクラスカードです。" },
+    { "id": "mile", "icon": "✈️", "title": "マイルが貯まるカード", "desc": "JAL・ANAマイルを貯めたい人に", "card_ids": ["jal-card", "ana-card", "ana-amex", "ana-diners"], "intro": "フライトやショッピングでマイルが貯まる、旅行好きにおすすめのカードです。" },
+    { "id": "hotel", "icon": "🏨", "title": "ホテル・宿泊特典カード", "desc": "無料宿泊や上級会員資格がもらえる", "card_ids": ["marriott-amex", "hilton-amex"], "intro": "無料宿泊特典やホテルの上級会員資格がもらえる、ホテル好きにおすすめのカードです。" },
     { "id": "suica", "icon": "🚃", "title": "Suica付きカード", "desc": "チャージでお得・交通系も1枚に", "card_ids": ["view-card"], "intro": "Suica一体型で、チャージや電車移動がお得になるカードです。" },
     { "id": "business", "icon": "🏢", "title": "法人・ビジネスカード", "desc": "経費管理に便利な事業者向け", "card_ids": ["smbc-business"], "intro": "個人事業主・法人向けに、経費管理がラクになるビジネスカードを紹介します。" }
   ],
