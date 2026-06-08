@@ -240,6 +240,58 @@
       ],
       "review": "プロミスVISAカードは三井住友カードが発行する年会費永年無料のクレジットカードです。対象店舗でのスマホのタッチ決済で最大7%相当のVポイント還元が受けられるうえ、プロミスのキャッシング枠も1枚で持てるのが特徴。ショッピングと、いざという時の借入を1枚にまとめたい方に向いています。",
       "target": "ショッピングとキャッシングを1枚にまとめたい人・年会費無料カードを探している人"
+    },
+    {
+      "id": "tokyu-card",
+      "name": "東急カード（TOKYU CARD）",
+      "brand_label": "TOKYU CARD",
+      "color": "green",
+      "stars": 4,
+      "catch": "東急線・PASMOユーザーにお得！TOKYU POINTが貯まる・使える",
+      "annual_fee": "初年度無料（翌年〜1,100円）",
+      "reward": "0.5%〜3.0%",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "VISA / Master",
+      "feature": "東急・PASMOでお得",
+      "affiliate_url": "https://www.topcard.co.jp/",
+      "merits": [
+        "東急百貨店・東急ストアなど東急グループでTOKYU POINTが高還元",
+        "PASMOオートチャージでもポイントが貯まる",
+        "TOKYU POINTとJALマイルを相互に交換できる"
+      ],
+      "demerits": [
+        "翌年以降は年会費1,100円がかかる（条件付き）",
+        "東急沿線を使わない人にはメリットが小さい"
+      ],
+      "review": "東急カードは東急線・東急ストア・東急百貨店など東急グループの利用でTOKYU POINTが効率よく貯まるカードです。PASMOオートチャージでもポイントが貯まり、通勤・通学で東急を使う人に最適。JALマイルとの相互交換にも対応しています。",
+      "target": "東急沿線をよく使う人・PASMOユーザー"
+    },
+    {
+      "id": "ja-card",
+      "name": "JAカード",
+      "brand_label": "JA CARD",
+      "color": "teal",
+      "stars": 4,
+      "catch": "JAバンク会員におすすめ！年1回の利用で翌年の年会費が無料に",
+      "annual_fee": "初年度無料（年1回利用で翌年無料）",
+      "reward": "0.5%〜",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "VISA / Master / JCB",
+      "feature": "JAバンク会員向け",
+      "affiliate_url": "https://www.jacard.co.jp/",
+      "merits": [
+        "年1回以上の利用で翌年の年会費が無料になる",
+        "JAバンクの口座と一体で管理しやすい",
+        "全国のVisa / Mastercard / JCB加盟店で使える"
+      ],
+      "demerits": [
+        "JAバンクを使わない人にはメリットが小さい",
+        "通常還元率は0.5%と標準的"
+      ],
+      "review": "JAカードはJAバンクの利用者向けに三菱UFJニコスが発行するクレジットカードです。年1回以上の利用で翌年の年会費が無料になり、JAバンクの口座と一体で管理できるのが便利。地域に根ざした使いやすさが魅力です。",
+      "target": "JAバンクを利用している人・地域密着のカードを求める人"
     }
   ],
   "purposes": [
