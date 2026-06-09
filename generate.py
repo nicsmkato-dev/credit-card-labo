@@ -317,6 +317,7 @@ def build_index(data):
 <section class="comparison-section" id="comparison">
   <div class="container">
     <h2 class="section-title">クレジットカード 一覧比較表</h2>
+    <p class="section-sub">掲載カードを一覧でまとめて比較。表の中を上下・左右にスクロールできます。</p>
     <div class="table-wrapper">
       <table class="comparison-table">
         <thead>
@@ -340,6 +341,7 @@ def build_index(data):
         </tbody>
       </table>
     </div>
+    <p class="table-scroll-hint">↕ 表内を上下にスクロールして全""" + str(len(cards)) + """枚を比較できます</p>
   </div>
 </section>"""
 
