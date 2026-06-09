@@ -103,6 +103,14 @@ def head(site, title, description, depth=0):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{description}">
   <title>{title}</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{title}">
+  <meta property="og:description" content="{description}">
+  <meta property="og:site_name" content="{site['name']}">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{title}">
+  <meta name="twitter:description" content="{description}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
@@ -380,6 +388,15 @@ def build_index(data):
   </div>
 </section>"""
 
+    base = site.get("base_url", "").rstrip("/")
+    html += f"""
+<script type="application/ld+json">
+{{"@context":"https://schema.org","@type":"WebSite","name":"{site['name']}","url":"{base}/","description":"{site['description']}","inLanguage":"ja"}}
+</script>
+<script type="application/ld+json">
+{{"@context":"https://schema.org","@type":"Organization","name":"{site['name']}","url":"{base}/","description":"クレジットカードを年会費・還元率・特典で比較・紹介する情報メディア"}}
+</script>"""
+
     html += footer(site)
     write(os.path.join(BASE_DIR, "index.html"), html)
 
@@ -521,6 +538,12 @@ def build_article_pages(data):
     </div>
   </div>
 </article>"""
+        base = site.get("base_url", "").rstrip("/")
+        iso = datetime.date.today().isoformat()
+        h += f"""
+<script type="application/ld+json">
+{{"@context":"https://schema.org","@type":"Article","headline":"{a['title']}","description":"{a['description']}","datePublished":"{iso}","dateModified":"{iso}","inLanguage":"ja","author":{{"@type":"Organization","name":"{site['name']}編集部"}},"publisher":{{"@type":"Organization","name":"{site['name']}"}},"mainEntityOfPage":"{base}/articles/{a['id']}.html"}}
+</script>"""
         h += footer(site, depth=1)
         write(os.path.join(BASE_DIR, "articles", f"{a['id']}.html"), h)
 
