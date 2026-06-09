@@ -103,6 +103,7 @@ def head(site, title, description, depth=0):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{description}">
   <title>{title}</title>
+  <link rel="icon" href="{prefix}favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}">
@@ -396,6 +397,10 @@ def build_index(data):
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"Organization","name":"{site['name']}","url":"{base}/","description":"クレジットカードを年会費・還元率・特典で比較・紹介する情報メディア"}}
 </script>"""
+    faq = {"@context": "https://schema.org", "@type": "FAQPage",
+           "mainEntity": [{"@type": "Question", "name": g["q"],
+                           "acceptedAnswer": {"@type": "Answer", "text": g["a"]}} for g in data["guides"]]}
+    html += '\n<script type="application/ld+json">\n' + json.dumps(faq, ensure_ascii=False) + '\n</script>'
 
     html += footer(site)
     write(os.path.join(BASE_DIR, "index.html"), html)
@@ -458,6 +463,11 @@ def build_card_pages(data):
     </div>
   </div>
 </article>"""
+        cbase = site.get("base_url", "").rstrip("/")
+        cbc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{cbase}/"},
+            {"@type": "ListItem", "position": 2, "name": c["name"], "item": f"{cbase}/cards/{c['id']}.html"}]}
+        html += '\n<script type="application/ld+json">\n' + json.dumps(cbc, ensure_ascii=False) + '\n</script>'
         html += footer(site, depth=1)
         write(os.path.join(BASE_DIR, "cards", f"{c['id']}.html"), html)
 
@@ -544,6 +554,11 @@ def build_article_pages(data):
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"Article","headline":"{a['title']}","description":"{a['description']}","datePublished":"{iso}","dateModified":"{iso}","inLanguage":"ja","author":{{"@type":"Organization","name":"{site['name']}編集部"}},"publisher":{{"@type":"Organization","name":"{site['name']}"}},"mainEntityOfPage":"{base}/articles/{a['id']}.html"}}
 </script>"""
+        bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
+            {"@type": "ListItem", "position": 2, "name": "記事一覧", "item": f"{base}/articles.html"},
+            {"@type": "ListItem", "position": 3, "name": a["title"], "item": f"{base}/articles/{a['id']}.html"}]}
+        h += '\n<script type="application/ld+json">\n' + json.dumps(bc, ensure_ascii=False) + '\n</script>'
         h += footer(site, depth=1)
         write(os.path.join(BASE_DIR, "articles", f"{a['id']}.html"), h)
 
@@ -583,6 +598,43 @@ def build_legal_pages(data):
         write(os.path.join(BASE_DIR, fname), html)
 
 
+def build_404(data):
+    site = data["site"]
+    html = f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="お探しのページは見つかりませんでした。">
+  <title>ページが見つかりません｜{site['name']}</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header"><div class="container"><div class="header-inner">
+  <a href="/" class="logo">{site['logo']}</a>
+  <nav class="global-nav"><a href="/index.html#ranking">ランキング</a><a href="/index.html#purpose">目的別</a><a href="/articles.html">記事一覧</a></nav>
+</div></div></header>
+<section class="detail-page">
+  <div class="container container-narrow" style="text-align:center;">
+    <p style="font-size:5rem;font-weight:900;background:linear-gradient(120deg,#283593,#ff6f00);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:6px;">404</p>
+    <h1 class="article-title">ページが見つかりません</h1>
+    <p class="review-text">お探しのページは移動または削除された可能性があります。<br>下記から目的のページをお探しください。</p>
+    <div class="apply-cta">
+      <a href="/index.html" class="btn-primary">トップページへ戻る</a>
+      <a href="/articles.html" class="btn-detail">記事一覧を見る</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>"""
+    write(os.path.join(BASE_DIR, "404.html"), html)
+
+
 def build_sitemap(data):
     site = data["site"]
     base = site.get("base_url", "").rstrip("/")
@@ -620,6 +672,7 @@ def main():
     build_purpose_pages(data)
     build_article_pages(data)
     build_legal_pages(data)
+    build_404(data)
     build_sitemap(data)
     n = 6 + len(data["cards"]) + len(data["purposes"]) + len(data["articles"])
     print(f"=== 完了: 約{n}ページを生成しました ===")
