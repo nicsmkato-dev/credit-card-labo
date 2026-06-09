@@ -357,6 +357,27 @@ def build_index(data):
   </div>
 </section>"""
 
+    # トップページの記事セクション
+    html += """
+<section class="home-articles-section">
+  <div class="container">
+    <h2 class="section-title">お役立ち記事</h2>
+    <p class="section-sub">クレジットカード選びに役立つ情報を発信しています。</p>
+    <div class="article-grid">"""
+    for a in data["articles"][:6]:
+        html += f"""
+      <a href="articles/{a['id']}.html" class="article-card">
+        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {today_str()} 更新</span></div>
+        <h3>{a['title']}</h3>
+        <p>{a['description']}</p>
+        <span class="read-more">続きを読む →</span>
+      </a>"""
+    html += """
+    </div>
+    <div class="home-articles-more"><a href="articles.html" class="btn-detail">記事をもっと見る →</a></div>
+  </div>
+</section>"""
+
     html += footer(site)
     write(os.path.join(BASE_DIR, "index.html"), html)
 
@@ -462,7 +483,7 @@ def build_article_pages(data):
     for a in data["articles"]:
         html += f"""
       <a href="articles/{a['id']}.html" class="article-card">
-        <div class="article-tag">記事</div>
+        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {today_str()} 更新</span></div>
         <h3>{a['title']}</h3>
         <p>{a['description']}</p>
         <span class="read-more">続きを読む →</span>
