@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://creca-labo.pages.dev/index.html</loc><lastmod>2026-06-09</lastmod></url>
   <url><loc>https://creca-labo.pages.dev/articles.html</loc><lastmod>2026-06-09</lastmod></url>
+  <url><loc>https://creca-labo.pages.dev/securities.html</loc><lastmod>2026-06-09</lastmod></url>
   <url><loc>https://creca-labo.pages.dev/about.html</loc><lastmod>2026-06-09</lastmod></url>
   <url><loc>https://creca-labo.pages.dev/privacy.html</loc><lastmod>2026-06-09</lastmod></url>
   <url><loc>https://creca-labo.pages.dev/disclaimer.html</loc><lastmod>2026-06-09</lastmod></url>
@@ -102,4 +103,9 @@
   <url><loc>https://creca-labo.pages.dev/articles/point-investment.html</loc><lastmod>2026-06-09</lastmod></url>
   <url><loc>https://creca-labo.pages.dev/articles/card-renew.html</loc><lastmod>2026-06-09</lastmod></url>
   <url><loc>https://creca-labo.pages.dev/articles/high-reward-howto.html</loc><lastmod>2026-06-09</lastmod></url>
+  <url><loc>https://creca-labo.pages.dev/securities/rakuten-sec.html</loc><lastmod>2026-06-09</lastmod></url>
+  <url><loc>https://creca-labo.pages.dev/securities/sbi-sec.html</loc><lastmod>2026-06-09</lastmod></url>
+  <url><loc>https://creca-labo.pages.dev/securities/monex-sec.html</loc><lastmod>2026-06-09</lastmod></url>
+  <url><loc>https://creca-labo.pages.dev/securities/matsui-sec.html</loc><lastmod>2026-06-09</lastmod></url>
+  <url><loc>https://creca-labo.pages.dev/securities/smartplus-sec.html</loc><lastmod>2026-06-09</lastmod></url>
 </urlset>

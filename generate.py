@@ -158,6 +158,7 @@ def header(site, depth=0):
         <a href="{p}index.html#ranking">ランキング</a>
         <a href="{p}index.html#purpose">目的別</a>
         <a href="{p}index.html#comparison">比較表</a>
+        <a href="{p}securities.html">証券・NISA</a>
         <a href="{p}articles.html">記事一覧</a>
       </nav>
     </div>
@@ -187,6 +188,7 @@ def footer(site, depth=0):
         <a href="{p}purpose/beginner.html">初心者向け</a>
         <a href="{p}purpose/travel.html">旅行・出張向け</a>
         <a href="{p}purpose/shopping.html">ネットショッピング</a>
+        <a href="{p}securities.html">ネット証券・NISA</a>
         <a href="{p}articles.html">記事一覧</a>
       </div>
       <div class="footer-links">
@@ -445,6 +447,20 @@ def build_index(data):
   </script>
 </section>"""
 
+    # 証券・NISA誘導（クレカ積立）
+    html += """
+<section class="securities-teaser">
+  <div class="container">
+    <div class="teaser-box">
+      <div class="teaser-text">
+        <h2>💹 クレカ積立でポイントを貯めよう</h2>
+        <p>クレジットカードで投資信託を積み立てると、ポイントが貯まってお得。NISA対応の人気ネット証券を比較しました。</p>
+      </div>
+      <a href="securities.html" class="btn-primary">ネット証券・NISAを見る →</a>
+    </div>
+  </div>
+</section>"""
+
     # 初心者ガイド
     html += """
 <section class="guide-section" id="beginner">
@@ -689,6 +705,140 @@ def build_legal_pages(data):
         write(os.path.join(BASE_DIR, fname), html)
 
 
+def broker_block(b, rank=None, depth=0):
+    p = "" if depth == 0 else "../"
+    badge = f'<div class="rank-badge">{rank}位</div>' if rank else ""
+    rank_class = f"rank-{rank}" if rank else "rank-x"
+    merits = "\n".join(f'          <p class="merit">✅ {m}</p>' for m in b["merits"])
+    return f"""
+    <div class="card-item {rank_class}">
+      {badge}
+      <div class="card-body">
+        <div class="card-header-row">
+          <div class="card-logo-area"><div class="broker-logo {b['color']}">{b['brand_label']}</div></div>
+          <div class="card-title-area">
+            <h3>{b['name']}</h3>
+            <div class="stars">{stars_html(b['stars'])}</div>
+            <p class="card-catch">{b['catch']}</p>
+          </div>
+        </div>
+        <div class="card-specs">
+          <div class="spec"><span class="spec-label">手数料</span><span class="spec-value highlight">{b['fee']}</span></div>
+          <div class="spec"><span class="spec-label">NISA</span><span class="spec-value">{b['nisa']}</span></div>
+          <div class="spec"><span class="spec-label">クレカ積立</span><span class="spec-value">{b['credit']}</span></div>
+          <div class="spec"><span class="spec-label">取扱商品</span><span class="spec-value">{b['products']}</span></div>
+        </div>
+        <div class="card-merits">
+{merits}
+        </div>
+        <div class="card-actions">
+          <a href="{b['affiliate_url']}" class="btn-apply" target="_blank" rel="nofollow sponsored noopener">公式サイトで口座開設（無料）</a>
+          <a href="{p}securities/{b['id']}.html" class="btn-detail">詳しく見る</a>
+        </div>
+      </div>
+    </div>"""
+
+
+def build_securities(data):
+    site = data["site"]
+    brokers = data.get("brokers", [])
+    if not brokers:
+        return
+    os.makedirs(os.path.join(BASE_DIR, "securities"), exist_ok=True)
+    # 一覧ページ
+    html = head(site, f"ネット証券・NISA口座おすすめ比較｜{site['name']}",
+                "クレカ積立に対応したネット証券・NISA口座を手数料・ポイント還元で比較。おすすめの証券会社を紹介します。")
+    html += header(site)
+    html += """
+<section class="securities-section">
+  <div class="container">
+    <h1 class="section-title">ネット証券・NISA口座 おすすめ比較</h1>
+    <p class="section-sub">クレジットカードで投資信託を積み立てる「クレカ積立」に対応したネット証券を比較。手数料無料・ポイント還元・NISA対応で選べる人気5社を紹介します。</p>"""
+    for i, b in enumerate(brokers, start=1):
+        html += broker_block(b, rank=i, depth=0)
+    html += """
+    <h2 class="section-title" style="margin-top:54px;">ネット証券 比較表</h2>
+    <div class="table-wrapper">
+      <table class="comparison-table">
+        <thead><tr><th>証券会社</th><th>手数料</th><th>NISA</th><th>クレカ積立</th><th>取扱商品</th><th>口座開設</th></tr></thead>
+        <tbody>"""
+    for idx, b in enumerate(brokers):
+        cls = ' class="table-highlight"' if idx == 0 else ""
+        html += f"""
+          <tr{cls}>
+            <td><a href="securities/{b['id']}.html"><strong>{b['name']}</strong></a></td>
+            <td>{b['fee']}</td>
+            <td>{b['nisa']}</td>
+            <td>{b['credit']}</td>
+            <td>{b['products']}</td>
+            <td><a href="{b['affiliate_url']}" target="_blank" rel="nofollow sponsored noopener" class="table-btn">開設</a></td>
+          </tr>"""
+    html += """
+        </tbody>
+      </table>
+    </div>
+    <p class="table-scroll-hint">※クレカ積立は、当サイト掲載のクレジットカードと組み合わせるとポイントが貯まります。</p>
+  </div>
+</section>"""
+    html += footer(site)
+    write(os.path.join(BASE_DIR, "securities.html"), html)
+
+    # 各証券の詳細ページ
+    base = site.get("base_url", "").rstrip("/")
+    for b in brokers:
+        merits = "\n".join(f'        <li>✅ {m}</li>' for m in b["merits"])
+        demerits = "\n".join(f'        <li>⚠️ {m}</li>' for m in b.get("demerits", []))
+        h = head(site, f"{b['name']}の特徴・評判・クレカ積立｜{site['name']}",
+                 f"{b['name']}の手数料・取扱商品・NISA・クレカ積立を解説。{b['catch']}", depth=1)
+        h += header(site, depth=1)
+        h += f"""
+<article class="detail-page">
+  <div class="container container-narrow">
+    <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <a href="../securities.html">ネット証券・NISA</a> ＞ <span>{b['name']}</span></nav>
+    <div class="detail-hero {b['color']}">
+      <div class="broker-logo {b['color']} big">{b['brand_label']}</div>
+      <div>
+        <h1>{b['name']}</h1>
+        <div class="stars">{stars_html(b['stars'])}</div>
+        <p>{b['catch']}</p>
+      </div>
+    </div>
+    <div class="card-specs detail-specs">
+      <div class="spec"><span class="spec-label">手数料</span><span class="spec-value highlight">{b['fee']}</span></div>
+      <div class="spec"><span class="spec-label">NISA</span><span class="spec-value">{b['nisa']}</span></div>
+      <div class="spec"><span class="spec-label">クレカ積立</span><span class="spec-value">{b['credit']}</span></div>
+      <div class="spec"><span class="spec-label">取扱商品</span><span class="spec-value">{b['products']}</span></div>
+    </div>
+    <div class="apply-cta">
+      <a href="{b['affiliate_url']}" class="btn-apply" target="_blank" rel="nofollow sponsored noopener">{b['name']}で口座開設（無料）</a>
+    </div>
+    <h2>{b['name']}の総合評価</h2>
+    <p class="review-text">{b['review']}</p>
+    <h2>メリット</h2>
+    <ul class="merit-list">
+{merits}
+    </ul>
+    <h2>デメリット・注意点</h2>
+    <ul class="demerit-list">
+{demerits}
+    </ul>
+    <h2>こんな人におすすめ</h2>
+    <p class="review-text">👤 {b['target']}</p>
+    <div class="apply-cta">
+      <a href="{b['affiliate_url']}" class="btn-apply" target="_blank" rel="nofollow sponsored noopener">公式サイトで口座開設（無料）</a>
+      <a href="../securities.html" class="btn-detail">他の証券会社と比較する</a>
+    </div>
+  </div>
+</article>"""
+        bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
+            {"@type": "ListItem", "position": 2, "name": "ネット証券・NISA", "item": f"{base}/securities.html"},
+            {"@type": "ListItem", "position": 3, "name": b["name"], "item": f"{base}/securities/{b['id']}.html"}]}
+        h += '\n<script type="application/ld+json">\n' + json.dumps(bc, ensure_ascii=False) + '\n</script>'
+        h += footer(site, depth=1)
+        write(os.path.join(BASE_DIR, "securities", f"{b['id']}.html"), h)
+
+
 def build_404(data):
     site = data["site"]
     html = f"""<!DOCTYPE html>
@@ -729,10 +879,11 @@ def build_404(data):
 def build_sitemap(data):
     site = data["site"]
     base = site.get("base_url", "").rstrip("/")
-    urls = ["index.html", "articles.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]
+    urls = ["index.html", "articles.html", "securities.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]
     urls += [f"cards/{c['id']}.html" for c in data["cards"]]
     urls += [f"purpose/{p['id']}.html" for p in data["purposes"]]
     urls += [f"articles/{a['id']}.html" for a in data["articles"]]
+    urls += [f"securities/{b['id']}.html" for b in data.get("brokers", [])]
     today = datetime.date.today().isoformat()
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -762,6 +913,7 @@ def main():
     build_card_pages(data)
     build_purpose_pages(data)
     build_article_pages(data)
+    build_securities(data)
     build_legal_pages(data)
     build_404(data)
     build_sitemap(data)
