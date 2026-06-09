@@ -116,6 +116,41 @@
     </div>
   </div>
 </section>
+<section class="diagnosis-section">
+  <div class="container">
+    <h2 class="section-title">かんたんカード診断</h2>
+    <p class="section-sub">いちばん重視するポイントを選ぶだけ。あなたにおすすめの1枚を提案します。</p>
+    <div class="diag-options">
+      <button class="diag-btn" data-key="free">💴 年会費無料</button>
+      <button class="diag-btn" data-key="highreward">📈 とにかく高還元</button>
+      <button class="diag-btn" data-key="mile">✈️ マイル・旅行</button>
+      <button class="diag-btn" data-key="status">✨ ステータス・特典</button>
+      <button class="diag-btn" data-key="docomo">📱 ドコモユーザー</button>
+      <button class="diag-btn" data-key="daily">🛍️ コンビニ・普段使い</button>
+    </div>
+    <div class="diag-result" id="diag-result" style="display:none;"></div>
+  </div>
+  <script>
+  var DIAG={"free": {"name": "三井住友カード（NL）", "catch": "コンビニ・マクドナルドで最大7%還元！ナンバーレスでセキュリティ万全", "detail": "cards/smbc-card.html", "url": "https://www.smbc-card.com/"}, "highreward": {"name": "リクルートカード", "catch": "いつでも還元率1.2%！年会費無料で業界最高水準の常時高還元", "detail": "cards/recruit-card.html", "url": "https://recruit-card.jp/"}, "mile": {"name": "JALカード", "catch": "JALマイルが貯まる！搭乗ボーナスでマイラーの定番", "detail": "cards/jal-card.html", "url": "https://www.jal.co.jp/jmb/jalcard/"}, "status": {"name": "アメリカン・エキスプレス・ゴールド・プリファード・カード", "catch": "憧れのアメックス・ゴールド！継続特典・空港ラウンジ・手厚い保険", "detail": "cards/amex-gold.html", "url": "https://www.americanexpress.com/ja-jp/"}, "docomo": {"name": "dカード", "catch": "年会費無料でdポイントが貯まる！ドコモユーザーにうれしい1枚", "detail": "cards/d-card.html", "url": "https://dcard.docomo.ne.jp/"}, "daily": {"name": "三井住友カード（NL）", "catch": "コンビニ・マクドナルドで最大7%還元！ナンバーレスでセキュリティ万全", "detail": "cards/smbc-card.html", "url": "https://www.smbc-card.com/"}};
+  (function(){
+    var btns=document.querySelectorAll('.diag-btn');
+    var res=document.getElementById('diag-result');
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        btns.forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');
+        var d=DIAG[b.getAttribute('data-key')];
+        if(!d){return;}
+        res.innerHTML='<div class="diag-card-label">🎯 あなたへのおすすめ</div>'
+          +'<h3>'+d.name+'</h3><p class="diag-catch">'+d.catch+'</p>'
+          +'<div class="diag-card-actions"><a href="'+d.url+'" target="_blank" rel="nofollow sponsored noopener" class="btn-apply">公式サイトで申し込む（無料）</a>'
+          +'<a href="'+d.detail+'" class="btn-detail">詳しく見る</a></div>';
+        res.style.display='block';
+      });
+    });
+  })();
+  </script>
+</section>
 <section class="ranking-section" id="ranking">
   <div class="container">
     <h2 class="section-title">おすすめクレジットカード ランキング TOP5</h2>
@@ -373,14 +408,23 @@
 <section class="comparison-section" id="comparison">
   <div class="container">
     <h2 class="section-title">クレジットカード 一覧比較表</h2>
-    <p class="section-sub">掲載カードを一覧でまとめて比較。表の中を上下・左右にスクロールできます。</p>
+    <p class="section-sub">掲載カードを一覧でまとめて比較。条件で絞り込み、表内をスクロールできます。</p>
+    <div class="table-filters">
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn" data-filter="free">年会費無料</button>
+      <button class="filter-btn" data-filter="highreward">高還元</button>
+      <button class="filter-btn" data-filter="gold">ゴールド</button>
+      <button class="filter-btn" data-filter="platinum">プラチナ</button>
+      <button class="filter-btn" data-filter="mile">マイル</button>
+      <button class="filter-btn" data-filter="instant">即日発行</button>
+    </div>
     <div class="table-wrapper">
       <table class="comparison-table">
         <thead>
           <tr><th>カード名</th><th>年会費</th><th>還元率</th><th>入会特典</th><th>ブランド</th><th>特徴</th><th>申込</th></tr>
         </thead>
         <tbody>
-          <tr class="table-highlight">
+          <tr class="table-highlight" data-cat="free highreward">
             <td><a href="cards/smbc-card.html"><strong>三井住友カード（NL）</strong></a></td>
             <td>無料</td>
             <td><strong>0.5%〜7.0%</strong></td>
@@ -389,7 +433,7 @@
             <td>コンビニで7%還元</td>
             <td><a href="https://www.smbc-card.com/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free highreward">
             <td><a href="cards/olive-card.html"><strong>Olive（オリーブ）</strong></a></td>
             <td>無料</td>
             <td><strong>0.5%〜20%</strong></td>
@@ -398,7 +442,7 @@
             <td>口座一体・最大20%還元</td>
             <td><a href="https://www.smbc.co.jp/kojin/olive/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free highreward">
             <td><a href="cards/rakuten-card.html"><strong>楽天カード</strong></a></td>
             <td>無料</td>
             <td><strong>1.0%〜3.0%</strong></td>
@@ -407,7 +451,7 @@
             <td>楽天市場でお得</td>
             <td><a href="https://www.rakuten-card.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free instant">
             <td><a href="cards/epos-card.html"><strong>エポスカード</strong></a></td>
             <td>無料</td>
             <td>0.5%〜1.25%</td>
@@ -416,7 +460,7 @@
             <td>即日発行・旅行保険</td>
             <td><a href="https://www.eposcard.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free highreward">
             <td><a href="cards/mufg-card.html"><strong>三菱UFJカード</strong></a></td>
             <td>無料</td>
             <td><strong>0.5%〜15%</strong></td>
@@ -425,7 +469,7 @@
             <td>対象店舗で最大15%還元</td>
             <td><a href="https://www.cr.mufg.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free highreward">
             <td><a href="cards/recruit-card.html"><strong>リクルートカード</strong></a></td>
             <td>無料</td>
             <td><strong>1.2%〜</strong></td>
@@ -434,7 +478,7 @@
             <td>常時還元率1.2%</td>
             <td><a href="https://recruit-card.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free highreward">
             <td><a href="cards/jcb-card-w.html"><strong>JCBカードW</strong></a></td>
             <td>無料</td>
             <td><strong>1.0%〜5.5%</strong></td>
@@ -443,7 +487,7 @@
             <td>39歳以下限定・高還元</td>
             <td><a href="https://www.jcb.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free">
             <td><a href="cards/aeon-card.html"><strong>イオンカード</strong></a></td>
             <td>無料</td>
             <td>0.5%〜1.0%</td>
@@ -452,7 +496,7 @@
             <td>イオンで5%OFFの日あり</td>
             <td><a href="https://www.aeon.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free">
             <td><a href="cards/promise-visa.html"><strong>プロミスVISAカード</strong></a></td>
             <td>無料</td>
             <td>0.5%〜7%</td>
@@ -461,7 +505,7 @@
             <td>キャッシング枠付き・最大7%還元</td>
             <td><a href="https://www.smbc-card.com/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="">
             <td><a href="cards/tokyu-card.html"><strong>東急カード（TOKYU CARD）</strong></a></td>
             <td>初年度無料（翌年〜1,100円）</td>
             <td>0.5%〜3.0%</td>
@@ -470,7 +514,7 @@
             <td>東急・PASMOでお得</td>
             <td><a href="https://www.topcard.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="">
             <td><a href="cards/ja-card.html"><strong>JAカード</strong></a></td>
             <td>初年度無料（年1回利用で翌年無料）</td>
             <td>0.5%〜</td>
@@ -479,7 +523,7 @@
             <td>JAバンク会員向け</td>
             <td><a href="https://www.jacard.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free highreward gold">
             <td><a href="cards/smbc-gold-nl.html"><strong>三井住友カード ゴールド（NL）</strong></a></td>
             <td>5,500円（年100万円利用で無料）</td>
             <td><strong>0.5%〜7%</strong></td>
@@ -488,7 +532,7 @@
             <td>100万円利用で年会費無料</td>
             <td><a href="https://www.smbc-card.com/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="gold">
             <td><a href="cards/jcb-gold.html"><strong>JCBゴールド</strong></a></td>
             <td>11,000円（オンライン入会で初年度無料）</td>
             <td>0.5%〜</td>
@@ -497,7 +541,7 @@
             <td>手厚い旅行保険・ラウンジ</td>
             <td><a href="https://www.jcb.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="highreward platinum">
             <td><a href="cards/smbc-platinum.html"><strong>三井住友カード プラチナプリファード</strong></a></td>
             <td>33,000円</td>
             <td><strong>1.0%〜</strong></td>
@@ -506,7 +550,7 @@
             <td>ポイント特化プラチナ</td>
             <td><a href="https://www.smbc-card.com/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="mile">
             <td><a href="cards/jal-card.html"><strong>JALカード</strong></a></td>
             <td>2,200円（初年度無料）</td>
             <td>JALマイル</td>
@@ -515,7 +559,7 @@
             <td>JALマイルが貯まる</td>
             <td><a href="https://www.jal.co.jp/jmb/jalcard/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="mile">
             <td><a href="cards/ana-card.html"><strong>ANAカード（一般）</strong></a></td>
             <td>2,200円（初年度無料）</td>
             <td>ANAマイル</td>
@@ -524,7 +568,7 @@
             <td>ANAマイルが貯まる</td>
             <td><a href="https://www.ana.co.jp/ja/jp/amc/reference/anacard/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="highreward">
             <td><a href="cards/view-card.html"><strong>ビックカメラSuicaカード</strong></a></td>
             <td>524円（年1回利用で翌年無料）</td>
             <td><strong>0.5%〜11.5%</strong></td>
@@ -533,7 +577,7 @@
             <td>Suica付き・チャージで高還元</td>
             <td><a href="https://www.jreast.co.jp/card/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free">
             <td><a href="cards/smbc-business.html"><strong>三井住友カード ビジネスオーナーズ</strong></a></td>
             <td>無料</td>
             <td>0.5%〜1.5%</td>
@@ -542,7 +586,7 @@
             <td>法人・個人事業主向け</td>
             <td><a href="https://www.smbc-card.com/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="gold">
             <td><a href="cards/amex-gold.html"><strong>アメリカン・エキスプレス・ゴールド・プリファード・カード</strong></a></td>
             <td>39,600円</td>
             <td>1.0%〜</td>
@@ -551,7 +595,7 @@
             <td>ステータス＆充実特典</td>
             <td><a href="https://www.americanexpress.com/ja-jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="platinum">
             <td><a href="cards/diners-club.html"><strong>ダイナースクラブカード</strong></a></td>
             <td>24,200円</td>
             <td>0.4%〜1.0%</td>
@@ -560,7 +604,7 @@
             <td>ハイステータス・グルメ特典</td>
             <td><a href="https://www.diners.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="">
             <td><a href="cards/amex-green.html"><strong>アメリカン・エキスプレス・グリーン・カード</strong></a></td>
             <td>月会費1,100円</td>
             <td>1.0%〜</td>
@@ -569,7 +613,7 @@
             <td>月会費制・アメックス入門</td>
             <td><a href="https://www.americanexpress.com/ja-jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="gold">
             <td><a href="cards/marriott-amex.html"><strong>マリオットボンヴォイ・アメリカン・エキスプレス・カード</strong></a></td>
             <td>23,100円</td>
             <td>1.0%（ポイント）</td>
@@ -578,7 +622,7 @@
             <td>ホテル無料宿泊＆上級会員</td>
             <td><a href="https://www.americanexpress.com/ja-jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="mile">
             <td><a href="cards/ana-amex.html"><strong>ANAアメリカン・エキスプレス・カード</strong></a></td>
             <td>7,700円</td>
             <td>ANAマイル</td>
@@ -587,7 +631,7 @@
             <td>ANAマイル＋アメックス特典</td>
             <td><a href="https://www.americanexpress.com/ja-jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="platinum">
             <td><a href="cards/hilton-amex.html"><strong>ヒルトン・オナーズ・アメリカン・エキスプレス・カード</strong></a></td>
             <td>16,500円</td>
             <td>1.0%〜（ヒルトンで高還元）</td>
@@ -596,7 +640,7 @@
             <td>ヒルトン上級会員・高還元</td>
             <td><a href="https://www.americanexpress.com/ja-jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="platinum mile">
             <td><a href="cards/ana-diners.html"><strong>ANAダイナースカード</strong></a></td>
             <td>29,700円</td>
             <td>ANAマイル</td>
@@ -605,7 +649,7 @@
             <td>ANAマイル＋ハイステータス</td>
             <td><a href="https://www.diners.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free">
             <td><a href="cards/d-card.html"><strong>dカード</strong></a></td>
             <td>無料</td>
             <td>1.0%〜</td>
@@ -614,7 +658,7 @@
             <td>dポイントが貯まる</td>
             <td><a href="https://dcard.docomo.ne.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="highreward gold">
             <td><a href="cards/dcard-gold.html"><strong>dカード GOLD</strong></a></td>
             <td>11,000円</td>
             <td><strong>1.0%〜10%</strong></td>
@@ -623,7 +667,7 @@
             <td>ドコモ料金10%還元</td>
             <td><a href="https://dcard.docomo.ne.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free instant">
             <td><a href="cards/saison-int.html"><strong>セゾンカードインターナショナル</strong></a></td>
             <td>無料</td>
             <td>0.5%〜</td>
@@ -632,7 +676,7 @@
             <td>即日発行・永久不滅ポイント</td>
             <td><a href="https://www.saisoncard.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="gold">
             <td><a href="cards/saison-gold-amex.html"><strong>セゾンゴールド・アメリカン・エキスプレス・カード</strong></a></td>
             <td>11,000円（初年度無料）</td>
             <td>0.75%〜</td>
@@ -641,7 +685,7 @@
             <td>ラウンジ・ポイント優遇</td>
             <td><a href="https://www.saisoncard.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="highreward platinum mile">
             <td><a href="cards/saison-platinum.html"><strong>セゾンプラチナ・ビジネス・アメリカン・エキスプレス・カード</strong></a></td>
             <td>22,000円</td>
             <td><strong>0.5%〜1.125%</strong></td>
@@ -650,7 +694,7 @@
             <td>JALマイル高還元・ラウンジ</td>
             <td><a href="https://www.saisoncard.co.jp/" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
           </tr>
-          <tr>
+          <tr data-cat="free">
             <td><a href="cards/uc-card.html"><strong>UCカード</strong></a></td>
             <td>無料</td>
             <td>0.5%〜</td>
@@ -664,6 +708,23 @@
     </div>
     <p class="table-scroll-hint">↕ 表内を上下にスクロールして全31枚を比較できます</p>
   </div>
+  <script>
+  (function(){
+    var btns=document.querySelectorAll('.table-filters .filter-btn');
+    var rows=document.querySelectorAll('.comparison-table tbody tr');
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        btns.forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');
+        var f=b.getAttribute('data-filter');
+        rows.forEach(function(r){
+          var cat=' '+(r.getAttribute('data-cat')||'')+' ';
+          r.style.display=(f==='all'||cat.indexOf(' '+f+' ')>=0)?'':'none';
+        });
+      });
+    });
+  })();
+  </script>
 </section>
 <section class="guide-section" id="beginner">
   <div class="container">

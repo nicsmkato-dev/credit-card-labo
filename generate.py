@@ -44,6 +44,25 @@ def card_by_id(data, cid):
     return None
 
 
+def card_cats(card):
+    """比較表の絞り込み用カテゴリタグを返す"""
+    cats = []
+    blob = card.get("name", "") + card.get("brand_label", "") + card.get("feature", "")
+    if "永年無料" in card.get("annual_fee", ""):
+        cats.append("free")
+    if card.get("reward_highlight"):
+        cats.append("highreward")
+    if "ゴールド" in blob or "GOLD" in blob or card.get("color") == "amber":
+        cats.append("gold")
+    if "プラチナ" in blob or "PLATINUM" in blob or card.get("color") == "platinum":
+        cats.append("platinum")
+    if "マイル" in card.get("reward", "") or "マイル" in card.get("feature", ""):
+        cats.append("mile")
+    if "即日" in card.get("feature", "") or "即日" in card.get("catch", ""):
+        cats.append("instant")
+    return " ".join(cats)
+
+
 def hero_card_svg():
     """ヒーロー用のオリジナル・クレジットカードSVGイラスト（著作権フリー）"""
     return """
@@ -272,6 +291,52 @@ def build_index(data):
   </div>
 </section>"""
 
+    # かんたんカード診断
+    diag_map = {"free": "smbc-card", "highreward": "recruit-card", "mile": "jal-card",
+                "status": "amex-gold", "docomo": "d-card", "daily": "smbc-card"}
+    diag_data = {}
+    for k, cid in diag_map.items():
+        c = card_by_id(data, cid)
+        if c:
+            diag_data[k] = {"name": c["name"], "catch": c["catch"],
+                            "detail": f"cards/{cid}.html", "url": c["affiliate_url"]}
+    html += """
+<section class="diagnosis-section">
+  <div class="container">
+    <h2 class="section-title">かんたんカード診断</h2>
+    <p class="section-sub">いちばん重視するポイントを選ぶだけ。あなたにおすすめの1枚を提案します。</p>
+    <div class="diag-options">
+      <button class="diag-btn" data-key="free">💴 年会費無料</button>
+      <button class="diag-btn" data-key="highreward">📈 とにかく高還元</button>
+      <button class="diag-btn" data-key="mile">✈️ マイル・旅行</button>
+      <button class="diag-btn" data-key="status">✨ ステータス・特典</button>
+      <button class="diag-btn" data-key="docomo">📱 ドコモユーザー</button>
+      <button class="diag-btn" data-key="daily">🛍️ コンビニ・普段使い</button>
+    </div>
+    <div class="diag-result" id="diag-result" style="display:none;"></div>
+  </div>
+  <script>
+  var DIAG=""" + json.dumps(diag_data, ensure_ascii=False) + """;
+  (function(){
+    var btns=document.querySelectorAll('.diag-btn');
+    var res=document.getElementById('diag-result');
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        btns.forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');
+        var d=DIAG[b.getAttribute('data-key')];
+        if(!d){return;}
+        res.innerHTML='<div class="diag-card-label">🎯 あなたへのおすすめ</div>'
+          +'<h3>'+d.name+'</h3><p class="diag-catch">'+d.catch+'</p>'
+          +'<div class="diag-card-actions"><a href="'+d.url+'" target="_blank" rel="nofollow sponsored noopener" class="btn-apply">公式サイトで申し込む（無料）</a>'
+          +'<a href="'+d.detail+'" class="btn-detail">詳しく見る</a></div>';
+        res.style.display='block';
+      });
+    });
+  })();
+  </script>
+</section>"""
+
     # ランキング (上位5枚)
     html += f"""
 <section class="ranking-section" id="ranking">
@@ -326,7 +391,16 @@ def build_index(data):
 <section class="comparison-section" id="comparison">
   <div class="container">
     <h2 class="section-title">クレジットカード 一覧比較表</h2>
-    <p class="section-sub">掲載カードを一覧でまとめて比較。表の中を上下・左右にスクロールできます。</p>
+    <p class="section-sub">掲載カードを一覧でまとめて比較。条件で絞り込み、表内をスクロールできます。</p>
+    <div class="table-filters">
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn" data-filter="free">年会費無料</button>
+      <button class="filter-btn" data-filter="highreward">高還元</button>
+      <button class="filter-btn" data-filter="gold">ゴールド</button>
+      <button class="filter-btn" data-filter="platinum">プラチナ</button>
+      <button class="filter-btn" data-filter="mile">マイル</button>
+      <button class="filter-btn" data-filter="instant">即日発行</button>
+    </div>
     <div class="table-wrapper">
       <table class="comparison-table">
         <thead>
@@ -337,7 +411,7 @@ def build_index(data):
         cls = ' class="table-highlight"' if idx == 0 else ""
         rstr = f"<strong>{c['reward']}</strong>" if c.get("reward_highlight") else c["reward"]
         html += f"""
-          <tr{cls}>
+          <tr{cls} data-cat="{card_cats(c)}">
             <td><a href="cards/{c['id']}.html"><strong>{c['name']}</strong></a></td>
             <td>{c['annual_fee'].replace('永年','')}</td>
             <td>{rstr}</td>
@@ -352,6 +426,23 @@ def build_index(data):
     </div>
     <p class="table-scroll-hint">↕ 表内を上下にスクロールして全""" + str(len(cards)) + """枚を比較できます</p>
   </div>
+  <script>
+  (function(){
+    var btns=document.querySelectorAll('.table-filters .filter-btn');
+    var rows=document.querySelectorAll('.comparison-table tbody tr');
+    btns.forEach(function(b){
+      b.addEventListener('click',function(){
+        btns.forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');
+        var f=b.getAttribute('data-filter');
+        rows.forEach(function(r){
+          var cat=' '+(r.getAttribute('data-cat')||'')+' ';
+          r.style.display=(f==='all'||cat.indexOf(' '+f+' ')>=0)?'':'none';
+        });
+      });
+    });
+  })();
+  </script>
 </section>"""
 
     # 初心者ガイド

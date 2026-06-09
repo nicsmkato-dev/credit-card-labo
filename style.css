@@ -70,6 +70,20 @@ img, svg { max-width: 100%; }
 .point-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
 .point-card p { font-size: 0.9rem; color: #5a6080; }
 
+/* ===== カード診断 ===== */
+.diagnosis-section { padding: 70px 0; background: linear-gradient(135deg, #1a1f3a, #283593); color: #fff; }
+.diagnosis-section .section-title { color: #fff; }
+.diagnosis-section .section-sub { color: rgba(255,255,255,.8); }
+.diag-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 760px; margin: 0 auto; }
+.diag-btn { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 0.95rem; font-weight: 700; color: #283593; background: #fff; border: 2px solid transparent; border-radius: 14px; padding: 18px 12px; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+.diag-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+.diag-btn.active { background: linear-gradient(135deg, #ff8a3d, #f4511e); color: #fff; }
+.diag-result { max-width: 620px; margin: 30px auto 0; background: #fff; color: #1a1f3a; border-radius: 18px; padding: 30px; text-align: center; box-shadow: 0 16px 40px rgba(0,0,0,.3); }
+.diag-card-label { display: inline-block; background: #fff3e0; color: #e65100; font-size: 0.8rem; font-weight: 700; padding: 5px 16px; border-radius: 20px; margin-bottom: 12px; }
+.diag-result h3 { font-size: 1.5rem; font-weight: 900; margin-bottom: 8px; }
+.diag-catch { font-size: 0.92rem; color: #4a4f6a; margin-bottom: 20px; }
+.diag-card-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
 /* ===== ランキング ===== */
 .ranking-section { padding: 84px 0; background: linear-gradient(180deg, #f5f6fb, #eef0fa); }
 .card-item { background: #fff; border-radius: 22px; padding: 30px; margin-bottom: 26px; box-shadow: 0 6px 28px rgba(40,53,147,.08); border: 1px solid #ebedf7; position: relative; transition: transform .25s, box-shadow .25s; }
@@ -168,6 +182,10 @@ img, svg { max-width: 100%; }
 
 /* ===== 比較表 ===== */
 .comparison-section { padding: 84px 0; background: linear-gradient(180deg, #eef0fa, #f5f6fb); }
+.table-filters { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 22px; }
+.filter-btn { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 0.86rem; font-weight: 700; color: #3949ab; background: #fff; border: 2px solid #c5cae9; border-radius: 30px; padding: 8px 20px; cursor: pointer; transition: all .2s; }
+.filter-btn:hover { background: #eef0fa; }
+.filter-btn.active { background: linear-gradient(135deg, #283593, #3949ab); color: #fff; border-color: transparent; }
 .table-wrapper { overflow: auto; max-height: 560px; border-radius: 18px; box-shadow: 0 8px 30px rgba(40,53,147,.1); }
 .comparison-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; min-width: 720px; }
 .comparison-table th { position: sticky; top: 0; z-index: 2; background: linear-gradient(135deg, #283593, #3949ab); color: #fff; padding: 16px 16px; font-size: 0.9rem; font-weight: 700; white-space: nowrap; }
@@ -250,6 +268,7 @@ img, svg { max-width: 100%; }
 }
 @media (max-width: 768px) {
   .points-grid { grid-template-columns: 1fr; }
+  .diag-options { grid-template-columns: 1fr 1fr; }
   .criteria-grid { grid-template-columns: 1fr; }
   .purpose-grid { grid-template-columns: repeat(2, 1fr); }
   .guide-grid { grid-template-columns: 1fr; }
