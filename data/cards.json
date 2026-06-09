@@ -656,6 +656,162 @@
       ],
       "review": "ANAダイナースカードは、ANAマイルとダイナースのハイステータスを両立できる提携カードです。マイル移行に上限がなく、ガッツリ貯めて特典航空券を狙う人に有利。空港ラウンジやグルメ特典などダイナースならではの上質な体験も魅力です。",
       "target": "ANAマイルを大量に貯めたい人・ステータスも重視する人"
+    },
+    {
+      "id": "d-card",
+      "name": "dカード",
+      "brand_label": "d CARD",
+      "color": "green",
+      "stars": 4,
+      "catch": "年会費無料でdポイントが貯まる！ドコモユーザーにうれしい1枚",
+      "annual_fee": "永年無料",
+      "reward": "1.0%〜",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "VISA / Master",
+      "feature": "dポイントが貯まる",
+      "affiliate_url": "https://dcard.docomo.ne.jp/",
+      "merits": [
+        "いつでも1%のdポイントが貯まる年会費無料カード",
+        "d払いと組み合わせるとポイントの二重取りも可能",
+        "最短5分でカード番号が発行されすぐ使える"
+      ],
+      "demerits": [
+        "上乗せ還元はdポイント加盟店が中心",
+        "ドコモ以外のユーザーは特典の恩恵が小さめ"
+      ],
+      "review": "dカードは年会費無料でdポイントが1%貯まる使いやすいカードです。d払いとの併用でポイントの二重取りができ、ドコモユーザーなら相性抜群。最短5分でカード番号が発行され、すぐに使い始められる手軽さも魅力です。",
+      "target": "dポイントを貯めたい人・ドコモユーザー"
+    },
+    {
+      "id": "dcard-gold",
+      "name": "dカード GOLD",
+      "brand_label": "d CARD GOLD",
+      "color": "amber",
+      "stars": 5,
+      "catch": "ドコモ料金が10%還元！年間利用特典もあるドコモ系ゴールド",
+      "annual_fee": "11,000円",
+      "reward": "1.0%〜10%",
+      "reward_highlight": true,
+      "bonus": "年間利用特典あり",
+      "international": "VISA / Master",
+      "feature": "ドコモ料金10%還元",
+      "affiliate_url": "https://dcard.docomo.ne.jp/",
+      "merits": [
+        "ドコモのケータイ・ドコモ光料金が最大10%ポイント還元",
+        "年間利用額に応じてクーポンがもらえる継続特典",
+        "空港ラウンジ無料・最大10万円のケータイ補償付き"
+      ],
+      "demerits": [
+        "年会費11,000円がかかる",
+        "ドコモユーザー以外は10%還元の恩恵が受けられない"
+      ],
+      "review": "dカード GOLDはドコモユーザーに圧倒的にお得なゴールドカードです。ドコモのケータイ・光回線料金が10%還元されるため、利用額が大きい人なら年会費以上のポイントが貯まります。空港ラウンジやケータイ補償などゴールド特典も充実しています。",
+      "target": "ドコモのスマホ・光回線を使う人・10%還元を活かしたい人"
+    },
+    {
+      "id": "saison-int",
+      "name": "セゾンカードインターナショナル",
+      "brand_label": "SAISON",
+      "color": "bronze",
+      "stars": 4,
+      "catch": "最短即日発行＆永久不滅ポイント！有効期限なしで貯めやすい",
+      "annual_fee": "永年無料",
+      "reward": "0.5%〜",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "VISA / Master / JCB",
+      "feature": "即日発行・永久不滅ポイント",
+      "affiliate_url": "https://www.saisoncard.co.jp/",
+      "merits": [
+        "貯めたポイントが失効しない「永久不滅ポイント」",
+        "セゾンカウンターで最短即日発行に対応",
+        "ナンバーレスでセキュリティも安心"
+      ],
+      "demerits": [
+        "通常還元率は0.5%と標準的",
+        "大きな上乗せ還元の特典は少なめ"
+      ],
+      "review": "セゾンカードインターナショナルは、ポイントの有効期限がない「永久不滅ポイント」が魅力の年会費無料カードです。最短即日発行に対応し、急ぎでカードが欲しい人にも便利。コツコツ貯めたい人や、まず1枚持っておきたい人に向いています。",
+      "target": "ポイントを失効させず貯めたい人・即日発行したい人"
+    },
+    {
+      "id": "saison-gold-amex",
+      "name": "セゾンゴールド・アメリカン・エキスプレス・カード",
+      "brand_label": "SAISON GOLD",
+      "color": "amber",
+      "stars": 4,
+      "catch": "空港ラウンジ＆永久不滅ポイント優遇！初年度年会費無料のゴールド",
+      "annual_fee": "11,000円（初年度無料）",
+      "reward": "0.75%〜",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "AMEX",
+      "feature": "ラウンジ・ポイント優遇",
+      "affiliate_url": "https://www.saisoncard.co.jp/",
+      "merits": [
+        "国内主要空港のラウンジが無料で使える",
+        "永久不滅ポイントが通常より優遇されて貯まる",
+        "手厚い旅行傷害保険やセゾンの優待が利用できる"
+      ],
+      "demerits": [
+        "2年目以降は年会費11,000円がかかる",
+        "AMEXブランドのため一部店舗で使えないことがある"
+      ],
+      "review": "セゾンゴールド・アメックスは、空港ラウンジや手厚い保険などゴールド特典を備えつつ、永久不滅ポイントが優遇されるカードです。初年度年会費無料で始めやすく、ポイントを長く貯めたい人や旅行好きにおすすめのゴールドカードです。",
+      "target": "ゴールド特典を手頃に持ちたい人・ポイントを貯めたい人"
+    },
+    {
+      "id": "saison-platinum",
+      "name": "セゾンプラチナ・ビジネス・アメリカン・エキスプレス・カード",
+      "brand_label": "SAISON PLATINUM",
+      "color": "platinum",
+      "stars": 4,
+      "catch": "高いマイル還元＆プライオリティ・パス付帯のコスパ最強プラチナ",
+      "annual_fee": "22,000円",
+      "reward": "0.5%〜1.125%",
+      "reward_highlight": true,
+      "bonus": "入会特典あり",
+      "international": "AMEX",
+      "feature": "JALマイル高還元・ラウンジ",
+      "affiliate_url": "https://www.saisoncard.co.jp/",
+      "merits": [
+        "JALマイルが最大1.125%相当の高還元で貯まる",
+        "世界中の空港ラウンジが使えるプライオリティ・パスが付帯",
+        "24時間対応のコンシェルジュサービスを利用できる"
+      ],
+      "demerits": [
+        "年会費22,000円がかかる",
+        "個人事業主・法人代表者向けの券面"
+      ],
+      "review": "セゾンプラチナ・ビジネス・アメックスは、JALマイル高還元とプライオリティ・パス、コンシェルジュを備えながら年会費が比較的抑えめで「コスパ最強プラチナ」と評されるカードです。マイルを貯めたい人や出張が多い人に特に人気です。",
+      "target": "JALマイルを貯めたい人・プラチナ特典をコスパよく持ちたい人"
+    },
+    {
+      "id": "uc-card",
+      "name": "UCカード",
+      "brand_label": "UC CARD",
+      "color": "teal",
+      "stars": 3,
+      "catch": "年会費無料＆永久不滅ポイント！シンプルで使いやすい1枚",
+      "annual_fee": "永年無料",
+      "reward": "0.5%〜",
+      "reward_highlight": false,
+      "bonus": "入会特典あり",
+      "international": "VISA / Master",
+      "feature": "年会費無料・永久不滅ポイント",
+      "affiliate_url": "https://www2.uccard.co.jp/",
+      "merits": [
+        "年会費無料で持てるシンプルなクレジットカード",
+        "ポイントが失効しない永久不滅ポイント",
+        "UCポイントモール経由のお買い物で還元率アップ"
+      ],
+      "demerits": [
+        "通常還元率は0.5%と控えめ",
+        "高還元の上乗せ特典は少なめ"
+      ],
+      "review": "UCカードは年会費無料で持てる、シンプルで使いやすいクレジットカードです。ポイントが失効しない永久不滅ポイントを採用し、UCポイントモール経由ならお得に貯まります。余計な機能はいらず、ベーシックな1枚が欲しい人に向いています。",
+      "target": "シンプルな年会費無料カードが欲しい人"
     }
   ],
   "purposes": [
@@ -665,10 +821,10 @@
     { "id": "cashback", "icon": "💴", "title": "高還元重視", "desc": "ポイント還元率の高さで選ぶカード", "card_ids": ["smbc-card", "recruit-card", "mufg-card"], "intro": "とにかくお得さを重視する方には、ポイント還元率の高いカードがおすすめです。" },
     { "id": "student", "icon": "🎓", "title": "学生向け", "desc": "学生でも作れる・学生限定特典があるカード", "card_ids": ["jcb-card-w", "rakuten-card", "epos-card"], "intro": "学生の方でも作りやすく、学生ならではの特典が受けられるカードを紹介します。" },
     { "id": "daily", "icon": "🛍️", "title": "普段使い", "desc": "コンビニ・スーパーで毎日お得なカード", "card_ids": ["smbc-card", "aeon-card", "mufg-card"], "intro": "毎日の買い物で着実にポイントを貯めたい方におすすめのカードです。" },
-    { "id": "nenkaihi-free", "icon": "💴", "title": "年会費無料カード", "desc": "ずっと無料で持てる定番カード", "card_ids": ["smbc-card", "rakuten-card", "recruit-card"], "intro": "維持費をかけずに持てる、年会費が永年無料のカードを集めました。初めての方にもおすすめです。" },
-    { "id": "instant", "icon": "⚡", "title": "即日発行できるカード", "desc": "急いでカードが必要なときに", "card_ids": ["epos-card", "smbc-card", "jcb-card-w"], "intro": "申し込んだその日から使える、発行スピードの速いカードを紹介します。" },
-    { "id": "gold", "icon": "👑", "title": "ゴールドカード", "desc": "ラウンジ・保険付きのワンランク上", "card_ids": ["smbc-gold-nl", "jcb-gold", "amex-gold"], "intro": "空港ラウンジや手厚い保険など、ワンランク上の特典が魅力のゴールドカードです。" },
-    { "id": "platinum", "icon": "💎", "title": "プラチナカード", "desc": "コンシェルジュなど最上級の特典", "card_ids": ["smbc-platinum", "diners-club"], "intro": "コンシェルジュや高い還元率など、最上級のサービスを備えたプラチナカードです。" },
+    { "id": "nenkaihi-free", "icon": "💴", "title": "年会費無料カード", "desc": "ずっと無料で持てる定番カード", "card_ids": ["smbc-card", "rakuten-card", "recruit-card", "d-card", "saison-int", "uc-card"], "intro": "維持費をかけずに持てる、年会費が永年無料のカードを集めました。初めての方にもおすすめです。" },
+    { "id": "instant", "icon": "⚡", "title": "即日発行できるカード", "desc": "急いでカードが必要なときに", "card_ids": ["epos-card", "smbc-card", "saison-int", "jcb-card-w"], "intro": "申し込んだその日から使える、発行スピードの速いカードを紹介します。" },
+    { "id": "gold", "icon": "👑", "title": "ゴールドカード", "desc": "ラウンジ・保険付きのワンランク上", "card_ids": ["smbc-gold-nl", "jcb-gold", "amex-gold", "dcard-gold", "saison-gold-amex"], "intro": "空港ラウンジや手厚い保険など、ワンランク上の特典が魅力のゴールドカードです。" },
+    { "id": "platinum", "icon": "💎", "title": "プラチナカード", "desc": "コンシェルジュなど最上級の特典", "card_ids": ["smbc-platinum", "diners-club", "saison-platinum"], "intro": "コンシェルジュや高い還元率など、最上級のサービスを備えたプラチナカードです。" },
     { "id": "status", "icon": "✨", "title": "ステータスカード", "desc": "アメックス・ダイナースなど憧れの1枚", "card_ids": ["amex-gold", "amex-green", "diners-club", "marriott-amex", "smbc-platinum"], "intro": "持つだけで一目置かれる、ステータスと上質な特典を備えたハイクラスカードです。" },
     { "id": "mile", "icon": "✈️", "title": "マイルが貯まるカード", "desc": "JAL・ANAマイルを貯めたい人に", "card_ids": ["jal-card", "ana-card", "ana-amex", "ana-diners"], "intro": "フライトやショッピングでマイルが貯まる、旅行好きにおすすめのカードです。" },
     { "id": "hotel", "icon": "🏨", "title": "ホテル・宿泊特典カード", "desc": "無料宿泊や上級会員資格がもらえる", "card_ids": ["marriott-amex", "hilton-amex"], "intro": "無料宿泊特典やホテルの上級会員資格がもらえる、ホテル好きにおすすめのカードです。" },
