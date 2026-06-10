@@ -37,6 +37,33 @@ def stars_html(n):
     return "★" * n + "☆" * (5 - n)
 
 
+def fmt_date(iso):
+    """ISO日付(2026-06-07)を日本語表記(2026年6月7日)に変換"""
+    y, m, d = (int(x) for x in iso.split("-"))
+    return f"{y}年{m}月{d}日"
+
+
+def article_date(a):
+    """記事の公開日(ISO)。未設定なら今日"""
+    return a.get("published", datetime.date.today().isoformat())
+
+
+def publish_from_queue(data):
+    """記事キューから1日1本だけ自動公開する。公開したらcards.jsonへ書き戻す"""
+    queue = data.get("article_queue", [])
+    if not queue:
+        return
+    today = datetime.date.today().isoformat()
+    if any(a.get("published") == today for a in data["articles"]):
+        return  # 今日はすでに公開済み
+    art = queue.pop(0)
+    art["published"] = today
+    data["articles"].append(art)
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"記事キューから自動公開: {art['id']}（残り{len(queue)}本）")
+
+
 def card_by_id(data, cid):
     for c in data["cards"]:
         if c["id"] == cid:
@@ -491,7 +518,7 @@ def build_index(data):
     for a in data["articles"][:6]:
         html += f"""
       <a href="articles/{a['id']}.html" class="article-card">
-        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {today_str()} 更新</span></div>
+        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {fmt_date(article_date(a))} 公開</span></div>
         <h3>{a['title']}</h3>
         <p>{a['description']}</p>
         <span class="read-more">続きを読む →</span>
@@ -625,7 +652,7 @@ def build_article_pages(data):
     for a in data["articles"]:
         html += f"""
       <a href="articles/{a['id']}.html" class="article-card">
-        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {today_str()} 更新</span></div>
+        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {fmt_date(article_date(a))} 公開</span></div>
         <h3>{a['title']}</h3>
         <p>{a['description']}</p>
         <span class="read-more">続きを読む →</span>
@@ -646,7 +673,7 @@ def build_article_pages(data):
   <div class="container container-narrow">
     <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <a href="../articles.html">記事一覧</a> ＞ <span>{a['title']}</span></nav>
     <h1 class="article-title">{a['title']}</h1>
-    <p class="article-date">📅 {today_str()} 更新</p>
+    <p class="article-date">📅 {fmt_date(article_date(a))} 公開</p>
     <p class="article-lead">{a['lead']}</p>"""
         for s in a["sections"]:
             h += f"""
@@ -674,7 +701,7 @@ def build_article_pages(data):
   </div>
 </article>"""
         base = site.get("base_url", "").rstrip("/")
-        iso = datetime.date.today().isoformat()
+        iso = article_date(a)
         h += f"""
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"Article","headline":"{a['title']}","description":"{a['description']}","datePublished":"{iso}","dateModified":"{iso}","inLanguage":"ja","author":{{"@type":"Organization","name":"{site['name']}編集部"}},"publisher":{{"@type":"Organization","name":"{site['name']}"}},"mainEntityOfPage":"{base}/articles/{a['id']}.html"}}
@@ -935,17 +962,17 @@ def build_404(data):
 def build_sitemap(data):
     site = data["site"]
     base = site.get("base_url", "").rstrip("/")
-    urls = ["index.html", "articles.html", "securities.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]
-    urls += [f"cards/{c['id']}.html" for c in data["cards"]]
-    urls += [f"purpose/{p['id']}.html" for p in data["purposes"]]
-    urls += [f"articles/{a['id']}.html" for a in data["articles"]]
-    urls += [f"securities/{b['id']}.html" for b in data.get("brokers", [])]
     today = datetime.date.today().isoformat()
+    urls = [(u, today) for u in ["index.html", "articles.html", "securities.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
+    urls += [(f"cards/{c['id']}.html", today) for c in data["cards"]]
+    urls += [(f"purpose/{p['id']}.html", today) for p in data["purposes"]]
+    urls += [(f"articles/{a['id']}.html", article_date(a)) for a in data["articles"]]
+    urls += [(f"securities/{b['id']}.html", today) for b in data.get("brokers", [])]
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    for u in urls:
+    for u, lastmod in urls:
         loc = f"{base}/{u}" if base else u
-        xml += f"  <url><loc>{loc}</loc><lastmod>{today}</lastmod></url>\n"
+        xml += f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod></url>\n"
     xml += "</urlset>\n"
     write(os.path.join(BASE_DIR, "sitemap.xml"), xml)
 
@@ -965,6 +992,7 @@ def write(path, content):
 def main():
     print(f"=== サイト自動生成開始 {today_str()} ===")
     data = load_data()
+    publish_from_queue(data)
     build_index(data)
     build_card_pages(data)
     build_purpose_pages(data)
