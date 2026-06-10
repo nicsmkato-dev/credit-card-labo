@@ -778,8 +778,45 @@ def build_securities(data):
       </table>
     </div>
     <p class="table-scroll-hint">※クレカ積立は、当サイト掲載のクレジットカードと組み合わせるとポイントが貯まります。</p>
+
+    <div class="securities-guide">
+      <h2 class="section-title" style="margin-top:54px;">ネット証券の選び方 3つのポイント</h2>
+      <div class="criteria-grid">
+        <div class="criteria-item"><h3>① 手数料の安さ</h3><p class="review-text">国内株式の売買手数料が無料の証券会社が増えています。コストは長期投資のリターンに直結するため、手数料体系は必ず確認しましょう。投資信託は購入時手数料無料(ノーロード)のものを選ぶのが基本です。</p></div>
+        <div class="criteria-item"><h3>② クレカ積立の還元率</h3><p class="review-text">投資信託の積立をクレジットカードで支払うと、0.5〜1%程度のポイントが貯まります。自分が使っているカード・ポイント経済圏に合った証券会社を選ぶと、効率よくポイントが貯まります。</p></div>
+        <div class="criteria-item"><h3>③ 取扱商品とNISA対応</h3><p class="review-text">投資信託の本数、米国株・外国株の取扱い、新NISA・iDeCoへの対応状況をチェック。初心者は、低コストのインデックスファンドが揃っているかを基準にすると失敗しにくくなります。</p></div>
+      </div>
+
+      <h2 class="section-title" style="margin-top:48px;">用語ミニ解説</h2>
+      <div class="term-box">
+        <p class="review-text"><strong>新NISA</strong>…投資の利益が非課税になる制度。年間最大360万円、生涯1,800万円まで非課税で投資できます。</p>
+        <p class="review-text"><strong>クレカ積立</strong>…投資信託の積立をクレジットカードで決済し、ポイントを貯めながら投資する方法。月10万円まで対応。</p>
+        <p class="review-text"><strong>iDeCo</strong>…私的年金制度。掛金が全額所得控除になり節税できますが、原則60歳まで引き出せません。</p>
+        <p class="review-text"><strong>インデックスファンド</strong>…日経平均やS&P500などの指数に連動する投資信託。低コストで分散投資でき、初心者の定番です。</p>
+      </div>
+
+      <h2 class="section-title" style="margin-top:48px;">よくある質問（FAQ）</h2>
+      <div class="faq-list">
+SEC_FAQ_PLACEHOLDER
+      </div>
+      <p class="review-text" style="margin-top:24px;">▶ <a href="articles/shin-nisa-hajimekata.html">新NISAの始め方完全ガイド</a>／<a href="articles/kureka-tsumitate.html">クレカ積立とは?</a> もあわせてご覧ください。</p>
+    </div>
   </div>
 </section>"""
+    sec_faqs = [
+        ("ネット証券はどこも同じですか?", "手数料・取扱商品・クレカ積立の還元率・ポイントの種類が会社ごとに異なります。普段貯めているポイント(楽天・Vポイントなど)や使っているクレジットカードに合わせて選ぶと、効率よくポイントが貯まります。"),
+        ("証券口座の開設にお金はかかりますか?", "口座開設・口座維持は無料の証券会社がほとんどです。本人確認書類とマイナンバーがあれば、スマホから10分程度で申し込めます。"),
+        ("新NISA口座は複数の証券会社で持てますか?", "NISA口座は1人1口座のみです。年単位で金融機関を変更できますが手続きに手間がかかるため、長く使う前提で最初の1社を選ぶことが大切です。"),
+        ("クレカ積立は本当にお得ですか?", "現金での積立ではポイントは付きませんが、クレカ積立なら決済額の0.5〜1%程度のポイントが貯まります。同じ金額を投資してもポイント分だけお得になるため、対応カードを持っているなら活用をおすすめします。"),
+        ("投資初心者は何から始めればいいですか?", "まずはネット証券で口座を開き、新NISAのつみたて投資枠で低コストのインデックスファンドを少額から積み立てるのが定番です。不安な方はポイント投資から試すのもよいでしょう。"),
+    ]
+    faq_html = "\n".join(
+        f'        <div class="faq-item"><p class="faq-q">Q. {q}</p><p class="faq-a">A. {a}</p></div>'
+        for q, a in sec_faqs)
+    html = html.replace("SEC_FAQ_PLACEHOLDER", faq_html)
+    faq_ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in sec_faqs]}
+    html += '\n<script type="application/ld+json">\n' + json.dumps(faq_ld, ensure_ascii=False) + '\n</script>'
     html += footer(site)
     write(os.path.join(BASE_DIR, "securities.html"), html)
 

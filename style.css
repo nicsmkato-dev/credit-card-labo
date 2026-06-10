@@ -171,6 +171,17 @@ img, svg { max-width: 100%; }
 .criteria-item p { font-size: 0.88rem; color: #5a6080; }
 .criteria-note { font-size: 0.8rem; color: #8a90a8; margin-top: 26px; text-align: center; line-height: 1.8; }
 
+/* ===== 証券ガイド・FAQ・用語 ===== */
+.securities-guide { margin-top: 20px; }
+.term-box { background: linear-gradient(135deg, #f5f6fb, #eef0fa); border-radius: 18px; padding: 26px 28px; border: 1px solid #ebedf7; }
+.term-box p { margin: 0 0 12px; }
+.term-box p:last-child { margin-bottom: 0; }
+.term-box strong { color: #283593; }
+.faq-list { display: flex; flex-direction: column; gap: 14px; }
+.faq-item { background: #fff; border: 1px solid #e6e8f2; border-left: 5px solid #ff6f00; border-radius: 14px; padding: 20px 24px; }
+.faq-q { font-weight: 700; color: #283593; margin-bottom: 8px; font-size: 1rem; }
+.faq-a { font-size: 0.9rem; color: #4a4f6a; line-height: 1.85; margin: 0; }
+
 /* ===== 目的別 ===== */
 .purpose-section { padding: 84px 0; background: #fff; }
 .purpose-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
