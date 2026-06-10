@@ -688,7 +688,7 @@ def build_legal_pages(data):
     <h2>損害の責任について</h2><p class="review-text">当サイトの情報を利用して生じたいかなる損害についても、当サイトは一切の責任を負いかねます。最終的なお申し込みの判断はご自身の責任で行ってください。</p>"""),
         "contact.html": ("お問い合わせ", """
     <h2>お問い合わせについて</h2><p class="review-text">当サイトへのご質問・掲載情報の誤りのご指摘・取材や提携のご依頼などは、下記メールアドレスまでご連絡ください。</p>
-    <p class="review-text">📧 example@example.com<br>（公開時にあなたの連絡先に差し替えてください）</p>
+    <p class="review-text">📧 crecalabo.info@gmail.com</p>
     <p class="review-text">内容を確認のうえ、順次対応させていただきます。返信までお時間をいただく場合がございますのでご了承ください。</p>"""),
     }
     for fname, (title, body) in pages.items():
