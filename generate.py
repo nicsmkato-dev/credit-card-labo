@@ -113,8 +113,10 @@ def hero_card_svg():
 
 
 # ---------- 共通パーツ ----------
-def head(site, title, description, depth=0):
+def head(site, title, description, depth=0, path=""):
     prefix = "" if depth == 0 else "../"
+    base = site.get("base_url", "").rstrip("/")
+    canonical_url = f"{base}/{path}" if path != "index.html" else f"{base}/"
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -122,15 +124,19 @@ def head(site, title, description, depth=0):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{description}">
   <title>{title}</title>
+  <link rel="canonical" href="{canonical_url}">
   <link rel="icon" href="{prefix}favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}">
+  <meta property="og:url" content="{canonical_url}">
+  <meta property="og:image" content="{base}/ogp.png">
   <meta property="og:site_name" content="{site['name']}">
   <meta property="og:locale" content="ja_JP">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{description}">
+  <meta name="twitter:image" content="{base}/ogp.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
@@ -253,7 +259,7 @@ def card_block(card, rank=None, depth=0):
 def build_index(data):
     site = data["site"]
     cards = data["cards"]
-    html = head(site, f"{site['name']}｜{year_month()}おすすめクレジットカードランキング", site["description"])
+    html = head(site, f"{site['name']}｜{year_month()}おすすめクレジットカードランキング", site["description"], path="index.html")
     html += header(site)
 
     # ヒーロー
@@ -519,7 +525,7 @@ def build_card_pages(data):
     os.makedirs(os.path.join(BASE_DIR, "cards"), exist_ok=True)
     for c in cards:
         html = head(site, f"{c['name']}の評判・特典を徹底解説｜{site['name']}",
-                    f"{c['name']}の年会費・還元率・特典・メリットデメリットを徹底解説。{c['catch']}", depth=1)
+                    f"{c['name']}の年会費・還元率・特典・メリットデメリットを徹底解説。{c['catch']}", depth=1, path=f"cards/{c['id']}.html")
         html += header(site, depth=1)
         rh = " highlight" if c.get("reward_highlight") else ""
         merits = "\n".join(f'        <li>✅ {m}</li>' for m in c["merits"])
@@ -584,7 +590,7 @@ def build_purpose_pages(data):
     os.makedirs(os.path.join(BASE_DIR, "purpose"), exist_ok=True)
     for pp in data["purposes"]:
         html = head(site, f"{pp['title']}におすすめのクレジットカード｜{site['name']}",
-                    f"{pp['title']}におすすめのクレジットカードを厳選して紹介。{pp['desc']}", depth=1)
+                    f"{pp['title']}におすすめのクレジットカードを厳選して紹介。{pp['desc']}", depth=1, path=f"purpose/{pp['id']}.html")
         html += header(site, depth=1)
         html += f"""
 <section class="purpose-detail">
@@ -608,7 +614,7 @@ def build_article_pages(data):
     os.makedirs(os.path.join(BASE_DIR, "articles"), exist_ok=True)
     # 記事一覧
     html = head(site, f"クレジットカード お役立ち記事一覧｜{site['name']}",
-                "クレジットカードの選び方・還元率・年会費などお役立ち情報をまとめた記事一覧です。")
+                "クレジットカードの選び方・還元率・年会費などお役立ち情報をまとめた記事一覧です。", path="articles.html")
     html += header(site)
     html += """
 <section class="article-list-section">
@@ -633,7 +639,7 @@ def build_article_pages(data):
 
     # 各記事
     for a in data["articles"]:
-        h = head(site, f"{a['title']}｜{site['name']}", a["description"], depth=1)
+        h = head(site, f"{a['title']}｜{site['name']}", a["description"], depth=1, path=f"articles/{a['id']}.html")
         h += header(site, depth=1)
         h += f"""
 <article class="detail-page">
@@ -646,6 +652,18 @@ def build_article_pages(data):
             h += f"""
     <h2>{s['h']}</h2>
     <p class="review-text">{s['p']}</p>"""
+        # 関連記事(リスト上の前後3本・内部リンク強化)
+        arts = data["articles"]
+        idx = arts.index(a)
+        related = [arts[(idx + k) % len(arts)] for k in (1, 2, 3)]
+        h += """
+    <div class="related-articles">
+      <h2>関連記事</h2>"""
+        for r in related:
+            h += f"""
+      <a href="{r['id']}.html" class="related-link">📄 {r['title']}</a>"""
+        h += """
+    </div>"""
         # 記事末尾にランキング誘導
         h += """
     <div class="article-cta">
@@ -692,7 +710,7 @@ def build_legal_pages(data):
     <p class="review-text">内容を確認のうえ、順次対応させていただきます。返信までお時間をいただく場合がございますのでご了承ください。</p>"""),
     }
     for fname, (title, body) in pages.items():
-        html = head(site, f"{title}｜{site['name']}", f"{site['name']}の{title}ページです。")
+        html = head(site, f"{title}｜{site['name']}", f"{site['name']}の{title}ページです。", path=fname)
         html += header(site)
         html += f"""
 <article class="detail-page">
@@ -748,7 +766,7 @@ def build_securities(data):
     os.makedirs(os.path.join(BASE_DIR, "securities"), exist_ok=True)
     # 一覧ページ
     html = head(site, f"ネット証券・NISA口座おすすめ比較｜{site['name']}",
-                "クレカ積立に対応したネット証券・NISA口座を手数料・ポイント還元で比較。おすすめの証券会社を紹介します。")
+                "クレカ積立に対応したネット証券・NISA口座を手数料・ポイント還元で比較。おすすめの証券会社を紹介します。", path="securities.html")
     html += header(site)
     html += """
 <section class="securities-section">
@@ -827,7 +845,7 @@ SEC_FAQ_PLACEHOLDER
         merits = "\n".join(f'        <li>✅ {m}</li>' for m in b["merits"])
         demerits = "\n".join(f'        <li>⚠️ {m}</li>' for m in b.get("demerits", []))
         h = head(site, f"{b['name']}の特徴・評判・クレカ積立｜{site['name']}",
-                 f"{b['name']}の手数料・取扱商品・NISA・クレカ積立を解説。{b['catch']}", depth=1)
+                 f"{b['name']}の手数料・取扱商品・NISA・クレカ積立を解説。{b['catch']}", depth=1, path=f"securities/{b['id']}.html")
         h += header(site, depth=1)
         h += f"""
 <article class="detail-page">
