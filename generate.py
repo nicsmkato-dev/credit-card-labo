@@ -515,7 +515,7 @@ def build_index(data):
     <h2 class="section-title">お役立ち記事</h2>
     <p class="section-sub">クレジットカード選びに役立つ情報を発信しています。</p>
     <div class="article-grid">"""
-    for a in data["articles"][:6]:
+    for a in sorted(data["articles"], key=article_date, reverse=True)[:6]:
         html += f"""
       <a href="articles/{a['id']}.html" class="article-card">
         <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {fmt_date(article_date(a))} 公開</span></div>
@@ -649,7 +649,7 @@ def build_article_pages(data):
     <h1 class="section-title">お役立ち記事一覧</h1>
     <p class="section-sub">クレジットカード選びに役立つ情報をお届けします。</p>
     <div class="article-grid">"""
-    for a in data["articles"]:
+    for a in sorted(data["articles"], key=article_date, reverse=True):
         html += f"""
       <a href="articles/{a['id']}.html" class="article-card">
         <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {fmt_date(article_date(a))} 公開</span></div>
