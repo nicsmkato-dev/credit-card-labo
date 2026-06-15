@@ -963,7 +963,7 @@ def build_sitemap(data):
     site = data["site"]
     base = site.get("base_url", "").rstrip("/")
     today = datetime.date.today().isoformat()
-    urls = [(u, today) for u in ["index.html", "articles.html", "securities.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
+    urls = [(u, today) for u in ["", "articles.html", "securities.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
     urls += [(f"cards/{c['id']}.html", today) for c in data["cards"]]
     urls += [(f"purpose/{p['id']}.html", today) for p in data["purposes"]]
     urls += [(f"articles/{a['id']}.html", article_date(a)) for a in data["articles"]]
