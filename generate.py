@@ -191,7 +191,9 @@ def header(site, depth=0):
         <a href="{p}index.html#ranking">ランキング</a>
         <a href="{p}index.html#purpose">目的別</a>
         <a href="{p}index.html#comparison">比較表</a>
+        <a href="{p}simulator.html">シミュレーター</a>
         <a href="{p}securities.html">証券・NISA</a>
+        <a href="{p}glossary.html">用語集</a>
         <a href="{p}articles.html">記事一覧</a>
       </nav>
     </div>
@@ -922,6 +924,113 @@ SEC_FAQ_PLACEHOLDER
         write(os.path.join(BASE_DIR, "securities", f"{b['id']}.html"), h)
 
 
+def build_simulator(data):
+    """ポイント還元シミュレーター（毎月の利用額から年間獲得ポイントを概算）"""
+    site = data["site"]
+    cards = [c for c in data["cards"] if c.get("sim_rate")]
+    if not cards:
+        return
+    # JSに渡すカードデータ
+    sim_data = [{"id": c["id"], "name": c["name"], "color": c.get("color", "gray"),
+                 "rate": c["sim_rate"], "url": c.get("affiliate_url", "#")} for c in cards]
+    sim_json = json.dumps(sim_data, ensure_ascii=False)
+    html = head(site, f"クレジットカード ポイント還元シミュレーター｜{site['name']}",
+                "毎月のカード利用額を入力するだけで、各クレジットカードで年間どれだけポイントが貯まるかを概算できる無料シミュレーターです。",
+                path="simulator.html")
+    html += header(site)
+    html += """
+<section class="simulator-section">
+  <div class="container container-narrow">
+    <h1 class="section-title">ポイント還元シミュレーター</h1>
+    <p class="section-sub">毎月のカード利用額を入力すると、主要カードで年間どれくらいポイントが貯まるかを概算します。</p>
+    <div class="sim-box">
+      <label class="sim-label" for="sim-spend">毎月のカード利用額（円）</label>
+      <input type="number" id="sim-spend" class="sim-input" value="50000" min="0" step="1000" inputmode="numeric">
+      <div class="sim-presets">
+        <button type="button" class="sim-preset" data-v="30000">3万円</button>
+        <button type="button" class="sim-preset" data-v="50000">5万円</button>
+        <button type="button" class="sim-preset" data-v="80000">8万円</button>
+        <button type="button" class="sim-preset" data-v="120000">12万円</button>
+      </div>
+      <button type="button" id="sim-run" class="btn-primary sim-run">年間ポイントを計算する</button>
+    </div>
+    <div id="sim-result" class="sim-result"></div>
+    <p class="sim-note">※基本還元率での概算です。対象店舗でのボーナス還元・キャンペーン・年会費は含みません。実際の還元は利用状況により異なります。最新の還元率は各カード公式サイトでご確認ください。</p>
+  </div>
+</section>
+<script>
+const SIM_CARDS = SIM_DATA_PLACEHOLDER;
+const yen = n => n.toLocaleString('ja-JP');
+function runSim(){
+  const spend = Math.max(0, parseInt(document.getElementById('sim-spend').value||'0',10));
+  const annual = spend * 12;
+  const rows = SIM_CARDS.map(c => ({...c, pts: Math.round(annual * c.rate / 100)}))
+    .sort((a,b)=> b.pts - a.pts);
+  const el = document.getElementById('sim-result');
+  if(!spend){ el.innerHTML = '<p class="sim-empty">金額を入力して計算してください。</p>'; return; }
+  let h = '<h2 class="sim-result-title">年間 '+yen(annual)+'円 の利用での獲得ポイント概算</h2>';
+  h += '<div class="sim-rows">';
+  rows.forEach((c,i)=>{
+    h += '<div class="sim-row">'
+      + '<span class="sim-rank">'+(i+1)+'</span>'
+      + '<span class="sim-logo '+c.color+'">'+c.name.slice(0,2)+'</span>'
+      + '<span class="sim-name">'+c.name+'<small>還元率 '+c.rate+'%</small></span>'
+      + '<span class="sim-pts">約'+yen(c.pts)+'<small>円分/年</small></span>'
+      + '<a class="sim-apply" href="'+c.url+'" target="_blank" rel="nofollow sponsored noopener">公式</a>'
+      + '</div>';
+  });
+  h += '</div>';
+  el.innerHTML = h;
+}
+document.getElementById('sim-run').addEventListener('click', runSim);
+document.querySelectorAll('.sim-preset').forEach(b=> b.addEventListener('click', ()=>{
+  document.getElementById('sim-spend').value = b.dataset.v; runSim();
+}));
+runSim();
+</script>"""
+    html = html.replace("SIM_DATA_PLACEHOLDER", sim_json)
+    html += footer(site)
+    write(os.path.join(BASE_DIR, "simulator.html"), html)
+
+
+def build_glossary(data):
+    """クレジットカード用語集"""
+    site = data["site"]
+    terms = data.get("glossary", [])
+    if not terms:
+        return
+    html = head(site, f"クレジットカード用語集｜{site['name']}",
+                "クレジットカードの基本用語（還元率・リボ払い・国際ブランド・クレカ積立など）を初心者向けにわかりやすく解説した用語集です。",
+                path="glossary.html")
+    html += header(site)
+    html += """
+<section class="glossary-section">
+  <div class="container container-narrow">
+    <h1 class="section-title">クレジットカード用語集</h1>
+    <p class="section-sub">カード選びでよく出てくる用語を、初心者にもわかりやすく解説します。</p>
+    <div class="glossary-list">"""
+    for t in terms:
+        reading = f'<span class="glossary-reading">{t["reading"]}</span>' if t.get("reading") else ""
+        html += f"""
+      <div class="glossary-item" id="term-{abs(hash(t['term'])) % 100000}">
+        <h2 class="glossary-term">{t['term']}{reading}</h2>
+        <p class="glossary-def">{t['def']}</p>
+      </div>"""
+    html += """
+    </div>
+  </div>
+</section>"""
+    # DefinedTermSet 構造化データ
+    base = site.get("base_url", "").rstrip("/")
+    dts = {"@context": "https://schema.org", "@type": "DefinedTermSet",
+           "name": f"クレジットカード用語集｜{site['name']}",
+           "url": f"{base}/glossary.html",
+           "hasDefinedTerm": [{"@type": "DefinedTerm", "name": t["term"], "description": t["def"]} for t in terms]}
+    html += '\n<script type="application/ld+json">\n' + json.dumps(dts, ensure_ascii=False) + '\n</script>'
+    html += footer(site)
+    write(os.path.join(BASE_DIR, "glossary.html"), html)
+
+
 def build_404(data):
     site = data["site"]
     html = f"""<!DOCTYPE html>
@@ -963,7 +1072,7 @@ def build_sitemap(data):
     site = data["site"]
     base = site.get("base_url", "").rstrip("/")
     today = datetime.date.today().isoformat()
-    urls = [(u, today) for u in ["", "articles.html", "securities.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
+    urls = [(u, today) for u in ["", "articles.html", "securities.html", "simulator.html", "glossary.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
     urls += [(f"cards/{c['id']}.html", today) for c in data["cards"]]
     urls += [(f"purpose/{p['id']}.html", today) for p in data["purposes"]]
     urls += [(f"articles/{a['id']}.html", article_date(a)) for a in data["articles"]]
@@ -998,6 +1107,8 @@ def main():
     build_purpose_pages(data)
     build_article_pages(data)
     build_securities(data)
+    build_simulator(data)
+    build_glossary(data)
     build_legal_pages(data)
     build_404(data)
     build_sitemap(data)
