@@ -1,33 +1,55 @@
 # =====================================================
-#  クレカ比較ラボ デプロイスクリプト
-#  サイトを再生成し、GitHub に push する（GitHub Pages で公開）
-#  使い方:  pwsh -File deploy.ps1
+#  creca-labo deploy script (ASCII-only to avoid encoding issues
+#  when run by Windows PowerShell 5.1 / scheduled task)
+#  Regenerates the site and pushes to GitHub (Cloudflare Pages auto-deploys).
+#  Usage:  powershell -NoProfile -ExecutionPolicy Bypass -File deploy.ps1
 # =====================================================
-$ErrorActionPreference = "Stop"
+$ErrorActionPreference = "Continue"
 $SiteDir = "C:\Users\user\Desktop\affiliate-site"
 $Python  = "C:\Users\user\AppData\Local\Python\bin\python.exe"
+$Log     = "$SiteDir\deploy.log"
+
+function Log($msg) {
+    $line = "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')  $msg"
+    Write-Host $line
+    Add-Content -Path $Log -Value $line -Encoding UTF8
+}
 
 Set-Location $SiteDir
+Log "===== deploy start ====="
 
-Write-Host "[1/3] サイトを再生成中..." -ForegroundColor Cyan
-& $Python "$SiteDir\generate.py"
+# Clear any stale git lock from a crashed run
+if (Test-Path "$SiteDir\.git\index.lock") {
+    Remove-Item "$SiteDir\.git\index.lock" -Force -ErrorAction SilentlyContinue
+    Log "removed stale .git/index.lock"
+}
 
-Write-Host "[2/3] 変更をコミット中..." -ForegroundColor Cyan
+Log "[1/3] regenerating site..."
+& $Python "$SiteDir\generate.py" 2>&1 | Out-Null
+if ($LASTEXITCODE -ne 0) { Log "ERROR: generate.py exited $LASTEXITCODE" }
+
+Log "[2/3] committing changes..."
 git add -A
-$stamp = Get-Date -Format "yyyy-MM-dd HH:mm"
-# 変更がある場合のみコミット
 $changes = git status --porcelain
 if ($changes) {
-    git -c user.name="クレカ比較ラボ" -c user.email="nics.m.kato@gmail.com" commit -m "自動更新 $stamp"
+    $stamp = Get-Date -Format "yyyy-MM-dd HH:mm"
+    git -c user.name="creca-labo-bot" -c user.email="nics.m.kato@gmail.com" commit -m "auto update $stamp" 2>&1 | ForEach-Object { Log $_ }
+    if ($LASTEXITCODE -ne 0) { Log "ERROR: git commit exited $LASTEXITCODE" }
 } else {
-    Write-Host "  変更なし。コミットをスキップします。" -ForegroundColor Yellow
+    Log "no changes; skipping commit"
 }
 
-Write-Host "[3/3] GitHub へ push 中..." -ForegroundColor Cyan
+Log "[3/3] pushing to GitHub..."
 $hasRemote = git remote
 if ($hasRemote) {
-    git push origin main
-    Write-Host "完了！数分後に GitHub Pages に反映されます。" -ForegroundColor Green
+    git push origin main 2>&1 | ForEach-Object { Log $_ }
+    if ($LASTEXITCODE -ne 0) {
+        Log "ERROR: git push exited $LASTEXITCODE (check credentials / network)"
+    } else {
+        Log "push OK; Cloudflare Pages will redeploy in a few minutes"
+    }
 } else {
-    Write-Host "リモートが未設定です。まず setup_github.ps1 を実行してください。" -ForegroundColor Yellow
+    Log "ERROR: no git remote configured"
 }
+
+Log "===== deploy end ====="
