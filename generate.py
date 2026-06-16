@@ -187,6 +187,9 @@ def header(site, depth=0):
   <div class="container">
     <div class="header-inner">
       <a href="{p}index.html" class="logo">{site['logo']}</a>
+      <button class="nav-toggle" aria-label="メニューを開く" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
       <nav class="global-nav">
         <a href="{p}index.html#ranking">ランキング</a>
         <a href="{p}index.html#purpose">目的別</a>
@@ -198,7 +201,22 @@ def header(site, depth=0):
       </nav>
     </div>
   </div>
-</header>"""
+</header>
+<script>
+(function(){{
+  var h=document.querySelector('.site-header');
+  if(!h) return;
+  var btn=h.querySelector('.nav-toggle'), nav=h.querySelector('.global-nav');
+  btn.addEventListener('click',function(){{
+    var open=h.classList.toggle('nav-open');
+    btn.setAttribute('aria-expanded',open);
+    btn.setAttribute('aria-label',open?'メニューを閉じる':'メニューを開く');
+  }});
+  nav.addEventListener('click',function(e){{
+    if(e.target.tagName==='A'){{ h.classList.remove('nav-open'); btn.setAttribute('aria-expanded','false'); }}
+  }});
+}})();
+</script>"""
 
 
 def footer(site, depth=0):
