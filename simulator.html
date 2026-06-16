@@ -61,29 +61,40 @@
         <button type="button" class="sim-preset" data-v="80000">8万円</button>
         <button type="button" class="sim-preset" data-v="120000">12万円</button>
       </div>
+      <div class="sim-grade-label">カードの種類</div>
+      <div class="sim-grades">
+        <button type="button" class="sim-grade active" data-g="すべて">すべて</button>
+        <button type="button" class="sim-grade" data-g="一般">一般</button>
+        <button type="button" class="sim-grade" data-g="ゴールド">ゴールド</button>
+        <button type="button" class="sim-grade" data-g="プラチナ">プラチナ</button>
+      </div>
       <button type="button" id="sim-run" class="btn-primary sim-run">年間ポイントを計算する</button>
     </div>
     <div id="sim-result" class="sim-result"></div>
-    <p class="sim-note">※基本還元率での概算です。対象店舗でのボーナス還元・キャンペーン・年会費は含みません。実際の還元は利用状況により異なります。最新の還元率は各カード公式サイトでご確認ください。</p>
+    <p class="sim-note">※基本還元率での概算です。対象店舗でのボーナス還元・キャンペーンは含みません。<strong>ゴールド・プラチナは年会費がかかります</strong>（各行に表示）。年会費を上回る還元・特典があるかで判断しましょう。最新の還元率は各カード公式サイトでご確認ください。</p>
   </div>
 </section>
 <script>
-const SIM_CARDS = [{"id": "smbc-card", "name": "三井住友カード（NL）", "color": "bronze", "rate": 0.5, "url": "https://www.smbc-card.com/"}, {"id": "olive-card", "name": "Olive（オリーブ）", "color": "teal", "rate": 0.5, "url": "https://www.smbc.co.jp/kojin/olive/"}, {"id": "rakuten-card", "name": "楽天カード", "color": "gold", "rate": 1.0, "url": "https://www.rakuten-card.co.jp/"}, {"id": "epos-card", "name": "エポスカード", "color": "silver", "rate": 0.5, "url": "https://www.eposcard.co.jp/"}, {"id": "mufg-card", "name": "三菱UFJカード", "color": "gray", "rate": 0.5, "url": "https://www.cr.mufg.jp/"}, {"id": "recruit-card", "name": "リクルートカード", "color": "green", "rate": 1.2, "url": "https://recruit-card.jp/"}, {"id": "jcb-card-w", "name": "JCBカードW", "color": "gold", "rate": 1.0, "url": "https://www.jcb.co.jp/"}, {"id": "aeon-card", "name": "イオンカード", "color": "silver", "rate": 0.5, "url": "https://www.aeon.co.jp/"}, {"id": "promise-visa", "name": "プロミスVISAカード", "color": "gold", "rate": 0.5, "url": "https://www.smbc-card.com/"}, {"id": "tokyu-card", "name": "東急カード（TOKYU CARD）", "color": "green", "rate": 1.0, "url": "https://www.topcard.co.jp/"}, {"id": "ja-card", "name": "JAカード", "color": "teal", "rate": 0.5, "url": "https://www.jacard.co.jp/"}, {"id": "d-card", "name": "dカード", "color": "green", "rate": 1.0, "url": "https://dcard.docomo.ne.jp/"}];
+const SIM_CARDS = [{"id": "smbc-card", "name": "三井住友カード（NL）", "color": "bronze", "rate": 0.5, "grade": "一般", "fee": "永年無料", "url": "https://www.smbc-card.com/"}, {"id": "olive-card", "name": "Olive（オリーブ）", "color": "teal", "rate": 0.5, "grade": "一般", "fee": "永年無料", "url": "https://www.smbc.co.jp/kojin/olive/"}, {"id": "rakuten-card", "name": "楽天カード", "color": "gold", "rate": 1.0, "grade": "一般", "fee": "永年無料", "url": "https://www.rakuten-card.co.jp/"}, {"id": "epos-card", "name": "エポスカード", "color": "silver", "rate": 0.5, "grade": "一般", "fee": "永年無料", "url": "https://www.eposcard.co.jp/"}, {"id": "mufg-card", "name": "三菱UFJカード", "color": "gray", "rate": 0.5, "grade": "一般", "fee": "永年無料", "url": "https://www.cr.mufg.jp/"}, {"id": "recruit-card", "name": "リクルートカード", "color": "green", "rate": 1.2, "grade": "一般", "fee": "永年無料", "url": "https://recruit-card.jp/"}, {"id": "jcb-card-w", "name": "JCBカードW", "color": "gold", "rate": 1.0, "grade": "一般", "fee": "永年無料", "url": "https://www.jcb.co.jp/"}, {"id": "aeon-card", "name": "イオンカード", "color": "silver", "rate": 0.5, "grade": "一般", "fee": "永年無料", "url": "https://www.aeon.co.jp/"}, {"id": "promise-visa", "name": "プロミスVISAカード", "color": "gold", "rate": 0.5, "grade": "一般", "fee": "永年無料", "url": "https://www.smbc-card.com/"}, {"id": "tokyu-card", "name": "東急カード（TOKYU CARD）", "color": "green", "rate": 1.0, "grade": "一般", "fee": "初年度無料（翌年〜1,100円）", "url": "https://www.topcard.co.jp/"}, {"id": "ja-card", "name": "JAカード", "color": "teal", "rate": 0.5, "grade": "一般", "fee": "初年度無料（年1回利用で翌年無料）", "url": "https://www.jacard.co.jp/"}, {"id": "smbc-gold-nl", "name": "三井住友カード ゴールド（NL）", "color": "amber", "rate": 0.5, "grade": "ゴールド", "fee": "5,500円（年100万円利用で永年無料）", "url": "https://www.smbc-card.com/"}, {"id": "jcb-gold", "name": "JCBゴールド", "color": "amber", "rate": 0.5, "grade": "ゴールド", "fee": "11,000円（オンライン入会で初年度無料）", "url": "https://www.jcb.co.jp/"}, {"id": "smbc-platinum", "name": "三井住友カード プラチナプリファード", "color": "platinum", "rate": 1.0, "grade": "プラチナ", "fee": "33,000円", "url": "https://www.smbc-card.com/"}, {"id": "amex-gold", "name": "アメリカン・エキスプレス・ゴールド・プリファード・カード", "color": "amber", "rate": 1.0, "grade": "ゴールド", "fee": "39,600円", "url": "https://www.americanexpress.com/ja-jp/"}, {"id": "d-card", "name": "dカード", "color": "green", "rate": 1.0, "grade": "一般", "fee": "永年無料", "url": "https://dcard.docomo.ne.jp/"}, {"id": "dcard-gold", "name": "dカード GOLD", "color": "amber", "rate": 1.0, "grade": "ゴールド", "fee": "11,000円", "url": "https://dcard.docomo.ne.jp/"}, {"id": "saison-gold-amex", "name": "セゾンゴールド・アメリカン・エキスプレス・カード", "color": "amber", "rate": 0.5, "grade": "ゴールド", "fee": "11,000円（初年度無料）", "url": "https://www.saisoncard.co.jp/"}, {"id": "saison-platinum", "name": "セゾンプラチナ・ビジネス・アメリカン・エキスプレス・カード", "color": "platinum", "rate": 0.5, "grade": "プラチナ", "fee": "22,000円", "url": "https://www.saisoncard.co.jp/"}];
+let SIM_GRADE = 'すべて';
 const yen = n => n.toLocaleString('ja-JP');
 function runSim(){
   const spend = Math.max(0, parseInt(document.getElementById('sim-spend').value||'0',10));
   const annual = spend * 12;
-  const rows = SIM_CARDS.map(c => ({...c, pts: Math.round(annual * c.rate / 100)}))
+  const pool = SIM_CARDS.filter(c => SIM_GRADE === 'すべて' || c.grade === SIM_GRADE);
+  const rows = pool.map(c => ({...c, pts: Math.round(annual * c.rate / 100)}))
     .sort((a,b)=> b.pts - a.pts);
   const el = document.getElementById('sim-result');
   if(!spend){ el.innerHTML = '<p class="sim-empty">金額を入力して計算してください。</p>'; return; }
+  if(!rows.length){ el.innerHTML = '<p class="sim-empty">該当するカードがありません。</p>'; return; }
   let h = '<h2 class="sim-result-title">年間 '+yen(annual)+'円 の利用での獲得ポイント概算</h2>';
   h += '<div class="sim-rows">';
   rows.forEach((c,i)=>{
+    const feeTag = (c.grade !== '一般' && c.fee) ? '<span class="sim-fee">年会費 '+c.fee+'</span>' : '';
     h += '<div class="sim-row">'
       + '<span class="sim-rank">'+(i+1)+'</span>'
       + '<span class="sim-logo '+c.color+'">'+c.name.slice(0,2)+'</span>'
-      + '<span class="sim-name">'+c.name+'<small>還元率 '+c.rate+'%</small></span>'
+      + '<span class="sim-name">'+c.name+'<small>還元率 '+c.rate+'%'+(c.grade!=='一般'?'・'+c.grade:'')+'</small>'+feeTag+'</span>'
       + '<span class="sim-pts">約'+yen(c.pts)+'<small>円分/年</small></span>'
       + '<a class="sim-apply" href="'+c.url+'" target="_blank" rel="nofollow sponsored noopener">公式</a>'
       + '</div>';
@@ -94,6 +105,10 @@ function runSim(){
 document.getElementById('sim-run').addEventListener('click', runSim);
 document.querySelectorAll('.sim-preset').forEach(b=> b.addEventListener('click', ()=>{
   document.getElementById('sim-spend').value = b.dataset.v; runSim();
+}));
+document.querySelectorAll('.sim-grade').forEach(b=> b.addEventListener('click', ()=>{
+  document.querySelectorAll('.sim-grade').forEach(x=> x.classList.remove('active'));
+  b.classList.add('active'); SIM_GRADE = b.dataset.g; runSim();
 }));
 runSim();
 </script>

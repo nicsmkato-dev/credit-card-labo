@@ -932,7 +932,8 @@ def build_simulator(data):
         return
     # JSに渡すカードデータ
     sim_data = [{"id": c["id"], "name": c["name"], "color": c.get("color", "gray"),
-                 "rate": c["sim_rate"], "url": c.get("affiliate_url", "#")} for c in cards]
+                 "rate": c["sim_rate"], "grade": c.get("grade", "一般"),
+                 "fee": c.get("annual_fee", ""), "url": c.get("affiliate_url", "#")} for c in cards]
     sim_json = json.dumps(sim_data, ensure_ascii=False)
     html = head(site, f"クレジットカード ポイント還元シミュレーター｜{site['name']}",
                 "毎月のカード利用額を入力するだけで、各クレジットカードで年間どれだけポイントが貯まるかを概算できる無料シミュレーターです。",
@@ -952,29 +953,40 @@ def build_simulator(data):
         <button type="button" class="sim-preset" data-v="80000">8万円</button>
         <button type="button" class="sim-preset" data-v="120000">12万円</button>
       </div>
+      <div class="sim-grade-label">カードの種類</div>
+      <div class="sim-grades">
+        <button type="button" class="sim-grade active" data-g="すべて">すべて</button>
+        <button type="button" class="sim-grade" data-g="一般">一般</button>
+        <button type="button" class="sim-grade" data-g="ゴールド">ゴールド</button>
+        <button type="button" class="sim-grade" data-g="プラチナ">プラチナ</button>
+      </div>
       <button type="button" id="sim-run" class="btn-primary sim-run">年間ポイントを計算する</button>
     </div>
     <div id="sim-result" class="sim-result"></div>
-    <p class="sim-note">※基本還元率での概算です。対象店舗でのボーナス還元・キャンペーン・年会費は含みません。実際の還元は利用状況により異なります。最新の還元率は各カード公式サイトでご確認ください。</p>
+    <p class="sim-note">※基本還元率での概算です。対象店舗でのボーナス還元・キャンペーンは含みません。<strong>ゴールド・プラチナは年会費がかかります</strong>（各行に表示）。年会費を上回る還元・特典があるかで判断しましょう。最新の還元率は各カード公式サイトでご確認ください。</p>
   </div>
 </section>
 <script>
 const SIM_CARDS = SIM_DATA_PLACEHOLDER;
+let SIM_GRADE = 'すべて';
 const yen = n => n.toLocaleString('ja-JP');
 function runSim(){
   const spend = Math.max(0, parseInt(document.getElementById('sim-spend').value||'0',10));
   const annual = spend * 12;
-  const rows = SIM_CARDS.map(c => ({...c, pts: Math.round(annual * c.rate / 100)}))
+  const pool = SIM_CARDS.filter(c => SIM_GRADE === 'すべて' || c.grade === SIM_GRADE);
+  const rows = pool.map(c => ({...c, pts: Math.round(annual * c.rate / 100)}))
     .sort((a,b)=> b.pts - a.pts);
   const el = document.getElementById('sim-result');
   if(!spend){ el.innerHTML = '<p class="sim-empty">金額を入力して計算してください。</p>'; return; }
+  if(!rows.length){ el.innerHTML = '<p class="sim-empty">該当するカードがありません。</p>'; return; }
   let h = '<h2 class="sim-result-title">年間 '+yen(annual)+'円 の利用での獲得ポイント概算</h2>';
   h += '<div class="sim-rows">';
   rows.forEach((c,i)=>{
+    const feeTag = (c.grade !== '一般' && c.fee) ? '<span class="sim-fee">年会費 '+c.fee+'</span>' : '';
     h += '<div class="sim-row">'
       + '<span class="sim-rank">'+(i+1)+'</span>'
       + '<span class="sim-logo '+c.color+'">'+c.name.slice(0,2)+'</span>'
-      + '<span class="sim-name">'+c.name+'<small>還元率 '+c.rate+'%</small></span>'
+      + '<span class="sim-name">'+c.name+'<small>還元率 '+c.rate+'%'+(c.grade!=='一般'?'・'+c.grade:'')+'</small>'+feeTag+'</span>'
       + '<span class="sim-pts">約'+yen(c.pts)+'<small>円分/年</small></span>'
       + '<a class="sim-apply" href="'+c.url+'" target="_blank" rel="nofollow sponsored noopener">公式</a>'
       + '</div>';
@@ -986,11 +998,43 @@ document.getElementById('sim-run').addEventListener('click', runSim);
 document.querySelectorAll('.sim-preset').forEach(b=> b.addEventListener('click', ()=>{
   document.getElementById('sim-spend').value = b.dataset.v; runSim();
 }));
+document.querySelectorAll('.sim-grade').forEach(b=> b.addEventListener('click', ()=>{
+  document.querySelectorAll('.sim-grade').forEach(x=> x.classList.remove('active'));
+  b.classList.add('active'); SIM_GRADE = b.dataset.g; runSim();
+}));
 runSim();
 </script>"""
     html = html.replace("SIM_DATA_PLACEHOLDER", sim_json)
     html += footer(site)
     write(os.path.join(BASE_DIR, "simulator.html"), html)
+
+
+KANA_ROWS = [
+    ("あ", "あいうえおぁぃぅぇぉ"),
+    ("か", "かきくけこがぎぐげご"),
+    ("さ", "さしすせそざじずぜぞ"),
+    ("た", "たちつてとだぢづでどっ"),
+    ("な", "なにぬねの"),
+    ("は", "はひふへほばびぶべぼぱぴぷぺぽ"),
+    ("ま", "まみむめも"),
+    ("や", "やゆよゃゅょ"),
+    ("ら", "らりるれろ"),
+    ("わ", "わをんゐゑ"),
+]
+
+
+def kana_row(reading):
+    """読み仮名の先頭文字から五十音の行（あ/か/…）を返す"""
+    if not reading:
+        return "他"
+    c = reading[0]
+    # カタカナ→ひらがな正規化
+    if "ァ" <= c <= "ヶ":
+        c = chr(ord(c) - 0x60)
+    for row, chars in KANA_ROWS:
+        if c in chars:
+            return row
+    return "他"
 
 
 def build_glossary(data):
@@ -1003,23 +1047,59 @@ def build_glossary(data):
                 "クレジットカードの基本用語（還元率・リボ払い・国際ブランド・クレカ積立など）を初心者向けにわかりやすく解説した用語集です。",
                 path="glossary.html")
     html += header(site)
-    html += """
+    # 五十音順に並べ、存在する行だけ絞り込みボタンを出す
+    terms_sorted = sorted(terms, key=lambda t: (
+        [r for r, _ in KANA_ROWS].index(kana_row(t.get("reading", ""))) if kana_row(t.get("reading", "")) in [r for r, _ in KANA_ROWS] else 99,
+        t.get("reading", "")))
+    present_rows = [r for r, _ in KANA_ROWS if any(kana_row(t.get("reading", "")) == r for t in terms_sorted)]
+    row_btns = '<button type="button" class="glossary-row-btn active" data-row="すべて">すべて</button>'
+    row_btns += "".join(f'<button type="button" class="glossary-row-btn" data-row="{r}">{r}行</button>' for r in present_rows)
+    html += f"""
 <section class="glossary-section">
   <div class="container container-narrow">
     <h1 class="section-title">クレジットカード用語集</h1>
-    <p class="section-sub">カード選びでよく出てくる用語を、初心者にもわかりやすく解説します。</p>
+    <p class="section-sub">カード選びでよく出てくる用語を、初心者にもわかりやすく解説します。行で絞り込めます。</p>
+    <input type="text" id="glossary-search" class="glossary-search" placeholder="用語を検索（例：還元率、リボ）">
+    <div class="glossary-rows">{row_btns}</div>
     <div class="glossary-list">"""
-    for t in terms:
+    for t in terms_sorted:
         reading = f'<span class="glossary-reading">{t["reading"]}</span>' if t.get("reading") else ""
+        row = kana_row(t.get("reading", ""))
         html += f"""
-      <div class="glossary-item" id="term-{abs(hash(t['term'])) % 100000}">
+      <div class="glossary-item" data-row="{row}" data-term="{t['term']}{t.get('reading','')}">
         <h2 class="glossary-term">{t['term']}{reading}</h2>
         <p class="glossary-def">{t['def']}</p>
       </div>"""
     html += """
     </div>
+    <p class="glossary-empty" id="glossary-empty" style="display:none;">該当する用語が見つかりませんでした。</p>
   </div>
-</section>"""
+</section>
+<script>
+(function(){
+  let row = 'すべて';
+  const items = [...document.querySelectorAll('.glossary-item')];
+  const search = document.getElementById('glossary-search');
+  const empty = document.getElementById('glossary-empty');
+  function apply(){
+    const q = (search.value||'').trim();
+    let shown = 0;
+    items.forEach(it=>{
+      const okRow = (row === 'すべて') || (it.dataset.row === row);
+      const okQ = !q || it.dataset.term.indexOf(q) !== -1 || it.textContent.indexOf(q) !== -1;
+      const show = okRow && okQ;
+      it.style.display = show ? '' : 'none';
+      if(show) shown++;
+    });
+    empty.style.display = shown ? 'none' : '';
+  }
+  document.querySelectorAll('.glossary-row-btn').forEach(b=> b.addEventListener('click', ()=>{
+    document.querySelectorAll('.glossary-row-btn').forEach(x=> x.classList.remove('active'));
+    b.classList.add('active'); row = b.dataset.row; apply();
+  }));
+  search.addEventListener('input', apply);
+})();
+</script>"""
     # DefinedTermSet 構造化データ
     base = site.get("base_url", "").rstrip("/")
     dts = {"@context": "https://schema.org", "@type": "DefinedTermSet",
