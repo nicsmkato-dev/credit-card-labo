@@ -190,7 +190,7 @@ def header(site, depth=0):
       <nav class="global-nav">
         <a href="{p}index.html#ranking">ランキング</a>
         <a href="{p}index.html#purpose">目的別</a>
-        <a href="{p}index.html#comparison">比較表</a>
+        <a href="{p}credit-card-guide.html">完全ガイド</a>
         <a href="{p}simulator.html">シミュレーター</a>
         <a href="{p}securities.html">証券・NISA</a>
         <a href="{p}glossary.html">用語集</a>
@@ -219,12 +219,14 @@ def footer(site, depth=0):
         <p>{site['tagline']}</p>
       </div>
       <div class="footer-links">
-        <h4>カテゴリ</h4>
-        <a href="{p}purpose/beginner.html">初心者向け</a>
-        <a href="{p}purpose/travel.html">旅行・出張向け</a>
-        <a href="{p}purpose/shopping.html">ネットショッピング</a>
-        <a href="{p}securities.html">ネット証券・NISA</a>
-        <a href="{p}articles.html">記事一覧</a>
+        <h4>ガイド・ツール</h4>
+        <a href="{p}credit-card-guide.html">クレジットカード完全ガイド</a>
+        <a href="{p}poikatsu-guide.html">ポイ活完全ガイド</a>
+        <a href="{p}nisa-guide.html">新NISA・投資ガイド</a>
+        <a href="{p}simulator.html">還元シミュレーター</a>
+        <a href="{p}rivo-simulator.html">リボ手数料計算</a>
+        <a href="{p}tsumitate-simulator.html">クレカ積立シミュレーター</a>
+        <a href="{p}glossary.html">用語集</a>
       </div>
       <div class="footer-links">
         <h4>サイト情報</h4>
@@ -944,6 +946,7 @@ def build_simulator(data):
   <div class="container container-narrow">
     <h1 class="section-title">ポイント還元シミュレーター</h1>
     <p class="section-sub">毎月のカード利用額を入力すると、主要カードで年間どれくらいポイントが貯まるかを概算します。</p>
+""" + tools_nav("simulator.html") + """
     <div class="sim-box">
       <label class="sim-label" for="sim-spend">毎月のカード利用額（円）</label>
       <input type="number" id="sim-spend" class="sim-input" value="50000" min="0" step="1000" inputmode="numeric">
@@ -1035,6 +1038,204 @@ def kana_row(reading):
         if c in chars:
             return row
     return "他"
+
+
+def tools_nav(active, depth=0):
+    """3つのシミュレーターを相互リンクするツールバー"""
+    p = "" if depth == 0 else "../"
+    tools = [("simulator.html", "💳 還元シミュレーター"),
+             ("rivo-simulator.html", "⚠️ リボ手数料計算"),
+             ("tsumitate-simulator.html", "📈 クレカ積立シミュ")]
+    btns = "".join(
+        f'<a href="{p}{u}" class="tool-tab{" active" if u == active else ""}">{label}</a>'
+        for u, label in tools)
+    return f'<div class="tool-tabs">{btns}</div>'
+
+
+def build_rivo_simulator(data):
+    """リボ払い手数料シミュレーター"""
+    site = data["site"]
+    html = head(site, f"リボ払い手数料シミュレーター｜完済までの期間と手数料を計算｜{site['name']}",
+                "リボ払いの残高・毎月の返済額・手数料率を入力すると、完済までの期間と支払う手数料の総額を計算します。リボ払いの怖さが数字でわかります。",
+                path="rivo-simulator.html")
+    html += header(site)
+    html += """
+<section class="simulator-section">
+  <div class="container container-narrow">
+    <h1 class="section-title">リボ払い手数料シミュレーター</h1>
+    <p class="section-sub">リボ払いの残高・毎月の返済額・手数料率を入れると、完済までの期間と手数料の総額を計算します。</p>
+""" + tools_nav("rivo-simulator.html") + """
+    <div class="sim-box">
+      <label class="sim-label" for="rb-bal">リボ残高（円）</label>
+      <input type="number" id="rb-bal" class="sim-input" value="200000" min="0" step="10000" inputmode="numeric">
+      <label class="sim-label" for="rb-pay">毎月の返済額（円）</label>
+      <input type="number" id="rb-pay" class="sim-input" value="10000" min="0" step="1000" inputmode="numeric">
+      <label class="sim-label" for="rb-rate">手数料率（実質年率 %）</label>
+      <input type="number" id="rb-rate" class="sim-input" value="15.0" min="0" max="20" step="0.1" inputmode="decimal">
+      <button type="button" id="rb-run" class="btn-primary sim-run">計算する</button>
+    </div>
+    <div id="rb-result" class="sim-result"></div>
+    <p class="sim-note">※元金定額方式での概算です。実際の計算方式・手数料率はカード会社により異なります。あくまで目安としてご利用ください。</p>
+  </div>
+</section>
+<script>
+const yen = n => Math.round(n).toLocaleString('ja-JP');
+function rbRun(){
+  let bal = Math.max(0, parseFloat(document.getElementById('rb-bal').value||'0'));
+  const pay = Math.max(0, parseFloat(document.getElementById('rb-pay').value||'0'));
+  const rate = Math.max(0, parseFloat(document.getElementById('rb-rate').value||'0'))/100/12;
+  const el = document.getElementById('rb-result');
+  if(!bal || !pay){ el.innerHTML='<p class="sim-empty">残高と返済額を入力してください。</p>'; return; }
+  const principal0 = bal;
+  let months=0, interestTotal=0;
+  const firstInterest = bal*rate;
+  if(pay <= firstInterest){
+    el.innerHTML = '<div class="rb-warn"><strong>⚠️ このままでは完済できません。</strong>毎月の返済額が手数料（初月 約'+yen(firstInterest)+'円）以下のため、残高がほとんど減りません。返済額を増やすか、一括返済を検討してください。</div>';
+    return;
+  }
+  while(bal > 0 && months < 1200){
+    const interest = bal*rate;
+    interestTotal += interest;
+    let principal = pay - interest;
+    if(principal > bal) principal = bal;
+    bal -= principal;
+    months++;
+  }
+  const total = principal0 + interestTotal;
+  const y = Math.floor(months/12), m = months%12;
+  el.innerHTML =
+    '<div class="rb-cards">'
+    + '<div class="rb-stat"><span class="rb-k">完済までの期間</span><span class="rb-v">'+(y?y+'年':'')+(m?m+'ヶ月':(y?'':months+'ヶ月'))+'</span></div>'
+    + '<div class="rb-stat warn"><span class="rb-k">手数料の総額</span><span class="rb-v">約'+yen(interestTotal)+'円</span></div>'
+    + '<div class="rb-stat"><span class="rb-k">総支払額</span><span class="rb-v">約'+yen(total)+'円</span></div>'
+    + '</div>'
+    + '<p class="rb-msg">一括払いなら手数料は<strong>0円</strong>。リボ払いを続けると <strong>'+yen(interestTotal)+'円</strong> 多く支払う計算です。可能な範囲で返済額を上げる・繰上返済するのが得策です。</p>';
+}
+document.getElementById('rb-run').addEventListener('click', rbRun);
+rbRun();
+</script>"""
+    html += footer(site)
+    write(os.path.join(BASE_DIR, "rivo-simulator.html"), html)
+
+
+def build_tsumitate_simulator(data):
+    """クレカ積立シミュレーター"""
+    site = data["site"]
+    html = head(site, f"クレカ積立シミュレーター｜貯まるポイントと将来資産を概算｜{site['name']}",
+                "毎月の積立額・還元率・想定利回り・年数を入力すると、クレカ積立で貯まるポイントと、将来の資産額・運用益を概算します。新NISAと組み合わせて活用しましょう。",
+                path="tsumitate-simulator.html")
+    html += header(site)
+    html += """
+<section class="simulator-section">
+  <div class="container container-narrow">
+    <h1 class="section-title">クレカ積立シミュレーター</h1>
+    <p class="section-sub">毎月の積立額と条件を入れると、貯まるポイントと将来の資産額を概算します。新NISAのつみたて投資枠と相性抜群です。</p>
+""" + tools_nav("tsumitate-simulator.html") + """
+    <div class="sim-box">
+      <label class="sim-label" for="ts-amt">毎月の積立額（円）</label>
+      <input type="number" id="ts-amt" class="sim-input" value="30000" min="0" max="100000" step="1000" inputmode="numeric">
+      <label class="sim-label" for="ts-pt">クレカ積立の還元率（%）</label>
+      <input type="number" id="ts-pt" class="sim-input" value="0.5" min="0" max="5" step="0.1" inputmode="decimal">
+      <label class="sim-label" for="ts-ret">想定の年利回り（%）</label>
+      <input type="number" id="ts-ret" class="sim-input" value="5" min="0" max="15" step="0.5" inputmode="decimal">
+      <label class="sim-label" for="ts-yr">積立年数（年）</label>
+      <input type="number" id="ts-yr" class="sim-input" value="20" min="1" max="40" step="1" inputmode="numeric">
+      <button type="button" id="ts-run" class="btn-primary sim-run">計算する</button>
+    </div>
+    <div id="ts-result" class="sim-result"></div>
+    <p class="sim-note">※想定利回りは保証された数値ではなく、運用成果は変動します。複利・毎月積立で概算しています。クレカ積立の上限は月10万円です。投資判断はご自身の責任で行ってください。</p>
+  </div>
+</section>
+<script>
+const yen2 = n => Math.round(n).toLocaleString('ja-JP');
+function tsRun(){
+  const amt = Math.max(0, parseFloat(document.getElementById('ts-amt').value||'0'));
+  const pt = Math.max(0, parseFloat(document.getElementById('ts-pt').value||'0'))/100;
+  const r = Math.max(0, parseFloat(document.getElementById('ts-ret').value||'0'))/100/12;
+  const yrs = Math.max(0, parseInt(document.getElementById('ts-yr').value||'0',10));
+  const n = yrs*12;
+  const el = document.getElementById('ts-result');
+  if(!amt || !n){ el.innerHTML='<p class="sim-empty">積立額と年数を入力してください。</p>'; return; }
+  const principal = amt*n;
+  const fv = r>0 ? amt*((Math.pow(1+r,n)-1)/r) : principal;
+  const gain = fv - principal;
+  const points = amt*n*pt;
+  el.innerHTML =
+    '<div class="rb-cards">'
+    + '<div class="rb-stat"><span class="rb-k">積立元本</span><span class="rb-v">'+yen2(principal)+'円</span></div>'
+    + '<div class="rb-stat good"><span class="rb-k">将来の資産額（概算）</span><span class="rb-v">約'+yen2(fv)+'円</span></div>'
+    + '<div class="rb-stat"><span class="rb-k">うち運用益</span><span class="rb-v">約'+yen2(gain)+'円</span></div>'
+    + '<div class="rb-stat good"><span class="rb-k">貯まるポイント総額</span><span class="rb-v">約'+yen2(points)+'円分</span></div>'
+    + '</div>'
+    + '<p class="rb-msg">現金で積み立てるとポイントは付きませんが、クレカ積立なら <strong>約'+yen2(points)+'円分</strong> のポイントが上乗せされます。新NISAなら運用益も非課税です。</p>'
+    + '<div class="apply-cta"><a href="securities.html" class="btn-primary">ネット証券・NISAを比較する</a></div>';
+}
+document.getElementById('ts-run').addEventListener('click', tsRun);
+tsRun();
+</script>"""
+    html += footer(site)
+    write(os.path.join(BASE_DIR, "tsumitate-simulator.html"), html)
+
+
+def build_pillars(data):
+    """完全ガイド（ピラーページ）"""
+    site = data["site"]
+    pillars = data.get("pillars", [])
+    if not pillars:
+        return
+    art_title = {a["id"]: a["title"] for a in data["articles"]}
+    base = site.get("base_url", "").rstrip("/")
+    for pl in pillars:
+        html = head(site, f"{pl['title']}｜{site['name']}", pl["description"], path=f"{pl['id']}.html")
+        html += header(site)
+        html += f"""
+<article class="pillar-page">
+  <div class="container container-narrow">
+    <nav class="breadcrumb"><a href="index.html">ホーム</a> ＞ <span>{pl['title']}</span></nav>
+    <h1 class="article-title">{pl['title']}</h1>
+    <p class="article-lead">{pl['lead']}</p>"""
+        # 目次
+        html += '\n    <div class="pillar-toc"><h2>目次</h2><ol>'
+        for i, s in enumerate(pl["sections"], 1):
+            html += f'<li><a href="#sec-{i}">{s["h"]}</a></li>'
+        html += '</ol></div>'
+        # 各セクション
+        for i, s in enumerate(pl["sections"], 1):
+            html += f"""
+    <section class="pillar-sec" id="sec-{i}">
+      <h2>{s['h']}</h2>
+      <p class="review-text">{s['p']}</p>
+      <div class="pillar-links">"""
+            for aid in s["ids"]:
+                if aid in art_title:
+                    html += f'\n        <a href="articles/{aid}.html" class="pillar-link">📄 {art_title[aid]}</a>'
+            html += """
+      </div>
+    </section>"""
+        # CTA
+        if pl.get("cta") == "securities":
+            html += """
+    <div class="article-cta">
+      <h3>ネット証券・NISAを比較する</h3>
+      <p>クレカ積立に対応したネット証券を、手数料・ポイント還元で比較できます。</p>
+      <a href="securities.html" class="btn-primary">証券・NISA比較を見る</a>
+    </div>"""
+        else:
+            html += """
+    <div class="article-cta">
+      <h3>おすすめカードをチェック</h3>
+      <p>編集部おすすめのクレジットカードランキングもぜひご覧ください。</p>
+      <a href="index.html#ranking" class="btn-primary">ランキングを見る</a>
+    </div>"""
+        html += """
+  </div>
+</article>"""
+        bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
+            {"@type": "ListItem", "position": 2, "name": pl["title"], "item": f"{base}/{pl['id']}.html"}]}
+        html += '\n<script type="application/ld+json">\n' + json.dumps(bc, ensure_ascii=False) + '\n</script>'
+        html += footer(site)
+        write(os.path.join(BASE_DIR, f"{pl['id']}.html"), html)
 
 
 def build_glossary(data):
@@ -1152,7 +1353,8 @@ def build_sitemap(data):
     site = data["site"]
     base = site.get("base_url", "").rstrip("/")
     today = datetime.date.today().isoformat()
-    urls = [(u, today) for u in ["", "articles.html", "securities.html", "simulator.html", "glossary.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
+    urls = [(u, today) for u in ["", "articles.html", "securities.html", "simulator.html", "rivo-simulator.html", "tsumitate-simulator.html", "glossary.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
+    urls += [(f"{p['id']}.html", today) for p in data.get("pillars", [])]
     urls += [(f"cards/{c['id']}.html", today) for c in data["cards"]]
     urls += [(f"purpose/{p['id']}.html", today) for p in data["purposes"]]
     urls += [(f"articles/{a['id']}.html", article_date(a)) for a in data["articles"]]
@@ -1188,7 +1390,10 @@ def main():
     build_article_pages(data)
     build_securities(data)
     build_simulator(data)
+    build_rivo_simulator(data)
+    build_tsumitate_simulator(data)
     build_glossary(data)
+    build_pillars(data)
     build_legal_pages(data)
     build_404(data)
     build_sitemap(data)

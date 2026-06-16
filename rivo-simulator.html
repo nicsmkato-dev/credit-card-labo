@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="リボ払いの残高・毎月の返済額・手数料率を入力すると、完済までの期間と支払う手数料の総額を計算します。リボ払いの怖さが数字でわかります。">
+  <title>リボ払い手数料シミュレーター｜完済までの期間と手数料を計算｜クレカ比較Labo</title>
+  <link rel="canonical" href="https://creca-labo.pages.dev/rivo-simulator.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="リボ払い手数料シミュレーター｜完済までの期間と手数料を計算｜クレカ比較Labo">
+  <meta property="og:description" content="リボ払いの残高・毎月の返済額・手数料率を入力すると、完済までの期間と支払う手数料の総額を計算します。リボ払いの怖さが数字でわかります。">
+  <meta property="og:url" content="https://creca-labo.pages.dev/rivo-simulator.html">
+  <meta property="og:image" content="https://creca-labo.pages.dev/ogp.png">
+  <meta property="og:site_name" content="クレカ比較Labo">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="リボ払い手数料シミュレーター｜完済までの期間と手数料を計算｜クレカ比較Labo">
+  <meta name="twitter:description" content="リボ払いの残高・毎月の返済額・手数料率を入力すると、完済までの期間と支払う手数料の総額を計算します。リボ払いの怖さが数字でわかります。">
+  <meta name="twitter:image" content="https://creca-labo.pages.dev/ogp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4SP91V4T07"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4SP91V4T07');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="logo">💳 クレカ比較Labo</a>
+      <nav class="global-nav">
+        <a href="index.html#ranking">ランキング</a>
+        <a href="index.html#purpose">目的別</a>
+        <a href="credit-card-guide.html">完全ガイド</a>
+        <a href="simulator.html">シミュレーター</a>
+        <a href="securities.html">証券・NISA</a>
+        <a href="glossary.html">用語集</a>
+        <a href="articles.html">記事一覧</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<section class="simulator-section">
+  <div class="container container-narrow">
+    <h1 class="section-title">リボ払い手数料シミュレーター</h1>
+    <p class="section-sub">リボ払いの残高・毎月の返済額・手数料率を入れると、完済までの期間と手数料の総額を計算します。</p>
+<div class="tool-tabs"><a href="simulator.html" class="tool-tab">💳 還元シミュレーター</a><a href="rivo-simulator.html" class="tool-tab active">⚠️ リボ手数料計算</a><a href="tsumitate-simulator.html" class="tool-tab">📈 クレカ積立シミュ</a></div>
+    <div class="sim-box">
+      <label class="sim-label" for="rb-bal">リボ残高（円）</label>
+      <input type="number" id="rb-bal" class="sim-input" value="200000" min="0" step="10000" inputmode="numeric">
+      <label class="sim-label" for="rb-pay">毎月の返済額（円）</label>
+      <input type="number" id="rb-pay" class="sim-input" value="10000" min="0" step="1000" inputmode="numeric">
+      <label class="sim-label" for="rb-rate">手数料率（実質年率 %）</label>
+      <input type="number" id="rb-rate" class="sim-input" value="15.0" min="0" max="20" step="0.1" inputmode="decimal">
+      <button type="button" id="rb-run" class="btn-primary sim-run">計算する</button>
+    </div>
+    <div id="rb-result" class="sim-result"></div>
+    <p class="sim-note">※元金定額方式での概算です。実際の計算方式・手数料率はカード会社により異なります。あくまで目安としてご利用ください。</p>
+  </div>
+</section>
+<script>
+const yen = n => Math.round(n).toLocaleString('ja-JP');
+function rbRun(){
+  let bal = Math.max(0, parseFloat(document.getElementById('rb-bal').value||'0'));
+  const pay = Math.max(0, parseFloat(document.getElementById('rb-pay').value||'0'));
+  const rate = Math.max(0, parseFloat(document.getElementById('rb-rate').value||'0'))/100/12;
+  const el = document.getElementById('rb-result');
+  if(!bal || !pay){ el.innerHTML='<p class="sim-empty">残高と返済額を入力してください。</p>'; return; }
+  const principal0 = bal;
+  let months=0, interestTotal=0;
+  const firstInterest = bal*rate;
+  if(pay <= firstInterest){
+    el.innerHTML = '<div class="rb-warn"><strong>⚠️ このままでは完済できません。</strong>毎月の返済額が手数料（初月 約'+yen(firstInterest)+'円）以下のため、残高がほとんど減りません。返済額を増やすか、一括返済を検討してください。</div>';
+    return;
+  }
+  while(bal > 0 && months < 1200){
+    const interest = bal*rate;
+    interestTotal += interest;
+    let principal = pay - interest;
+    if(principal > bal) principal = bal;
+    bal -= principal;
+    months++;
+  }
+  const total = principal0 + interestTotal;
+  const y = Math.floor(months/12), m = months%12;
+  el.innerHTML =
+    '<div class="rb-cards">'
+    + '<div class="rb-stat"><span class="rb-k">完済までの期間</span><span class="rb-v">'+(y?y+'年':'')+(m?m+'ヶ月':(y?'':months+'ヶ月'))+'</span></div>'
+    + '<div class="rb-stat warn"><span class="rb-k">手数料の総額</span><span class="rb-v">約'+yen(interestTotal)+'円</span></div>'
+    + '<div class="rb-stat"><span class="rb-k">総支払額</span><span class="rb-v">約'+yen(total)+'円</span></div>'
+    + '</div>'
+    + '<p class="rb-msg">一括払いなら手数料は<strong>0円</strong>。リボ払いを続けると <strong>'+yen(interestTotal)+'円</strong> 多く支払う計算です。可能な範囲で返済額を上げる・繰上返済するのが得策です。</p>';
+}
+document.getElementById('rb-run').addEventListener('click', rbRun);
+rbRun();
+</script>
+<section class="disclosure-section">
+  <div class="container">
+    <div class="disclosure-box">
+      <p>⚠️ <strong>広告・アフィリエイト表示について：</strong>本サイトはアフィリエイトプログラムに参加しており、カードお申し込みリンクを経由して成約が発生した場合、当サイトに報酬が支払われることがあります。掲載情報は編集部の調査に基づきますが、最新情報は各カード公式サイトにてご確認ください。</p>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">💳 クレカ比較Labo</a>
+        <p>クレジットカードを賢く選んで、毎日の生活をもっとお得に。</p>
+      </div>
+      <div class="footer-links">
+        <h4>ガイド・ツール</h4>
+        <a href="credit-card-guide.html">クレジットカード完全ガイド</a>
+        <a href="poikatsu-guide.html">ポイ活完全ガイド</a>
+        <a href="nisa-guide.html">新NISA・投資ガイド</a>
+        <a href="simulator.html">還元シミュレーター</a>
+        <a href="rivo-simulator.html">リボ手数料計算</a>
+        <a href="tsumitate-simulator.html">クレカ積立シミュレーター</a>
+        <a href="glossary.html">用語集</a>
+      </div>
+      <div class="footer-links">
+        <h4>サイト情報</h4>
+        <a href="about.html">運営者情報</a>
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="disclaimer.html">免責事項</a>
+        <a href="contact.html">お問い合わせ</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>最終更新：2026年6月16日（火）　/　© 2026 クレカ比較Labo All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

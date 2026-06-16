@@ -3393,5 +3393,186 @@
       "reading": "イデコ",
       "def": "私的年金制度。掛金が全額所得控除になり節税できますが、原則60歳まで引き出せません。老後資金づくりに向いています。"
     }
+  ],
+  "pillars": [
+    {
+      "id": "credit-card-guide",
+      "title": "クレジットカード完全ガイド｜選び方から活用・管理まで",
+      "description": "クレジットカードの選び方・還元率・申込と審査・支払い管理・シーン別の使い方まで、初心者が知りたいことを体系的にまとめた完全ガイドです。",
+      "lead": "「結局どのカードを、どう選んで、どう使えばいいの？」——その全体像を1ページで掴めるようにまとめました。気になるテーマから、詳しい解説記事へ進めます。",
+      "sections": [
+        {
+          "h": "1. カードの選び方の基本",
+          "p": "まずは選び方の軸を押さえましょう。年会費・還元率・国際ブランド・特典の見方がわかれば、自分に合う1枚が絞り込めます。",
+          "ids": [
+            "how-to-choose",
+            "card-grade",
+            "annual-fee-free",
+            "annual-fee-worth",
+            "gold-card"
+          ]
+        },
+        {
+          "h": "2. 還元率とポイントを理解する",
+          "p": "クレジットカードの「お得さ」の中心はポイント還元です。還元率の考え方と、効率よく貯めるコツを学びましょう。",
+          "ids": [
+            "high-reward-howto",
+            "point-guide",
+            "point-double",
+            "point-reward-ranking"
+          ]
+        },
+        {
+          "h": "3. 申し込み・審査・発行",
+          "p": "申し込みから手元に届くまでの流れと、審査で気をつけたいポイントをまとめました。即日発行や多重申込の注意点も解説します。",
+          "ids": [
+            "how-to-apply",
+            "card-screening",
+            "instant-card",
+            "multiple-apply",
+            "credit-history"
+          ]
+        },
+        {
+          "h": "4. 支払い方法と家計管理",
+          "p": "一括・分割・リボの違いを正しく理解し、ムダな手数料を払わないことが大切です。明細チェックや家計簿アプリ連携も役立ちます。",
+          "ids": [
+            "payment-methods",
+            "payment-date",
+            "revolving",
+            "statement",
+            "credit-limit",
+            "kakeibo-app"
+          ]
+        },
+        {
+          "h": "5. 使いこなし・セキュリティ・トラブル",
+          "p": "ナンバーレスやタッチ決済、スマホ決済の活用法と、不正利用・紛失などトラブル時の対処をまとめました。",
+          "ids": [
+            "numberless",
+            "touch-payment",
+            "apple-pay",
+            "3d-secure",
+            "security",
+            "unknown-charge",
+            "reissue",
+            "cancel",
+            "change-info",
+            "card-renew",
+            "family-card",
+            "etc-card"
+          ]
+        },
+        {
+          "h": "6. シーン別の使い方",
+          "p": "旅行・コンビニ・スーパー・公共料金・税金など、場面ごとにお得で便利な使い方があります。",
+          "ids": [
+            "travel-card",
+            "overseas-use",
+            "konbini-card",
+            "supermarket-card",
+            "tax-payment",
+            "rent-payment",
+            "utility-payment",
+            "subscription",
+            "furusato",
+            "train-shinkansen",
+            "gas-card"
+          ]
+        },
+        {
+          "h": "7. 属性・ライフステージ別",
+          "p": "学生・主婦（主夫）・個人事業主・シニアなど、立場によって最適なカードや作り方は変わります。",
+          "ids": [
+            "student-card",
+            "housewife",
+            "self-employed",
+            "women-card",
+            "card-age"
+          ]
+        }
+      ],
+      "cta": "ranking"
+    },
+    {
+      "id": "poikatsu-guide",
+      "title": "ポイ活完全ガイド｜貯め方・使い方・注意点まで",
+      "description": "ポイ活（ポイント活動）の始め方から、効率的な貯め方・賢い使い道・やってはいけないNG行動まで、損しないための知識を体系的にまとめました。",
+      "lead": "ポイ活は「仕組みを作って放置」が理想形。基本から実践、失敗回避までを順番に学べるようにまとめました。",
+      "sections": [
+        {
+          "h": "1. ポイ活の基本を知る",
+          "p": "まずは全体像から。支払いの集約と経済圏選びが、ポイ活の土台になります。",
+          "ids": [
+            "poikatsu-hajimekata",
+            "point-keizaiken",
+            "poikatsu-ng"
+          ]
+        },
+        {
+          "h": "2. 効率よく貯める",
+          "p": "高還元カードの活用、ポイントの二重取り、よく行く店での貯め方など、貯めるテクニックをまとめました。",
+          "ids": [
+            "high-reward-howto",
+            "point-double",
+            "konbini-card",
+            "supermarket-card",
+            "point-guide"
+          ]
+        },
+        {
+          "h": "3. 賢く使う",
+          "p": "貯めたポイントは使い方で価値が変わります。損しない使い道と、ポイント投資への展開を解説します。",
+          "ids": [
+            "point-tsukaimichi",
+            "point-investment",
+            "point-toushi"
+          ]
+        },
+        {
+          "h": "4. ツールと安全性",
+          "p": "ポイントサイトの仕組みと安全な使い方、家計簿アプリでの管理術を押さえておきましょう。",
+          "ids": [
+            "point-site-guide",
+            "kakeibo-app"
+          ]
+        }
+      ],
+      "cta": "ranking"
+    },
+    {
+      "id": "nisa-guide",
+      "title": "新NISA・投資 完全ガイド｜クレカ積立でお得に始める",
+      "description": "新NISAの始め方、iDeCoとの違い、クレカ積立でポイントを貯めながら投資する方法まで、初心者が投資デビューするための完全ガイドです。",
+      "lead": "「投資を始めたいけど何から？」という方へ。新NISAの基本から、クレジットカードと組み合わせてお得に積み立てる方法までをまとめました。",
+      "sections": [
+        {
+          "h": "1. 新NISA・iDeCoの基本",
+          "p": "非課税で投資できる新NISAの仕組みと、iDeCoとの違い、積立と一括の考え方を理解しましょう。",
+          "ids": [
+            "shin-nisa-hajimekata",
+            "ideco-nisa-chigai",
+            "tsumitate-vs-ikkatsu"
+          ]
+        },
+        {
+          "h": "2. クレカ積立でお得に",
+          "p": "投資信託の積立をクレジットカードで決済すると、ポイントが貯まります。証券会社とカードの組み合わせがカギです。",
+          "ids": [
+            "kureka-tsumitate",
+            "nisa-card-combo"
+          ]
+        },
+        {
+          "h": "3. ポイント投資から試す",
+          "p": "現金を使わず、貯まったポイントで投資を体験する方法もあります。少額から無理なく始めましょう。",
+          "ids": [
+            "point-toushi",
+            "point-investment"
+          ]
+        }
+      ],
+      "cta": "securities"
+    }
   ]
 }

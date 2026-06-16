@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="毎月の積立額・還元率・想定利回り・年数を入力すると、クレカ積立で貯まるポイントと、将来の資産額・運用益を概算します。新NISAと組み合わせて活用しましょう。">
+  <title>クレカ積立シミュレーター｜貯まるポイントと将来資産を概算｜クレカ比較Labo</title>
+  <link rel="canonical" href="https://creca-labo.pages.dev/tsumitate-simulator.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="クレカ積立シミュレーター｜貯まるポイントと将来資産を概算｜クレカ比較Labo">
+  <meta property="og:description" content="毎月の積立額・還元率・想定利回り・年数を入力すると、クレカ積立で貯まるポイントと、将来の資産額・運用益を概算します。新NISAと組み合わせて活用しましょう。">
+  <meta property="og:url" content="https://creca-labo.pages.dev/tsumitate-simulator.html">
+  <meta property="og:image" content="https://creca-labo.pages.dev/ogp.png">
+  <meta property="og:site_name" content="クレカ比較Labo">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="クレカ積立シミュレーター｜貯まるポイントと将来資産を概算｜クレカ比較Labo">
+  <meta name="twitter:description" content="毎月の積立額・還元率・想定利回り・年数を入力すると、クレカ積立で貯まるポイントと、将来の資産額・運用益を概算します。新NISAと組み合わせて活用しましょう。">
+  <meta name="twitter:image" content="https://creca-labo.pages.dev/ogp.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4SP91V4T07"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-4SP91V4T07');
+  </script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="index.html" class="logo">💳 クレカ比較Labo</a>
+      <nav class="global-nav">
+        <a href="index.html#ranking">ランキング</a>
+        <a href="index.html#purpose">目的別</a>
+        <a href="credit-card-guide.html">完全ガイド</a>
+        <a href="simulator.html">シミュレーター</a>
+        <a href="securities.html">証券・NISA</a>
+        <a href="glossary.html">用語集</a>
+        <a href="articles.html">記事一覧</a>
+      </nav>
+    </div>
+  </div>
+</header>
+<section class="simulator-section">
+  <div class="container container-narrow">
+    <h1 class="section-title">クレカ積立シミュレーター</h1>
+    <p class="section-sub">毎月の積立額と条件を入れると、貯まるポイントと将来の資産額を概算します。新NISAのつみたて投資枠と相性抜群です。</p>
+<div class="tool-tabs"><a href="simulator.html" class="tool-tab">💳 還元シミュレーター</a><a href="rivo-simulator.html" class="tool-tab">⚠️ リボ手数料計算</a><a href="tsumitate-simulator.html" class="tool-tab active">📈 クレカ積立シミュ</a></div>
+    <div class="sim-box">
+      <label class="sim-label" for="ts-amt">毎月の積立額（円）</label>
+      <input type="number" id="ts-amt" class="sim-input" value="30000" min="0" max="100000" step="1000" inputmode="numeric">
+      <label class="sim-label" for="ts-pt">クレカ積立の還元率（%）</label>
+      <input type="number" id="ts-pt" class="sim-input" value="0.5" min="0" max="5" step="0.1" inputmode="decimal">
+      <label class="sim-label" for="ts-ret">想定の年利回り（%）</label>
+      <input type="number" id="ts-ret" class="sim-input" value="5" min="0" max="15" step="0.5" inputmode="decimal">
+      <label class="sim-label" for="ts-yr">積立年数（年）</label>
+      <input type="number" id="ts-yr" class="sim-input" value="20" min="1" max="40" step="1" inputmode="numeric">
+      <button type="button" id="ts-run" class="btn-primary sim-run">計算する</button>
+    </div>
+    <div id="ts-result" class="sim-result"></div>
+    <p class="sim-note">※想定利回りは保証された数値ではなく、運用成果は変動します。複利・毎月積立で概算しています。クレカ積立の上限は月10万円です。投資判断はご自身の責任で行ってください。</p>
+  </div>
+</section>
+<script>
+const yen2 = n => Math.round(n).toLocaleString('ja-JP');
+function tsRun(){
+  const amt = Math.max(0, parseFloat(document.getElementById('ts-amt').value||'0'));
+  const pt = Math.max(0, parseFloat(document.getElementById('ts-pt').value||'0'))/100;
+  const r = Math.max(0, parseFloat(document.getElementById('ts-ret').value||'0'))/100/12;
+  const yrs = Math.max(0, parseInt(document.getElementById('ts-yr').value||'0',10));
+  const n = yrs*12;
+  const el = document.getElementById('ts-result');
+  if(!amt || !n){ el.innerHTML='<p class="sim-empty">積立額と年数を入力してください。</p>'; return; }
+  const principal = amt*n;
+  const fv = r>0 ? amt*((Math.pow(1+r,n)-1)/r) : principal;
+  const gain = fv - principal;
+  const points = amt*n*pt;
+  el.innerHTML =
+    '<div class="rb-cards">'
+    + '<div class="rb-stat"><span class="rb-k">積立元本</span><span class="rb-v">'+yen2(principal)+'円</span></div>'
+    + '<div class="rb-stat good"><span class="rb-k">将来の資産額（概算）</span><span class="rb-v">約'+yen2(fv)+'円</span></div>'
+    + '<div class="rb-stat"><span class="rb-k">うち運用益</span><span class="rb-v">約'+yen2(gain)+'円</span></div>'
+    + '<div class="rb-stat good"><span class="rb-k">貯まるポイント総額</span><span class="rb-v">約'+yen2(points)+'円分</span></div>'
+    + '</div>'
+    + '<p class="rb-msg">現金で積み立てるとポイントは付きませんが、クレカ積立なら <strong>約'+yen2(points)+'円分</strong> のポイントが上乗せされます。新NISAなら運用益も非課税です。</p>'
+    + '<div class="apply-cta"><a href="securities.html" class="btn-primary">ネット証券・NISAを比較する</a></div>';
+}
+document.getElementById('ts-run').addEventListener('click', tsRun);
+tsRun();
+</script>
+<section class="disclosure-section">
+  <div class="container">
+    <div class="disclosure-box">
+      <p>⚠️ <strong>広告・アフィリエイト表示について：</strong>本サイトはアフィリエイトプログラムに参加しており、カードお申し込みリンクを経由して成約が発生した場合、当サイトに報酬が支払われることがあります。掲載情報は編集部の調査に基づきますが、最新情報は各カード公式サイトにてご確認ください。</p>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">💳 クレカ比較Labo</a>
+        <p>クレジットカードを賢く選んで、毎日の生活をもっとお得に。</p>
+      </div>
+      <div class="footer-links">
+        <h4>ガイド・ツール</h4>
+        <a href="credit-card-guide.html">クレジットカード完全ガイド</a>
+        <a href="poikatsu-guide.html">ポイ活完全ガイド</a>
+        <a href="nisa-guide.html">新NISA・投資ガイド</a>
+        <a href="simulator.html">還元シミュレーター</a>
+        <a href="rivo-simulator.html">リボ手数料計算</a>
+        <a href="tsumitate-simulator.html">クレカ積立シミュレーター</a>
+        <a href="glossary.html">用語集</a>
+      </div>
+      <div class="footer-links">
+        <h4>サイト情報</h4>
+        <a href="about.html">運営者情報</a>
+        <a href="privacy.html">プライバシーポリシー</a>
+        <a href="disclaimer.html">免責事項</a>
+        <a href="contact.html">お問い合わせ</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>最終更新：2026年6月16日（火）　/　© 2026 クレカ比較Labo All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

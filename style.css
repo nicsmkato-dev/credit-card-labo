@@ -210,6 +210,36 @@ img, svg { max-width: 100%; }
 .sim-grade.active { background: #283593; color: #fff; border-color: #283593; }
 .sim-fee { display: inline-block; margin-top: 3px; font-size: 0.7rem; color: #b26a00; background: #fff6e6; border-radius: 5px; padding: 1px 6px; }
 
+/* ===== ツール相互リンク・計算結果カード ===== */
+.tool-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.tool-tab { flex: 1; min-width: 120px; text-align: center; padding: 11px 8px; background: #fff; border: 1px solid #cfd4ea; border-radius: 11px; font-weight: 600; color: #3949ab; text-decoration: none; font-size: 0.88rem; transition: all .15s; }
+.tool-tab:hover { border-color: #ff6f00; }
+.tool-tab.active { background: #283593; color: #fff; border-color: #283593; }
+.rb-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 8px; }
+.rb-stat { background: #fff; border: 1px solid #e6e8f2; border-radius: 14px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.rb-stat.warn { border-color: #ffcdb2; background: #fff6f1; }
+.rb-stat.good { border-color: #cfe8d6; background: #f3fbf5; }
+.rb-k { font-size: 0.82rem; color: #6a708c; }
+.rb-v { font-family: 'Zen Kaku Gothic New', sans-serif; font-weight: 900; font-size: 1.4rem; color: #283593; }
+.rb-stat.warn .rb-v { color: #e2562a; }
+.rb-stat.good .rb-v { color: #1f8a4c; }
+.rb-msg { margin-top: 16px; background: #f5f6fb; border-radius: 12px; padding: 16px 18px; font-size: 0.9rem; color: #4a4f6a; line-height: 1.8; }
+.rb-warn { background: #fff3f0; border: 1px solid #ffcdb2; border-radius: 14px; padding: 20px 22px; color: #c0392b; line-height: 1.85; }
+
+/* ===== 完全ガイド（ピラー） ===== */
+.pillar-page { padding: 40px 0 72px; }
+.pillar-toc { background: linear-gradient(135deg, #f5f6fb, #eef0fa); border: 1px solid #ebedf7; border-radius: 16px; padding: 22px 26px; margin: 24px 0 8px; }
+.pillar-toc h2 { font-size: 1.05rem; margin: 0 0 12px; border: none; padding: 0; }
+.pillar-toc ol { margin: 0; padding-left: 1.2em; }
+.pillar-toc li { margin: 7px 0; }
+.pillar-toc a { color: #283593; text-decoration: none; font-weight: 500; }
+.pillar-toc a:hover { color: #ff6f00; }
+.pillar-sec { margin-top: 38px; scroll-margin-top: 80px; }
+.pillar-sec h2 { font-size: 1.25rem; }
+.pillar-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
+.pillar-link { background: #fff; border: 1px solid #e6e8f2; border-radius: 11px; padding: 13px 16px; font-size: 0.88rem; color: #283593; font-weight: 500; text-decoration: none; transition: all .15s; }
+.pillar-link:hover { border-color: #ff6f00; color: #ff6f00; transform: translateY(-1px); }
+
 /* ===== 用語集 ===== */
 .glossary-section { padding: 72px 0; }
 .glossary-search { width: 100%; padding: 12px 16px; border: 2px solid #d5d9ec; border-radius: 12px; font-size: 1rem; box-sizing: border-box; margin-bottom: 14px; }
@@ -353,6 +383,8 @@ img, svg { max-width: 100%; }
   .purpose-grid { grid-template-columns: repeat(2, 1fr); }
   .guide-grid { grid-template-columns: 1fr; }
   .article-grid { grid-template-columns: 1fr; }
+  .pillar-links { grid-template-columns: 1fr; }
+  .rb-cards { grid-template-columns: 1fr; }
   .card-specs { grid-template-columns: repeat(2, 1fr); }
   .detail-hero { flex-direction: column; text-align: center; }
   .detail-specs { grid-template-columns: repeat(2, 1fr); }
