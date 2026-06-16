@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "affiliate-site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-l", "3456", "C:\\Users\\user\\Desktop\\affiliate-site"],
+      "port": 3456
+    }
+  ]
+}

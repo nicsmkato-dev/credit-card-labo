@@ -18,10 +18,14 @@ function Log($msg) {
 Set-Location $SiteDir
 Log "===== deploy start ====="
 
-# Clear any stale git lock from a crashed run
-if (Test-Path "$SiteDir\.git\index.lock") {
-    Remove-Item "$SiteDir\.git\index.lock" -Force -ErrorAction SilentlyContinue
-    Log "removed stale .git/index.lock"
+# Clear any stale git lock files from a crashed run (.git root + refs/)
+Get-ChildItem "$SiteDir\.git" -Filter "*.lock" -File -ErrorAction SilentlyContinue | ForEach-Object {
+    Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue
+    Log "removed stale lock .git/$($_.Name)"
+}
+Get-ChildItem "$SiteDir\.git\refs" -Recurse -Filter "*.lock" -ErrorAction SilentlyContinue | ForEach-Object {
+    Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue
+    Log "removed stale ref lock $($_.Name)"
 }
 
 Log "[1/3] regenerating site..."
