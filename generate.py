@@ -713,12 +713,19 @@ def build_article_pages(data):
       <a href="{r['id']}.html" class="related-link">📄 {r['title']}</a>"""
         h += """
     </div>"""
-        # 記事末尾にランキング誘導
+        # 記事末尾にランキング誘導＋便利ツール導線
         h += """
     <div class="article-cta">
       <h3>おすすめカードはこちら</h3>
       <p>編集部おすすめのクレジットカードランキングもぜひチェックしてください。</p>
       <a href="../index.html#ranking" class="btn-primary">ランキングを見る</a>
+    </div>
+    <div class="tool-links">
+      <p class="tool-links-title">🛠 無料ツールで比べてみる</p>
+      <div class="tool-links-row">
+        <a href="../simulator.html" class="tool-link">📊 ポイント還元シミュレーター<small>毎月の利用額で年間ポイントを計算</small></a>
+        <a href="../glossary.html" class="tool-link">📖 クレジットカード用語集<small>わからない用語をすぐ解説</small></a>
+      </div>
     </div>
   </div>
 </article>"""

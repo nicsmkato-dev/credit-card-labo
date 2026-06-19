@@ -176,6 +176,15 @@ img, svg { max-width: 100%; }
 .criteria-item p { font-size: 0.88rem; color: #5a6080; }
 .criteria-note { font-size: 0.8rem; color: #8a90a8; margin-top: 26px; text-align: center; line-height: 1.8; }
 
+/* ===== 記事内ツール導線 ===== */
+.tool-links { margin-top: 22px; }
+.tool-links-title { font-weight: 700; color: #283593; margin-bottom: 12px; }
+.tool-links-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tool-link { display: flex; flex-direction: column; background: linear-gradient(135deg, #fff6ee, #fdeee0); border: 1px solid #ffd9b8; border-radius: 14px; padding: 16px 18px; font-weight: 700; color: #d2691e; text-decoration: none; transition: transform .15s, box-shadow .15s; }
+.tool-link:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,111,0,.15); }
+.tool-link small { display: block; font-weight: 400; font-size: 0.78rem; color: #8a7355; margin-top: 5px; }
+@media (max-width: 600px) { .tool-links-row { grid-template-columns: 1fr; } }
+
 /* ===== 関連記事 ===== */
 .related-articles { margin-top: 44px; padding: 24px 28px; background: linear-gradient(135deg, #f5f6fb, #eef0fa); border-radius: 18px; border: 1px solid #ebedf7; }
 .related-articles h2 { font-size: 1.1rem; margin: 0 0 14px; border: none; padding: 0; }
