@@ -324,6 +324,9 @@ img, svg { max-width: 100%; }
 .site-footer { background: linear-gradient(135deg, #14182e, #1f2547); color: #b8bcd0; padding: 64px 0 26px; }
 .footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 44px; margin-bottom: 44px; }
 .footer-brand .logo { color: #9fa8da; font-size: 1.3rem; display: block; margin-bottom: 14px; }
+.footer-sns { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 9px 16px; border: 1px solid rgba(255,255,255,.25); border-radius: 30px; color: #cfd4ea; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: background .2s, border-color .2s; }
+.footer-sns:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.5); color: #fff; }
+.footer-sns svg { flex-shrink: 0; }
 .footer-brand p { font-size: 0.85rem; color: #9095b0; }
 .footer-links h4 { color: #fff; font-size: 0.9rem; font-weight: 700; margin-bottom: 16px; }
 .footer-links a { display: block; font-size: 0.85rem; color: #9095b0; margin-bottom: 10px; transition: color .2s; }
