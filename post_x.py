@@ -24,10 +24,25 @@ import x_poster  # noqa: E402
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data", "cards.json")
+LOG_FILE = os.path.join(BASE_DIR, "post_x.log")
 # このサイト専用のXログインプロファイル（共通のx_profileとは別にする）
 CRECA_PROFILE = os.path.join(X_POSTER_DIR, "x_profile_creca")
 
 HASHTAGS = "#クレジットカード #クレカ #ポイ活"
+
+
+def log(msg):
+    """実行ログを post_x.log に追記（毎回の成否・理由を残す）"""
+    line = f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}  {msg}"
+    try:
+        print(line)
+    except Exception:
+        pass
+    try:
+        with io.open(LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(line + "\n")
+    except Exception:
+        pass
 
 
 def load():
@@ -71,30 +86,35 @@ def main():
     cmd = sys.argv[1] if len(sys.argv) > 1 else "help"
     if cmd == "login":
         ok = x_poster.login(profile_dir=CRECA_PROFILE)
-        print("LOGIN:", ok)
+        log(f"[login] result={ok}")
         return
     data = load()
     base = site_base(data)
     if cmd == "post-today":
         art = today_article(data)
         if not art:
-            print("本日公開の新記事はありません。投稿をスキップします。")
+            log("[post-today] 本日公開の新記事なし → スキップ")
             return
     elif cmd == "post":
         aid = sys.argv[2] if len(sys.argv) > 2 else ""
         art = find_article(data, aid)
         if not art:
-            print(f"記事が見つかりません: {aid}")
+            log(f"[post] 記事が見つかりません: {aid}")
             return
     else:
         print(__doc__)
         return
     text = compose(art, base)
-    print("----- 投稿内容 -----")
-    print(text)
-    print("--------------------")
-    ok = x_poster.post_to_x(text, profile_dir=CRECA_PROFILE)
-    print("RESULT:", ok)
+    log(f"[{cmd}] 投稿開始 article={art['id']} title={art['title']}")
+    try:
+        ok = x_poster.post_to_x(text, profile_dir=CRECA_PROFILE)
+    except Exception as e:
+        log(f"[{cmd}] 例外: {e}")
+        ok = False
+    if ok:
+        log(f"[{cmd}] 投稿成功 article={art['id']}")
+    else:
+        log(f"[{cmd}] 投稿失敗 article={art['id']}（未ログイン/重複/Xの制限等の可能性）")
 
 
 if __name__ == "__main__":
