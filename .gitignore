@@ -1,6 +1,11 @@
 deploy.log
 post_x.log
+post_note.log
+note_posted.txt
+post_x.py
+post_note.py
 profile_x.png
 header_x.png
+X投稿ネタ.txt
 __pycache__/
 *.pyc
