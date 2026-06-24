@@ -1403,6 +1403,8 @@ def build_sitemap(data):
         xml += f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod></url>\n"
     xml += "</urlset>\n"
     write(os.path.join(BASE_DIR, "sitemap.xml"), xml)
+    # Search Consoleの「取得できませんでした」張り付き対策として別名でも同内容を出力
+    write(os.path.join(BASE_DIR, "sitemap_v2.xml"), xml)
 
     robots = "User-agent: *\nAllow: /\n"
     if base:
