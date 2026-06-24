@@ -398,6 +398,35 @@ def build_index(data):
   </script>
 </section>"""
 
+    # 新着・お役立ち記事（記事中心構成：上位に配置）
+    n_articles = len(data["articles"])
+    html += """
+<section class="home-articles-section home-articles-top">
+  <div class="container">
+    <h2 class="section-title">新着・お役立ち記事</h2>
+    <p class="section-sub">クレジットカード・ポイ活・新NISAの「知って得する」情報を毎日更新中📈</p>
+    <div class="article-topics">
+      <a href="articles.html">記事一覧</a>
+      <a href="simulator.html">還元シミュレーター</a>
+      <a href="glossary.html">用語集</a>
+      <a href="credit-card-guide.html">完全ガイド</a>
+      <a href="index.html#purpose">目的別で探す</a>
+    </div>
+    <div class="article-grid">"""
+    for a in sorted(data["articles"], key=article_date, reverse=True)[:12]:
+        html += f"""
+      <a href="articles/{a['id']}.html" class="article-card">
+        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {fmt_date(article_date(a))} 公開</span></div>
+        <h3>{a['title']}</h3>
+        <p>{a['description']}</p>
+        <span class="read-more">続きを読む →</span>
+      </a>"""
+    html += f"""
+    </div>
+    <div class="home-articles-more"><a href="articles.html" class="btn-primary">記事をすべて見る（{n_articles}本）→</a></div>
+  </div>
+</section>"""
+
     # ランキング (上位5枚)
     html += f"""
 <section class="ranking-section" id="ranking">
@@ -531,27 +560,6 @@ def build_index(data):
       <div class="guide-card"><h3>📌 {g['q']}</h3><p>{g['a']}</p></div>"""
     html += """
     </div>
-  </div>
-</section>"""
-
-    # トップページの記事セクション
-    html += """
-<section class="home-articles-section">
-  <div class="container">
-    <h2 class="section-title">お役立ち記事</h2>
-    <p class="section-sub">クレジットカード選びに役立つ情報を発信しています。</p>
-    <div class="article-grid">"""
-    for a in sorted(data["articles"], key=article_date, reverse=True)[:6]:
-        html += f"""
-      <a href="articles/{a['id']}.html" class="article-card">
-        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {fmt_date(article_date(a))} 公開</span></div>
-        <h3>{a['title']}</h3>
-        <p>{a['description']}</p>
-        <span class="read-more">続きを読む →</span>
-      </a>"""
-    html += """
-    </div>
-    <div class="home-articles-more"><a href="articles.html" class="btn-detail">記事をもっと見る →</a></div>
   </div>
 </section>"""
 
