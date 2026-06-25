@@ -151,6 +151,10 @@ img, svg { max-width: 100%; }
 .card-photo img { height: 100%; width: auto; display: block; }
 .card-photo.big { height: 112px; }
 
+/* 本文中のカード名→詳細ページ内部リンク */
+.card-inline-link { color: #3949ab; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+.card-inline-link:hover { color: #1a237e; background: #eef0fb; }
+
 .card-title-area h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 4px; }
 .stars { color: #ffb300; font-size: 1.05rem; letter-spacing: 2px; margin-bottom: 8px; }
 .card-catch { font-size: 0.92rem; color: #4a4f6a; }

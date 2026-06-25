@@ -9,6 +9,7 @@ data/cards.json を読み込み、全HTMLページを自動生成する。
 """
 import json
 import os
+import re
 import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -35,6 +36,45 @@ def year_month():
 
 def stars_html(n):
     return "★" * n + "☆" * (5 - n)
+
+
+_CARD_LINK_CACHE = {}
+
+
+def _card_link_regex(cards):
+    """カード名→id と、名前マッチ用の正規表現を構築（長い名前優先でキャッシュ）"""
+    key = id(cards)
+    if key not in _CARD_LINK_CACHE:
+        pairs = sorted(((c["name"], c["id"]) for c in cards),
+                       key=lambda x: len(x[0]), reverse=True)
+        name_to_id = {n: i for n, i in pairs}
+        pat = "|".join(re.escape(n) for n, _ in pairs)
+        _CARD_LINK_CACHE[key] = (re.compile(pat), name_to_id)
+    return _CARD_LINK_CACHE[key]
+
+
+def link_cards(text, cards, depth=1, linked_ids=None, skip_id=None):
+    """本文中のカード名を、そのカードの詳細ページへのリンクに置換する。
+    linked_ids を渡すと同一ページで各カード初出の1回だけリンク（過剰リンク防止）。
+    skip_id を渡すとそのカード自身（自ページ）はリンクしない。"""
+    if not text:
+        return text
+    rx, name_to_id = _card_link_regex(cards)
+    p = "" if depth == 0 else "../"
+
+    def repl(m):
+        name = m.group(0)
+        cid = name_to_id[name]
+        if cid == skip_id:
+            return name
+        if linked_ids is not None:
+            if cid in linked_ids:
+                return name
+            linked_ids.add(cid)
+        return (f'<a href="{p}cards/{cid}.html" '
+                f'class="card-inline-link">{name}</a>')
+
+    return rx.sub(repl, text)
 
 
 CARD_IMG_EXTS = (".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif")
@@ -729,17 +769,18 @@ def build_article_pages(data):
     for a in data["articles"]:
         h = head(site, f"{a['title']}｜{site['name']}", a["description"], depth=1, path=f"articles/{a['id']}.html")
         h += header(site, depth=1)
+        linked = set()  # 記事内でカード初出のみリンク（過剰リンク防止）
         h += f"""
 <article class="detail-page">
   <div class="container container-narrow">
     <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <a href="../articles.html">記事一覧</a> ＞ <span>{a['title']}</span></nav>
     <h1 class="article-title">{a['title']}</h1>
     <p class="article-date">📅 {fmt_date(article_date(a))} 公開</p>
-    <p class="article-lead">{a['lead']}</p>"""
+    <p class="article-lead">{link_cards(a['lead'], data['cards'], 1, linked)}</p>"""
         for s in a["sections"]:
             h += f"""
     <h2>{s['h']}</h2>
-    <p class="review-text">{s['p']}</p>"""
+    <p class="review-text">{link_cards(s['p'], data['cards'], 1, linked)}</p>"""
         # 関連記事(リスト上の前後3本・内部リンク強化)
         arts = data["articles"]
         idx = arts.index(a)
