@@ -146,6 +146,11 @@ img, svg { max-width: 100%; }
 .card-logo-placeholder.big .cc-mark { width: 36px; height: 22px; bottom: 12px; }
 .card-logo-placeholder.big .cc-mark::before, .card-logo-placeholder.big .cc-mark::after { width: 22px; height: 22px; }
 
+/* 実カード券面画像 */
+.card-photo { width: 140px; height: 88px; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 16px rgba(0,0,0,.22); background: #fff; display: flex; align-items: center; justify-content: center; }
+.card-photo img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.card-photo.big { width: 168px; height: 105px; }
+
 .card-title-area h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 4px; }
 .stars { color: #ffb300; font-size: 1.05rem; letter-spacing: 2px; margin-bottom: 8px; }
 .card-catch { font-size: 0.92rem; color: #4a4f6a; }

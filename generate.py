@@ -37,6 +37,33 @@ def stars_html(n):
     return "★" * n + "☆" * (5 - n)
 
 
+CARD_IMG_EXTS = (".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif")
+
+
+def card_image_path(cid):
+    """images/cards/<id>.<ext> が存在すればそのファイル名を返す。無ければ None"""
+    for ext in CARD_IMG_EXTS:
+        rel = os.path.join("images", "cards", cid + ext)
+        if os.path.exists(os.path.join(BASE_DIR, rel)):
+            return rel.replace("\\", "/")
+    return None
+
+
+def card_visual(card, depth=0, big=False):
+    """実画像があれば<img>、無ければ従来のCSS券面を返す"""
+    p = "" if depth == 0 else "../"
+    big_cls = " big" if big else ""
+    img = card_image_path(card["id"])
+    if img:
+        return (f'<div class="card-photo{big_cls}">'
+                f'<img src="{p}{img}" alt="{card["name"]}" loading="lazy" '
+                f'width="320" height="202"></div>')
+    return (f'<div class="card-logo-placeholder {card["color"]}{big_cls}">'
+            f'<span class="cc-num">•••• •••• •••• ••••</span>'
+            f'<span class="cc-brand">{card["brand_label"]}</span>'
+            f'<span class="cc-mark"></span></div>')
+
+
 def fmt_date(iso):
     """ISO日付(2026-06-07)を日本語表記(2026年6月7日)に変換"""
     y, m, d = (int(x) for x in iso.split("-"))
@@ -283,7 +310,7 @@ def card_block(card, rank=None, depth=0):
       <div class="card-body">
         <div class="card-header-row">
           <div class="card-logo-area">
-            <div class="card-logo-placeholder {card['color']}"><span class="cc-num">•••• •••• •••• ••••</span><span class="cc-brand">{card['brand_label']}</span><span class="cc-mark"></span></div>
+            {card_visual(card, depth)}
           </div>
           <div class="card-title-area">
             <h3>{card['name']}</h3>
@@ -596,7 +623,7 @@ def build_card_pages(data):
   <div class="container container-narrow">
     <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <span>{c['name']}</span></nav>
     <div class="detail-hero {c['color']}">
-      <div class="card-logo-placeholder {c['color']} big"><span class="cc-num">•••• •••• •••• ••••</span><span class="cc-brand">{c['brand_label']}</span><span class="cc-mark"></span></div>
+      {card_visual(c, 1, big=True)}
       <div>
         <h1>{c['name']}</h1>
         <div class="stars">{stars_html(c['stars'])}</div>
