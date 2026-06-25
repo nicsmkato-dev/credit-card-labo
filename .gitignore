@@ -10,3 +10,8 @@ note_header.png
 X投稿ネタ.txt
 __pycache__/
 *.pyc
+
+# 内部メモ（公開しない）
+# 離脱防止機能メモ.txt
+X投稿ネタ.txt
+運営マニュアル.md
