@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://creca-labo.pages.dev/sitemap.xml
+Sitemap: https://creca-labo.com/sitemap.xml
