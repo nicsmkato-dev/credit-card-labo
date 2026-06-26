@@ -11,6 +11,13 @@ X投稿ネタ.txt
 __pycache__/
 *.pyc
 
+# A8自動取得（認証情報・ログイン用Chromeプロファイル・ログ）
+config/a8_config.json
+a8_profile/
+a8_sync.log
+a8_inspect_*.html
+a8_inspect_*.png
+
 # 内部メモ（公開しない）
 # 離脱防止機能メモ.txt
 X投稿ネタ.txt

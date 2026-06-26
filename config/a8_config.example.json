@@ -1,0 +1,6 @@
+{
+  "_comment": "このファイルをコピーして a8_config.json を作り、A8のログインIDとパスワードを入れてください（a8_config.json はgit管理外）。",
+  "login_id": "あなたのA8ログインID",
+  "password": "あなたのA8パスワード",
+  "auto_deploy": false
+}

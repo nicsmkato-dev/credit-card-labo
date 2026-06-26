@@ -1,0 +1,340 @@
+{
+  "smbc-card": {
+    "name": "三井住友カード（NL）",
+    "match": [
+      "三井住友カード"
+    ],
+    "a8_program_id": ""
+  },
+  "olive-card": {
+    "name": "Olive（オリーブ）",
+    "match": [
+      "Olive"
+    ],
+    "a8_program_id": ""
+  },
+  "rakuten-card": {
+    "name": "楽天カード",
+    "match": [
+      "Rakuten Card",
+      "楽天カード"
+    ],
+    "a8_program_id": ""
+  },
+  "epos-card": {
+    "name": "エポスカード",
+    "match": [
+      "Epos Card",
+      "エポスカード"
+    ],
+    "a8_program_id": ""
+  },
+  "mufg-card": {
+    "name": "三菱UFJカード",
+    "match": [
+      "MUFG Card",
+      "三菱UFJカード"
+    ],
+    "a8_program_id": ""
+  },
+  "recruit-card": {
+    "name": "リクルートカード",
+    "match": [
+      "Recruit Card",
+      "リクルートカード"
+    ],
+    "a8_program_id": ""
+  },
+  "jcb-card-w": {
+    "name": "JCBカードW",
+    "match": [
+      "JCB CARD W",
+      "JCBカードW"
+    ],
+    "a8_program_id": ""
+  },
+  "aeon-card": {
+    "name": "イオンカード",
+    "match": [
+      "AEON Card",
+      "イオンカード"
+    ],
+    "a8_program_id": ""
+  },
+  "promise-visa": {
+    "name": "プロミスVISAカード",
+    "match": [
+      "Promise VISA",
+      "プロミスVISAカード"
+    ],
+    "a8_program_id": ""
+  },
+  "tokyu-card": {
+    "name": "東急カード（TOKYU CARD）",
+    "match": [
+      "TOKYU CARD",
+      "東急カード"
+    ],
+    "a8_program_id": ""
+  },
+  "ja-card": {
+    "name": "JAカード",
+    "match": [
+      "JA CARD",
+      "JAカード"
+    ],
+    "a8_program_id": ""
+  },
+  "smbc-gold-nl": {
+    "name": "三井住友カード ゴールド（NL）",
+    "match": [
+      "三井住友 GOLD",
+      "三井住友カード ゴールド"
+    ],
+    "a8_program_id": ""
+  },
+  "jcb-gold": {
+    "name": "JCBゴールド",
+    "match": [
+      "JCB GOLD",
+      "JCBゴールド"
+    ],
+    "a8_program_id": ""
+  },
+  "smbc-platinum": {
+    "name": "三井住友カード プラチナプリファード",
+    "match": [
+      "PLATINUM",
+      "三井住友カード プラチナプリファード"
+    ],
+    "a8_program_id": ""
+  },
+  "jal-card": {
+    "name": "JALカード",
+    "match": [
+      "JAL CARD",
+      "JALカード"
+    ],
+    "a8_program_id": ""
+  },
+  "ana-card": {
+    "name": "ANAカード（一般）",
+    "match": [
+      "ANA CARD",
+      "ANAカード"
+    ],
+    "a8_program_id": ""
+  },
+  "view-card": {
+    "name": "ビックカメラSuicaカード",
+    "match": [
+      "VIEW Suica",
+      "ビックカメラSuicaカード"
+    ],
+    "a8_program_id": ""
+  },
+  "smbc-business": {
+    "name": "三井住友カード ビジネスオーナーズ",
+    "match": [
+      "BUSINESS",
+      "三井住友カード ビジネスオーナーズ"
+    ],
+    "a8_program_id": ""
+  },
+  "amex-gold": {
+    "name": "アメリカン・エキスプレス・ゴールド・プリファード・カード",
+    "match": [
+      "AMEX GOLD",
+      "アメリカン・エキスプレス・ゴールド・プリファード・カード"
+    ],
+    "a8_program_id": ""
+  },
+  "diners-club": {
+    "name": "ダイナースクラブカード",
+    "match": [
+      "Diners Club",
+      "ダイナースクラブカード"
+    ],
+    "a8_program_id": ""
+  },
+  "amex-green": {
+    "name": "アメリカン・エキスプレス・グリーン・カード",
+    "match": [
+      "AMEX GREEN",
+      "アメリカン・エキスプレス・グリーン・カード"
+    ],
+    "a8_program_id": ""
+  },
+  "marriott-amex": {
+    "name": "マリオットボンヴォイ・アメリカン・エキスプレス・カード",
+    "match": [
+      "Marriott AMEX",
+      "マリオットボンヴォイ・アメリカン・エキスプレス・カード"
+    ],
+    "a8_program_id": ""
+  },
+  "ana-amex": {
+    "name": "ANAアメリカン・エキスプレス・カード",
+    "match": [
+      "ANA AMEX",
+      "ANAアメリカン・エキスプレス・カード"
+    ],
+    "a8_program_id": ""
+  },
+  "hilton-amex": {
+    "name": "ヒルトン・オナーズ・アメリカン・エキスプレス・カード",
+    "match": [
+      "Hilton AMEX",
+      "ヒルトン・オナーズ・アメリカン・エキスプレス・カード"
+    ],
+    "a8_program_id": ""
+  },
+  "ana-diners": {
+    "name": "ANAダイナースカード",
+    "match": [
+      "ANA Diners",
+      "ANAダイナースカード"
+    ],
+    "a8_program_id": ""
+  },
+  "d-card": {
+    "name": "dカード",
+    "match": [
+      "d CARD",
+      "dカード"
+    ],
+    "a8_program_id": ""
+  },
+  "dcard-gold": {
+    "name": "dカード GOLD",
+    "match": [
+      "d CARD GOLD",
+      "dカード GOLD"
+    ],
+    "a8_program_id": ""
+  },
+  "saison-int": {
+    "name": "セゾンカードインターナショナル",
+    "match": [
+      "SAISON",
+      "セゾンカードインターナショナル"
+    ],
+    "a8_program_id": ""
+  },
+  "saison-gold-amex": {
+    "name": "セゾンゴールド・アメリカン・エキスプレス・カード",
+    "match": [
+      "SAISON GOLD",
+      "セゾンゴールド・アメリカン・エキスプレス・カード"
+    ],
+    "a8_program_id": ""
+  },
+  "saison-platinum": {
+    "name": "セゾンプラチナ・ビジネス・アメリカン・エキスプレス・カード",
+    "match": [
+      "SAISON PLATINUM",
+      "セゾンプラチナ・ビジネス・アメリカン・エキスプレス・カード"
+    ],
+    "a8_program_id": ""
+  },
+  "uc-card": {
+    "name": "UCカード",
+    "match": [
+      "UC CARD",
+      "UCカード"
+    ],
+    "a8_program_id": ""
+  },
+  "paypay-card": {
+    "name": "PayPayカード",
+    "match": [
+      "PayPay Card",
+      "PayPayカード"
+    ],
+    "a8_program_id": ""
+  },
+  "paypay-gold": {
+    "name": "PayPayカード ゴールド",
+    "match": [
+      "PayPay Gold",
+      "PayPayカード ゴールド"
+    ],
+    "a8_program_id": ""
+  },
+  "aupay-card": {
+    "name": "au PAY カード",
+    "match": [
+      "au PAY Card",
+      "au PAY カード"
+    ],
+    "a8_program_id": ""
+  },
+  "aupay-gold": {
+    "name": "au PAY ゴールドカード",
+    "match": [
+      "au PAY Gold",
+      "au PAY ゴールドカード"
+    ],
+    "a8_program_id": ""
+  },
+  "epos-gold": {
+    "name": "エポスゴールドカード",
+    "match": [
+      "Epos Gold",
+      "エポスゴールドカード"
+    ],
+    "a8_program_id": ""
+  },
+  "saison-gold-premium": {
+    "name": "SAISON GOLD Premium",
+    "match": [
+      "SAISON GOLD",
+      "SAISON GOLD Premium"
+    ],
+    "a8_program_id": ""
+  },
+  "life-card": {
+    "name": "ライフカード",
+    "match": [
+      "Life Card",
+      "ライフカード"
+    ],
+    "a8_program_id": ""
+  },
+  "rakuten-sec": {
+    "name": "楽天証券",
+    "match": [
+      "楽天証券"
+    ],
+    "a8_program_id": ""
+  },
+  "sbi-sec": {
+    "name": "SBI証券",
+    "match": [
+      "SBI証券"
+    ],
+    "a8_program_id": ""
+  },
+  "monex-sec": {
+    "name": "マネックス証券",
+    "match": [
+      "マネックス証券"
+    ],
+    "a8_program_id": ""
+  },
+  "matsui-sec": {
+    "name": "松井証券",
+    "match": [
+      "松井証券"
+    ],
+    "a8_program_id": ""
+  },
+  "smartplus-sec": {
+    "name": "三菱UFJ eスマート証券",
+    "match": [
+      "eスマート証券",
+      "三菱UFJ eスマート証券"
+    ],
+    "a8_program_id": ""
+  }
+}

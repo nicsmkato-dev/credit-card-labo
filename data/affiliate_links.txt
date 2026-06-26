@@ -1,0 +1,54 @@
+# =====================================================
+#  アフィリエイトリンク上書き表  (creca-labo)
+#  形式: <id><空白><url>   （# 始まり・空行は無視）
+#  ここに書いた id のリンクが cards.json の affiliate_url を上書きする。
+#  未記載のものは公式URL（cards.json）にフォールバック。
+#  a8_sync.py がA8承認済みリンクをこのファイルへ自動追記する。
+# =====================================================
+
+# ---- クレジットカード ----
+# smbc-card             # 三井住友カード（NL）（未反映・公式URLにフォールバック）
+# olive-card            # Olive（オリーブ）（未反映・公式URLにフォールバック）
+rakuten-card         https://hb.afl.rakuten.co.jp/hgc/553a3a45.fc15b05d.553a3a46.754c5a08/?pc=https%3A%2F%2Fwww.rakuten-card.co.jp%2F&link_type=text&ut=eyJwYWdlIjoidXJsIiwidHlwZSI6InRleHQiLCJjb2wiOjF9    # 楽天カード
+# epos-card             # エポスカード（未反映・公式URLにフォールバック）
+# mufg-card             # 三菱UFJカード（未反映・公式URLにフォールバック）
+# recruit-card          # リクルートカード（未反映・公式URLにフォールバック）
+# jcb-card-w            # JCBカードW（未反映・公式URLにフォールバック）
+# aeon-card             # イオンカード（未反映・公式URLにフォールバック）
+# promise-visa          # プロミスVISAカード（未反映・公式URLにフォールバック）
+# tokyu-card            # 東急カード（TOKYU CARD）（未反映・公式URLにフォールバック）
+# ja-card               # JAカード（未反映・公式URLにフォールバック）
+# smbc-gold-nl          # 三井住友カード ゴールド（NL）（未反映・公式URLにフォールバック）
+# jcb-gold              # JCBゴールド（未反映・公式URLにフォールバック）
+# smbc-platinum         # 三井住友カード プラチナプリファード（未反映・公式URLにフォールバック）
+# jal-card              # JALカード（未反映・公式URLにフォールバック）
+# ana-card              # ANAカード（一般）（未反映・公式URLにフォールバック）
+# view-card             # ビックカメラSuicaカード（未反映・公式URLにフォールバック）
+# smbc-business         # 三井住友カード ビジネスオーナーズ（未反映・公式URLにフォールバック）
+# amex-gold             # アメリカン・エキスプレス・ゴールド・プリファード・カード（未反映・公式URLにフォールバック）
+# diners-club           # ダイナースクラブカード（未反映・公式URLにフォールバック）
+# amex-green            # アメリカン・エキスプレス・グリーン・カード（未反映・公式URLにフォールバック）
+# marriott-amex         # マリオットボンヴォイ・アメリカン・エキスプレス・カード（未反映・公式URLにフォールバック）
+# ana-amex              # ANAアメリカン・エキスプレス・カード（未反映・公式URLにフォールバック）
+# hilton-amex           # ヒルトン・オナーズ・アメリカン・エキスプレス・カード（未反映・公式URLにフォールバック）
+# ana-diners            # ANAダイナースカード（未反映・公式URLにフォールバック）
+# d-card                # dカード（未反映・公式URLにフォールバック）
+# dcard-gold            # dカード GOLD（未反映・公式URLにフォールバック）
+# saison-int            # セゾンカードインターナショナル（未反映・公式URLにフォールバック）
+# saison-gold-amex      # セゾンゴールド・アメリカン・エキスプレス・カード（未反映・公式URLにフォールバック）
+# saison-platinum       # セゾンプラチナ・ビジネス・アメリカン・エキスプレス・カード（未反映・公式URLにフォールバック）
+# uc-card               # UCカード（未反映・公式URLにフォールバック）
+# paypay-card           # PayPayカード（未反映・公式URLにフォールバック）
+# paypay-gold           # PayPayカード ゴールド（未反映・公式URLにフォールバック）
+# aupay-card            # au PAY カード（未反映・公式URLにフォールバック）
+# aupay-gold            # au PAY ゴールドカード（未反映・公式URLにフォールバック）
+# epos-gold             # エポスゴールドカード（未反映・公式URLにフォールバック）
+# saison-gold-premium    # SAISON GOLD Premium（未反映・公式URLにフォールバック）
+# life-card             # ライフカード（未反映・公式URLにフォールバック）
+
+# ---- 証券 ----
+# rakuten-sec           # 楽天証券（未反映・公式URLにフォールバック）
+# sbi-sec               # SBI証券（未反映・公式URLにフォールバック）
+# monex-sec             # マネックス証券（未反映・公式URLにフォールバック）
+matsui-sec           https://px.a8.net/svt/ejp?a8mat=4B5RS9+2A5U9E+3XCC+64C3M    # 松井証券
+# smartplus-sec         # 三菱UFJ eスマート証券（未反映・公式URLにフォールバック）

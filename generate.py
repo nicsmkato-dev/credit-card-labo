@@ -14,14 +14,45 @@ import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data", "cards.json")
+# アフィリエイトリンク上書き表（ASP承認後のリンクをここに入れると affiliate_url を差し替える）
+#   形式: 1行 = "<id>  <url>"  （# 始まりと空行は無視）
+#   未記載のカード/証券は cards.json の affiliate_url（公式URL等）にフォールバック。
+#   a8_sync.py がA8の承認済みリンクを自動でこのファイルへ追記する。
+LINKS_FILE = os.path.join(BASE_DIR, "data", "affiliate_links.txt")
 
 # 日本語の曜日
 WEEKDAYS = ["月", "火", "水", "木", "金", "土", "日"]
 
 
+def load_affiliate_overrides():
+    """data/affiliate_links.txt を読み、{id: url} を返す。無ければ空dict。"""
+    overrides = {}
+    if not os.path.exists(LINKS_FILE):
+        return overrides
+    with open(LINKS_FILE, "r", encoding="utf-8") as f:
+        for raw in f:
+            line = raw.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split()  # URLは空白を含まない→先頭=id, 2番目=url, 以降は行末コメント
+            if len(parts) < 2:
+                continue
+            cid, url = parts[0].strip(), parts[1].strip()
+            if cid and url:
+                overrides[cid] = url
+    return overrides
+
+
 def load_data():
     with open(DATA_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+        data = json.load(f)
+    overrides = load_affiliate_overrides()
+    if overrides:
+        for key in ("cards", "brokers"):
+            for item in data.get(key, []) or []:
+                if isinstance(item, dict) and item.get("id") in overrides:
+                    item["affiliate_url"] = overrides[item["id"]]
+    return data
 
 
 def today_str():
