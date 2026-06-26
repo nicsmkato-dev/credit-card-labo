@@ -155,6 +155,14 @@ img, svg { max-width: 100%; }
 .card-inline-link { color: #3949ab; font-weight: 700; text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 .card-inline-link:hover { color: #1a237e; background: #eef0fb; }
 
+/* 記事末尾「この記事で紹介したカード」 */
+.article-card-links { margin: 30px 0; padding: 20px 22px; background: linear-gradient(135deg, #f3f4fb, #eceefb); border-radius: 14px; border-left: 5px solid #3949ab; }
+.article-card-links h2 { font-size: 1.15rem; font-weight: 800; margin: 0 0 12px; padding: 0; border: none; }
+.article-card-links ul { list-style: none; margin: 0; padding: 0; }
+.article-card-links li { margin: 0; }
+.article-card-links li a { display: block; padding: 11px 14px; margin-bottom: 8px; background: #fff; border-radius: 10px; color: #283593; font-weight: 700; font-size: 0.95rem; text-decoration: none; box-shadow: 0 2px 6px rgba(57,73,171,.08); transition: .15s; }
+.article-card-links li a:hover { background: #283593; color: #fff; transform: translateX(3px); }
+
 .card-title-area h3 { font-size: 1.4rem; font-weight: 900; margin-bottom: 4px; }
 .stars { color: #ffb300; font-size: 1.05rem; letter-spacing: 2px; margin-bottom: 8px; }
 .card-catch { font-size: 0.92rem; color: #4a4f6a; }

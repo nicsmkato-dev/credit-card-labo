@@ -40,39 +40,55 @@ def stars_html(n):
 
 _CARD_LINK_CACHE = {}
 
+# 本文で正式名以外の表記でも詳細ページへリンクするための別名（表記ゆれ）
+CARD_ALIASES = {
+    "jcb-card-w": ["JCB CARD W", "JCBカード W", "JCB CARD W plus L"],
+    "jcb-gold": ["JCB GOLD"],
+    "smbc-card": ["三井住友カード(NL)", "三井住友NL"],
+    "dcard-gold": ["dカードGOLD"],
+    "epos-gold": ["エポスゴールド"],
+    "paypay-gold": ["PayPayゴールド", "PayPayカードゴールド"],
+    "aupay-card": ["au PAYカード", "auPAYカード"],
+    "aupay-gold": ["au PAYゴールド", "auPAYゴールド"],
+    "saison-gold-premium": ["セゾンゴールドプレミアム", "セゾンゴールド・プレミアム"],
+}
+
 
 def _card_link_regex(cards):
-    """カード名→id と、名前マッチ用の正規表現を構築（長い名前優先でキャッシュ）"""
+    """マッチ文字列→id と正規表現を構築（正式名＋別名、長い表記優先でキャッシュ）"""
     key = id(cards)
     if key not in _CARD_LINK_CACHE:
-        pairs = sorted(((c["name"], c["id"]) for c in cards),
-                       key=lambda x: len(x[0]), reverse=True)
-        name_to_id = {n: i for n, i in pairs}
-        pat = "|".join(re.escape(n) for n, _ in pairs)
-        _CARD_LINK_CACHE[key] = (re.compile(pat), name_to_id)
+        pairs = [(c["name"], c["id"]) for c in cards]
+        for cid, aliases in CARD_ALIASES.items():
+            for a in aliases:
+                pairs.append((a, cid))
+        pairs.sort(key=lambda x: len(x[0]), reverse=True)
+        text_to_id = {t: i for t, i in pairs}
+        pat = "|".join(re.escape(t) for t, _ in pairs)
+        _CARD_LINK_CACHE[key] = (re.compile(pat), text_to_id)
     return _CARD_LINK_CACHE[key]
 
 
 def link_cards(text, cards, depth=1, linked_ids=None, skip_id=None):
-    """本文中のカード名を、そのカードの詳細ページへのリンクに置換する。
-    linked_ids を渡すと同一ページで各カード初出の1回だけリンク（過剰リンク防止）。
+    """本文中のカード名（別名含む）を、そのカードの詳細ページへのリンクに置換する。
+    linked_ids（リスト）を渡すと同一ページで各カード初出の1回だけリンク（過剰リンク防止）。
     skip_id を渡すとそのカード自身（自ページ）はリンクしない。"""
     if not text:
         return text
-    rx, name_to_id = _card_link_regex(cards)
+    rx, text_to_id = _card_link_regex(cards)
     p = "" if depth == 0 else "../"
 
     def repl(m):
-        name = m.group(0)
-        cid = name_to_id[name]
+        matched = m.group(0)
+        cid = text_to_id[matched]
         if cid == skip_id:
-            return name
+            return matched
         if linked_ids is not None:
             if cid in linked_ids:
-                return name
-            linked_ids.add(cid)
+                return matched
+            linked_ids.append(cid)
         return (f'<a href="{p}cards/{cid}.html" '
-                f'class="card-inline-link">{name}</a>')
+                f'class="card-inline-link">{matched}</a>')
 
     return rx.sub(repl, text)
 
@@ -769,7 +785,7 @@ def build_article_pages(data):
     for a in data["articles"]:
         h = head(site, f"{a['title']}｜{site['name']}", a["description"], depth=1, path=f"articles/{a['id']}.html")
         h += header(site, depth=1)
-        linked = set()  # 記事内でカード初出のみリンク（過剰リンク防止）
+        linked = []  # 記事内で言及・リンクしたカードid（初出順）
         h += f"""
 <article class="detail-page">
   <div class="container container-narrow">
@@ -781,6 +797,20 @@ def build_article_pages(data):
             h += f"""
     <h2>{s['h']}</h2>
     <p class="review-text">{link_cards(s['p'], data['cards'], 1, linked)}</p>"""
+        # 記事で紹介したカードの詳細リンク（本文で言及されたカードを末尾にまとめる）
+        if linked:
+            h += """
+    <div class="article-card-links">
+      <h2>この記事で紹介したカード</h2>
+      <ul>"""
+            for cid in linked:
+                c = card_by_id(data, cid)
+                if c:
+                    h += f"""
+        <li><a href="../cards/{cid}.html">{c['name']} の詳細を見る →</a></li>"""
+            h += """
+      </ul>
+    </div>"""
         # 関連記事(リスト上の前後3本・内部リンク強化)
         arts = data["articles"]
         idx = arts.index(a)
