@@ -850,6 +850,202 @@
       ],
       "review": "UCカードは年会費無料で持てる、シンプルで使いやすいクレジットカードです。ポイントが失効しない永久不滅ポイントを採用し、UCポイントモール経由ならお得に貯まります。余計な機能はいらず、ベーシックな1枚が欲しい人に向いています。",
       "target": "シンプルな年会費無料カードが欲しい人"
+    },
+    {
+      "id": "paypay-card",
+      "name": "PayPayカード",
+      "brand_label": "PayPay Card",
+      "color": "gray",
+      "stars": 5,
+      "catch": "PayPay経済圏の最強カード！年会費無料で還元率1%〜",
+      "annual_fee": "永年無料",
+      "reward": "1.0%〜5.0%",
+      "reward_highlight": true,
+      "bonus": "新規入会・利用で最大10,000円相当",
+      "international": "VISA / Mastercard / JCB",
+      "feature": "PayPay連携・高還元",
+      "affiliate_url": "https://www.paypay-card.co.jp/",
+      "merits": [
+        "PayPay残高チャージ＆支払いでポイントが貯まる唯一のカード",
+        "Yahoo!ショッピング・LOHACOで最大5%還元",
+        "年会費永年無料で基本還元1.0%"
+      ],
+      "demerits": [
+        "ETCカードは年会費550円（税込）",
+        "PayPayステップの還元条件がやや複雑"
+      ],
+      "review": "PayPayユーザーなら必携の1枚。PayPay残高へのチャージ＆支払いでポイントが貯まるのはPayPayカードだけです。Yahoo!ショッピングやLOHACOでは最大5%還元と強力で、PayPay経済圏に寄せるなら最優先で持ちたいカードです。",
+      "target": "PayPayをよく使う人・Yahoo!ショッピング利用者",
+      "sim_rate": 1.0,
+      "grade": "一般"
+    },
+    {
+      "id": "paypay-gold",
+      "name": "PayPayカード ゴールド",
+      "brand_label": "PayPay Gold",
+      "color": "amber",
+      "stars": 4,
+      "catch": "PayPay経済圏で最大級の高還元ゴールド",
+      "annual_fee": "11,000円（税込）",
+      "reward": "1.5%〜7.0%",
+      "reward_highlight": true,
+      "bonus": "新規入会・利用で最大10,000円相当",
+      "international": "VISA / Mastercard / JCB",
+      "feature": "PayPay高還元・ソフトバンク",
+      "affiliate_url": "https://www.paypay-card.co.jp/gold/",
+      "merits": [
+        "PayPay・カード利用で基本還元1.5%",
+        "ソフトバンク/ワイモバイル料金が最大10%還元",
+        "Yahoo!ショッピングで最大7%還元"
+      ],
+      "demerits": [
+        "年会費11,000円（税込）",
+        "ソフトバンク非ユーザーは特典を活かしにくい"
+      ],
+      "review": "PayPayとソフトバンクをまとめて使う人に最適なゴールドカード。基本還元1.5%に加え、ソフトバンク/ワイモバイルの携帯料金が最大10%還元になるため、対象ユーザーなら年会費以上の価値を出しやすい1枚です。",
+      "target": "ソフトバンク/ワイモバイルユーザー・PayPayヘビーユーザー",
+      "sim_rate": 1.5,
+      "grade": "ゴールド"
+    },
+    {
+      "id": "aupay-card",
+      "name": "au PAY カード",
+      "brand_label": "au PAY Card",
+      "color": "gray",
+      "stars": 4,
+      "catch": "au経済圏の定番！Pontaポイントが貯まる高還元カード",
+      "annual_fee": "無料（前年1回以上の利用で）",
+      "reward": "1.0%〜",
+      "reward_highlight": false,
+      "bonus": "新規入会・利用で最大10,000Pontaポイント",
+      "international": "VISA / Mastercard",
+      "feature": "Ponta・au経済圏",
+      "affiliate_url": "https://www.kddi-fs.com/personal/aupaycard/",
+      "merits": [
+        "還元率1.0%でPontaポイントが貯まる",
+        "au PAYへのチャージ＆au PAYマーケットでお得",
+        "au/UQ mobileユーザーに各種特典"
+      ],
+      "demerits": [
+        "前年1回も利用しないと年会費1,375円",
+        "国際ブランドにJCBがない"
+      ],
+      "review": "auユーザーやPontaポイントを貯めたい人の定番カード。還元率1.0%でPontaが貯まり、au PAYへのチャージや au PAY マーケットと組み合わせるとさらにお得。前年に1回でも使えば年会費は無料です。",
+      "target": "auユーザー・Pontaポイントを貯めたい人",
+      "sim_rate": 1.0,
+      "grade": "一般"
+    },
+    {
+      "id": "aupay-gold",
+      "name": "au PAY ゴールドカード",
+      "brand_label": "au PAY Gold",
+      "color": "amber",
+      "stars": 4,
+      "catch": "au携帯料金が最大10%還元！au経済圏の最強ゴールド",
+      "annual_fee": "11,000円（税込）",
+      "reward": "1.0%〜",
+      "reward_highlight": true,
+      "bonus": "新規入会・利用で最大20,000Pontaポイント",
+      "international": "VISA / Mastercard",
+      "feature": "au料金10%還元",
+      "affiliate_url": "https://www.kddi-fs.com/personal/aupaycard/gold/",
+      "merits": [
+        "au携帯電話料金が最大10%ポイント還元",
+        "au PAY残高チャージで1.0%還元",
+        "空港ラウンジ無料・旅行傷害保険付帯"
+      ],
+      "demerits": [
+        "年会費11,000円（税込）",
+        "au非ユーザーはメリットが薄い"
+      ],
+      "review": "auの携帯料金が最大10%還元になる、au経済圏ユーザー向けの最強ゴールド。auでんきやau PAYと合わせて使うほどお得になり、ヘビーユーザーなら年会費を十分回収できます。",
+      "target": "auユーザー・auでんき利用者",
+      "sim_rate": 1.0,
+      "grade": "ゴールド"
+    },
+    {
+      "id": "epos-gold",
+      "name": "エポスゴールドカード",
+      "brand_label": "Epos Gold",
+      "color": "amber",
+      "stars": 5,
+      "catch": "年間50万利用で永年無料！育てる人気ゴールド",
+      "annual_fee": "5,000円（税込）※年50万利用or招待で永年無料",
+      "reward": "0.5%〜1.5%",
+      "reward_highlight": false,
+      "bonus": "—",
+      "international": "VISA",
+      "feature": "年会費無料化・選べるポイントアップ",
+      "affiliate_url": "https://www.eposcard.co.jp/goldcard/",
+      "merits": [
+        "年間50万円利用 or 招待で年会費が永年無料",
+        "選べるポイントアップショップで還元1.5%",
+        "年間利用額に応じ最大10,000ボーナスポイント"
+      ],
+      "demerits": [
+        "国際ブランドがVISAのみ",
+        "通常還元率は0.5%"
+      ],
+      "review": "年間50万円の利用または招待で年会費が永年無料になる、コスパ最強クラスのゴールド。「選べるポイントアップショップ」を3つ登録すれば対象店で還元1.5%、さらに年間ボーナスも加わり、無料で持てるゴールドの決定版です。",
+      "target": "エポスを使い込む人・無料でゴールドを持ちたい人",
+      "sim_rate": 0.5,
+      "grade": "ゴールド"
+    },
+    {
+      "id": "saison-gold-premium",
+      "name": "SAISON GOLD Premium",
+      "brand_label": "SAISON GOLD",
+      "color": "amber",
+      "stars": 4,
+      "catch": "年100万利用で永年無料＆翌年1万円分還元の話題ゴールド",
+      "annual_fee": "11,000円（税込）※年100万利用で翌年以降永年無料",
+      "reward": "0.5%〜5.0%",
+      "reward_highlight": false,
+      "bonus": "—",
+      "international": "VISA / JCB / Amex",
+      "feature": "100万で無料・コンビニ高還元",
+      "affiliate_url": "https://www.saisoncard.co.jp/",
+      "merits": [
+        "年間100万円利用で翌年以降の年会費が永年無料",
+        "対象コンビニ・カフェで最大5%還元",
+        "年間100万円利用で1万円相当のボーナス"
+      ],
+      "demerits": [
+        "初年度は年会費11,000円（税込）",
+        "年100万円使わないと割高"
+      ],
+      "review": "年間100万円の利用で翌年以降ずっと年会費無料になる話題のゴールド。対象のコンビニやカフェで最大5%還元、さらに100万円達成で1万円分のボーナスがもらえるため、メインカードとして使い込む人に向いています。",
+      "target": "年100万円以上カードを使う人",
+      "sim_rate": 0.5,
+      "grade": "ゴールド"
+    },
+    {
+      "id": "life-card",
+      "name": "ライフカード",
+      "brand_label": "Life Card",
+      "color": "silver",
+      "stars": 4,
+      "catch": "誕生月はポイント3倍！審査に通りやすい定番カード",
+      "annual_fee": "永年無料",
+      "reward": "0.5%〜",
+      "reward_highlight": false,
+      "bonus": "新規入会・利用で最大10,000円相当",
+      "international": "VISA / Mastercard / JCB",
+      "feature": "誕生月3倍・審査",
+      "affiliate_url": "https://www.lifecard.co.jp/",
+      "merits": [
+        "誕生月はポイント還元率が3倍",
+        "入会初年度はポイント1.5倍",
+        "年会費無料でETC・家族カードも無料"
+      ],
+      "demerits": [
+        "通常還元率は0.5%とやや低め",
+        "ポイント交換にやや手間がかかる"
+      ],
+      "review": "誕生月はポイントが3倍になるユニークなカード。年会費無料で初年度はポイント1.5倍、独自審査で初めての方にも作りやすいと評判です。誕生月にまとめ買いをする人なら高還元を狙えます。",
+      "target": "誕生月にまとめ買いする人・初めてのカード",
+      "sim_rate": 0.5,
+      "grade": "一般"
     }
   ],
   "purposes": [
