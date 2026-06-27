@@ -453,6 +453,18 @@ def build_index(data):
   </div>
 </section>"""
 
+    # 編集部の総合No.1（ファーストビュー直下に申込CTAを置き、回遊の起点にする）
+    top = cards[0]
+    html += f"""
+<section class="featured-pick" id="featured">
+  <div class="container">
+    <h2 class="section-title">👑 {year_month()} 編集部の総合No.1</h2>
+    <p class="section-sub">どれにするか迷ったら、まずこの1枚。{top['catch']}</p>
+    {card_block(top, rank=1)}
+    <p class="featured-more">ほかの上位カードも比べるなら <a href="#ranking">ランキングTOP5</a> ／ <a href="#comparison">一覧比較表</a> ／ <a href="#purpose">目的別で探す</a></p>
+  </div>
+</section>"""
+
     # 3つのポイント
     html += """
 <section class="points-section">

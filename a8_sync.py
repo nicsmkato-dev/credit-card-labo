@@ -3,8 +3,12 @@
 a8_sync.py — A8.net の「承認済み（提携中）」プログラムのアフィリエイトリンクを
 自動取得して creca-labo の data/affiliate_links.txt を更新するスクリプト。
 
+方式A（採用）: 専用Chromeプロファイル(a8_profile)に【横浜アカウント】で初回だけ手動ログイン
+  →セッションを保存。以降は手動不要で自動再利用（x_poster/note と同じ運用）。
+  ※A8の提携作業はもともと実Chrome操作で行っていた経緯あり。会員名義は「横浜」。
+
 全体の流れ:
-  1) config/a8_config.json の ID/パスワードでA8にログイン（undetected-chromedriver）
+  1) 専用プロファイルでA8にログイン（初回のみ横浜アカウントで手動／以降セッション再利用）
   2) 参加プログラム一覧から「提携中」のプログラム名＋px.a8.netリンクを収集
   3) data/a8_program_map.json でカードID(creca-labo)に突合
   4) data/affiliate_links.txt を再生成（承認済みカードのリンクを反映）
@@ -71,14 +75,12 @@ def log(msg):
 
 
 def load_config():
-    if not os.path.exists(CONFIG_FILE):
-        log(f"ERROR: {CONFIG_FILE} がありません。config/a8_config.example.json を複製してください。")
-        sys.exit(1)
-    with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-        cfg = json.load(f)
-    if not cfg.get("login_id") or not cfg.get("password"):
-        log("ERROR: a8_config.json に login_id / password を設定してください。")
-        sys.exit(1)
+    # 方式A（専用プロファイルに横浜アカウントで初回手動ログイン）では認証情報は必須ではない。
+    # config が無くても auto_deploy=false の既定で動作する。
+    cfg = {"login_id": "", "password": "", "auto_deploy": False}
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+            cfg.update(json.load(f))
     return cfg
 
 
@@ -123,15 +125,28 @@ def is_logged_in(driver):
     return False
 
 
-def login(driver, cfg, wait_seconds=120):
-    """ID/パスワードでA8にログイン。成功でTrue。プロファイルにセッションが残れば次回以降は自動。"""
+def _wait_logged_in(driver, wait_seconds):
+    for _ in range(max(1, wait_seconds // 5)):
+        time.sleep(5)
+        try:
+            if is_logged_in(driver):
+                return True
+        except Exception:
+            pass
+    return False
+
+
+def login(driver, cfg, wait_seconds=240):
+    """A8にログイン。方式A=専用プロファイルに横浜アカウントで初回手動ログイン→セッション保存。
+    一度ログインすればプロファイルに残り、次回以降は手動不要で自動再利用される。
+    config に login_id/password があれば自動入力を試み、無ければ手動ログインを待つ。
+    """
     driver.get(A8_LOGIN_URL)
     time.sleep(4)
     if is_logged_in(driver):
-        log("既にログイン済み（セッション再利用）")
+        log("既にログイン済み（セッション再利用・横浜アカウント）")
         return True
 
-    # ログインフォームに入力。フィールド名はA8標準(login/password)を第一候補に、汎用フォールバック。
     def find_first(css_list):
         for css in css_list:
             els = [e for e in driver.find_elements(By.CSS_SELECTOR, css) if e.is_displayed()]
@@ -139,44 +154,40 @@ def login(driver, cfg, wait_seconds=120):
                 return els[0]
         return None
 
-    id_box = find_first([
-        "input[name='login']", "input#login",
-        "input[type='email']", "input[type='text']",
-    ])
-    pw_box = find_first([
-        "input[name='password']", "input#password", "input[type='password']",
-    ])
-    if not id_box or not pw_box:
-        log("WARN: ログインフォームが見つからない。inspectで実DOMを確認してください。")
-        # 手動ログインの猶予（プロファイルに保存される）
-        log(f"ブラウザで手動ログインしてください（最大{wait_seconds}秒待機）...")
-        for _ in range(wait_seconds // 5):
-            time.sleep(5)
-            if is_logged_in(driver):
-                log("ログインを確認しました")
+    # 認証情報があれば自動入力を試す（任意・便宜用）。無ければ手動ログインへ。
+    if cfg.get("login_id") and cfg.get("password"):
+        id_box = find_first([
+            "input[name='login']", "input#login",
+            "input[type='email']", "input[type='text']",
+        ])
+        pw_box = find_first([
+            "input[name='password']", "input#password", "input[type='password']",
+        ])
+        if id_box and pw_box:
+            id_box.clear(); id_box.send_keys(cfg["login_id"])
+            pw_box.clear(); pw_box.send_keys(cfg["password"])
+            btn = find_first([
+                "input[type='submit']", "button[type='submit']",
+                "button#submit", ".btnLogin", "input.btnLogin",
+            ])
+            if btn:
+                try:
+                    btn.click()
+                except Exception:
+                    driver.execute_script("arguments[0].click();", btn)
+            else:
+                pw_box.submit()
+            if _wait_logged_in(driver, 30):
+                log("ログイン成功（認証情報・横浜アカウント）")
                 return True
-        return False
+            log("自動ログイン未確認（2段階/画像認証の可能性）→手動ログインに切替")
 
-    id_box.clear(); id_box.send_keys(cfg["login_id"])
-    pw_box.clear(); pw_box.send_keys(cfg["password"])
-    btn = find_first([
-        "input[type='submit']", "button[type='submit']",
-        "button#submit", ".btnLogin", "input.btnLogin",
-    ])
-    if btn:
-        try:
-            btn.click()
-        except Exception:
-            driver.execute_script("arguments[0].click();", btn)
-    else:
-        pw_box.submit()
-
-    for _ in range(wait_seconds // 5):
-        time.sleep(5)
-        if is_logged_in(driver):
-            log("ログイン成功")
-            return True
-    log("ログイン確認できず（2段階認証/画像認証の可能性。inspectで確認を）")
+    # 手動ログイン待機（横浜アカウントで初回ログイン→プロファイルに保存）
+    log(f"開いたブラウザで A8 に【横浜アカウント】で手動ログインしてください（最大{wait_seconds}秒待機）...")
+    if _wait_logged_in(driver, wait_seconds):
+        log("ログインを確認・セッション保存OK（次回以降は自動再利用）")
+        return True
+    log("時間内にログインを確認できませんでした")
     return False
 
 

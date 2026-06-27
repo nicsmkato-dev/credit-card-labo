@@ -66,6 +66,12 @@ img, svg { max-width: 100%; }
 .section-title::after { content: ''; display: block; width: 56px; height: 4px; background: linear-gradient(90deg, #283593, #ff6f00); border-radius: 2px; margin: 14px auto 0; }
 .section-sub { text-align: center; color: #6b7088; margin-bottom: 44px; font-size: 0.95rem; }
 
+/* ===== 編集部の総合No.1（ファーストビュー直下CTA） ===== */
+.featured-pick { padding: 56px 0 64px; background: linear-gradient(180deg, #fff7ee, #fff); }
+.featured-pick .card-item { max-width: 720px; margin: 0 auto; }
+.featured-more { text-align: center; margin-top: 22px; color: #6b7088; font-size: 0.92rem; }
+.featured-more a { color: #283593; font-weight: 600; }
+
 /* ===== ポイント ===== */
 .points-section { padding: 80px 0; background: #fff; }
 .points-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
