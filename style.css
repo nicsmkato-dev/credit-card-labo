@@ -318,6 +318,18 @@ img, svg { max-width: 100%; }
 .filter-btn { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 0.86rem; font-weight: 700; color: #3949ab; background: #fff; border: 2px solid #c5cae9; border-radius: 30px; padding: 8px 20px; cursor: pointer; transition: all .2s; }
 .filter-btn:hover { background: #eef0fa; }
 .filter-btn.active { background: linear-gradient(135deg, #283593, #3949ab); color: #fff; border-color: transparent; }
+.table-filters-kei { margin-top: -8px; margin-bottom: 22px; align-items: center; }
+.filter-group-label { font-size: 0.8rem; font-weight: 700; color: #8a90a8; align-self: center; margin-right: 2px; }
+.campaign-bonus { color: #d84315; }
+/* 年会費ペイ計算機 結果 */
+.af-card { border-radius: 16px; padding: 22px 24px; margin-top: 8px; }
+.af-card.af-ok { background: linear-gradient(135deg, #e8f5e9, #f1f8f4); border: 1px solid #b6dcc0; }
+.af-card.af-ng { background: linear-gradient(135deg, #fff4ee, #fdf0f0); border: 1px solid #f0cfc0; }
+.af-head { font-size: 1.1rem; font-weight: 700; margin: 0 0 12px; }
+.af-line { font-size: 0.95rem; color: #3a3f5a; margin: 6px 0; }
+/* 編集方針リスト */
+.policy-list { margin: 8px 0 18px; padding-left: 1.4em; }
+.policy-list li { margin: 8px 0; line-height: 1.7; color: #3a3f5a; }
 .table-wrapper { overflow: auto; max-height: 560px; border-radius: 18px; box-shadow: 0 8px 30px rgba(40,53,147,.1); }
 .comparison-table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; min-width: 720px; }
 .comparison-table th { position: sticky; top: 0; z-index: 2; background: linear-gradient(135deg, #283593, #3949ab); color: #fff; padding: 16px 16px; font-size: 0.9rem; font-weight: 700; white-space: nowrap; }

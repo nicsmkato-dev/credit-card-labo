@@ -2,8 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://creca-labo.com/</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/articles.html</loc><lastmod>2026-06-29</lastmod></url>
+  <url><loc>https://creca-labo.com/campaign.html</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/securities.html</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/simulator.html</loc><lastmod>2026-06-29</lastmod></url>
+  <url><loc>https://creca-labo.com/annualfee-simulator.html</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/rivo-simulator.html</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/tsumitate-simulator.html</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/glossary.html</loc><lastmod>2026-06-29</lastmod></url>
@@ -67,6 +69,11 @@
   <url><loc>https://creca-labo.com/purpose/hotel.html</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/purpose/suica.html</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/purpose/business.html</loc><lastmod>2026-06-29</lastmod></url>
+  <url><loc>https://creca-labo.com/keizaiken/rakuten.html</loc><lastmod>2026-06-29</lastmod></url>
+  <url><loc>https://creca-labo.com/keizaiken/vpoint.html</loc><lastmod>2026-06-29</lastmod></url>
+  <url><loc>https://creca-labo.com/keizaiken/dpoint.html</loc><lastmod>2026-06-29</lastmod></url>
+  <url><loc>https://creca-labo.com/keizaiken/paypay.html</loc><lastmod>2026-06-29</lastmod></url>
+  <url><loc>https://creca-labo.com/keizaiken/ponta.html</loc><lastmod>2026-06-29</lastmod></url>
   <url><loc>https://creca-labo.com/articles/how-to-choose.html</loc><lastmod>2026-06-07</lastmod></url>
   <url><loc>https://creca-labo.com/articles/point-reward-ranking.html</loc><lastmod>2026-06-07</lastmod></url>
   <url><loc>https://creca-labo.com/articles/annual-fee-free.html</loc><lastmod>2026-06-07</lastmod></url>

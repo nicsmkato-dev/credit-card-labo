@@ -231,8 +231,34 @@ def card_by_id(data, cid):
     return None
 
 
+# ポイント経済圏（「楽天経済圏 クレカ」等の検索意図に対応。比較表フィルタ＋経済圏別ページを生成）
+KEIZAIKEN = [
+    {"id": "rakuten", "name": "楽天", "icon": "🛒", "point": "楽天ポイント",
+     "intro": "楽天市場・楽天ペイ・楽天モバイルなど楽天サービスをよく使う方向け。楽天ポイントが貯まりやすいカードをまとめました。",
+     "card_ids": ["rakuten-card"]},
+    {"id": "vpoint", "name": "Vポイント（三井住友）", "icon": "💳", "point": "Vポイント",
+     "intro": "三井住友カード・Oliveを中心としたVポイント経済圏。対象のコンビニ・飲食店で高還元を狙える主力カードです。",
+     "card_ids": ["smbc-card", "olive-card", "smbc-gold-nl", "smbc-platinum", "smbc-business"]},
+    {"id": "dpoint", "name": "dポイント（ドコモ）", "icon": "📱", "point": "dポイント",
+     "intro": "ドコモ・dカードを中心としたdポイント経済圏。携帯料金や日常の買い物でdポイントが貯まり、ドコモユーザーに最適です。",
+     "card_ids": ["d-card", "dcard-gold"]},
+    {"id": "paypay", "name": "PayPay", "icon": "📲", "point": "PayPayポイント",
+     "intro": "PayPay・ソフトバンク・Yahoo!をよく使う方向け。PayPayポイントが効率よく貯まるカードを紹介します。",
+     "card_ids": ["paypay-card", "paypay-gold"]},
+    {"id": "ponta", "name": "Ponta（au・リクルート）", "icon": "🅿️", "point": "Pontaポイント",
+     "intro": "au・じゃらん・ホットペッパーなどPontaが貯まる・使えるサービス向け。au PAYカードやリクルートカードが中心です。",
+     "card_ids": ["aupay-card", "aupay-gold", "recruit-card"]},
+]
+_KEIZAIKEN_OF = {cid: k["id"] for k in KEIZAIKEN for cid in k["card_ids"]}
+
+
+def card_keizaiken(card):
+    """カードが属するポイント経済圏id（rakuten/vpoint/dpoint/paypay/ponta）。無ければ空文字。"""
+    return _KEIZAIKEN_OF.get(card.get("id"), "")
+
+
 def card_cats(card):
-    """比較表の絞り込み用カテゴリタグを返す"""
+    """比較表の絞り込み用カテゴリタグを返す（経済圏タグも含む）"""
     cats = []
     blob = card.get("name", "") + card.get("brand_label", "") + card.get("feature", "")
     if "永年無料" in card.get("annual_fee", ""):
@@ -247,6 +273,9 @@ def card_cats(card):
         cats.append("mile")
     if "即日" in card.get("feature", "") or "即日" in card.get("catch", ""):
         cats.append("instant")
+    kz = card_keizaiken(card)
+    if kz:
+        cats.append(kz)
     return " ".join(cats)
 
 
@@ -353,10 +382,10 @@ def header(site, depth=0):
       <nav class="global-nav">
         <a href="{p}index.html#ranking">ランキング</a>
         <a href="{p}index.html#purpose">目的別</a>
-        <a href="{p}credit-card-guide.html">完全ガイド</a>
-        <a href="{p}simulator.html">シミュレーター</a>
+        <a href="{p}index.html#keizaiken">経済圏</a>
+        <a href="{p}campaign.html">キャンペーン</a>
+        <a href="{p}simulator.html">ツール</a>
         <a href="{p}securities.html">証券・NISA</a>
-        <a href="{p}glossary.html">用語集</a>
         <a href="{p}articles.html">記事一覧</a>
       </nav>
     </div>
@@ -402,11 +431,10 @@ def footer(site, depth=0):
       </div>
       <div class="footer-links">
         <h4>ガイド・ツール</h4>
+        <a href="{p}campaign.html">入会キャンペーンまとめ</a>
         <a href="{p}credit-card-guide.html">クレジットカード完全ガイド</a>
-        <a href="{p}poikatsu-guide.html">ポイ活完全ガイド</a>
-        <a href="{p}nisa-guide.html">新NISA・投資ガイド</a>
         <a href="{p}simulator.html">還元シミュレーター</a>
-        <a href="{p}rivo-simulator.html">リボ手数料計算</a>
+        <a href="{p}annualfee-simulator.html">年会費ペイ計算機</a>
         <a href="{p}tsumitate-simulator.html">クレカ積立シミュレーター</a>
         <a href="{p}glossary.html">用語集</a>
       </div>
@@ -648,6 +676,25 @@ def build_index(data):
   </div>
 </section>"""
 
+    # ポイント経済圏から選ぶ
+    html += """
+<section class="keizaiken-section" id="keizaiken">
+  <div class="container">
+    <h2 class="section-title">ポイント経済圏から選ぶ</h2>
+    <p class="section-sub">よく使うサービスの「経済圏」に合わせて選ぶと、ポイントが集中して貯まりやすくなります。</p>
+    <div class="purpose-grid">"""
+    for kz in KEIZAIKEN:
+        html += f"""
+      <a href="keizaiken/{kz['id']}.html" class="purpose-card">
+        <div class="purpose-icon">{kz['icon']}</div>
+        <h3>{kz['name']}経済圏</h3>
+        <p>{kz['point']}が貯まる・使えるおすすめカード</p>
+      </a>"""
+    html += """
+    </div>
+  </div>
+</section>"""
+
     # 比較表 (全カード)
     html += """
 <section class="comparison-section" id="comparison">
@@ -662,6 +709,14 @@ def build_index(data):
       <button class="filter-btn" data-filter="platinum">プラチナ</button>
       <button class="filter-btn" data-filter="mile">マイル</button>
       <button class="filter-btn" data-filter="instant">即日発行</button>
+    </div>
+    <div class="table-filters table-filters-kei">
+      <span class="filter-group-label">経済圏</span>
+      <button class="filter-btn" data-filter="rakuten">楽天</button>
+      <button class="filter-btn" data-filter="vpoint">Vポイント</button>
+      <button class="filter-btn" data-filter="dpoint">dポイント</button>
+      <button class="filter-btn" data-filter="paypay">PayPay</button>
+      <button class="filter-btn" data-filter="ponta">au・Ponta</button>
     </div>
     <div class="table-wrapper">
       <table class="comparison-table">
@@ -842,6 +897,95 @@ def build_purpose_pages(data):
         write(os.path.join(BASE_DIR, "purpose", f"{pp['id']}.html"), html)
 
 
+def build_keizaiken_pages(data):
+    """ポイント経済圏別おすすめページ（楽天/Vポイント/dポイント/PayPay/Ponta）。"""
+    site = data["site"]
+    os.makedirs(os.path.join(BASE_DIR, "keizaiken"), exist_ok=True)
+    for kz in KEIZAIKEN:
+        cards = [card_by_id(data, cid) for cid in kz["card_ids"]]
+        cards = [c for c in cards if c]
+        if not cards:
+            continue
+        title = f"{kz['name']}経済圏におすすめのクレジットカード"
+        desc = f"{kz['name']}経済圏で{kz['point']}を効率よく貯めるおすすめクレジットカードを比較。{kz['intro']}"
+        html = head(site, f"{title}｜{site['name']}", desc, depth=1, path=f"keizaiken/{kz['id']}.html")
+        html += header(site, depth=1)
+        html += f"""
+<section class="purpose-detail">
+  <div class="container">
+    <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <a href="../index.html#keizaiken">経済圏から選ぶ</a> ＞ <span>{kz['name']}経済圏</span></nav>
+    <h1 class="section-title">{kz['icon']} {title}</h1>
+    <p class="section-sub">{kz['intro']}</p>"""
+        for i, c in enumerate(cards, start=1):
+            html += card_block(c, rank=i, depth=1)
+        # 他の経済圏への内部リンク
+        html += """
+    <div class="related-articles">
+      <h2>他のポイント経済圏から選ぶ</h2>"""
+        for other in KEIZAIKEN:
+            if other["id"] != kz["id"]:
+                html += f"""
+      <a href="{other['id']}.html" class="related-link">{other['icon']} {other['name']}経済圏のおすすめカード</a>"""
+        html += """
+    </div>
+  </div>
+</section>"""
+        # Breadcrumb JSON-LD
+        base = site.get("base_url", "").rstrip("/")
+        bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
+            {"@type": "ListItem", "position": 2, "name": f"{kz['name']}経済圏", "item": f"{base}/keizaiken/{kz['id']}.html"}]}
+        html += '\n<script type="application/ld+json">\n' + json.dumps(bc, ensure_ascii=False) + '\n</script>'
+        html += footer(site, depth=1)
+        write(os.path.join(BASE_DIR, "keizaiken", f"{kz['id']}.html"), html)
+
+
+def build_campaign(data):
+    """今月の入会キャンペーンまとめ（入会特典のあるカードをデータ駆動で一覧・毎日再生成で鮮度維持）。"""
+    site = data["site"]
+    cards = [c for c in data["cards"] if c.get("bonus") and c["bonus"] not in ("入会特典あり", "—", "")]
+    html = head(site, f"クレジットカード 入会キャンペーンまとめ｜{year_month()}最新｜{site['name']}",
+                f"{year_month()}最新のクレジットカード入会キャンペーン・新規入会特典をまとめて比較。お得に作れるカードを毎日更新でチェックできます。",
+                path="campaign.html")
+    html += header(site)
+    html += f"""
+<section class="comparison-section">
+  <div class="container">
+    <nav class="breadcrumb"><a href="index.html">ホーム</a> ＞ <span>入会キャンペーンまとめ</span></nav>
+    <h1 class="section-title">🎁 {year_month()} クレジットカード入会キャンペーンまとめ</h1>
+    <p class="section-sub">新規入会・利用で受け取れる特典が大きいカードを一覧にまとめました。特典内容は変更されることがあるため、最新情報は各公式サイトでご確認ください。</p>
+    <div class="table-wrapper">
+      <table class="comparison-table">
+        <thead>
+          <tr><th>カード名</th><th>入会特典</th><th>年会費</th><th>還元率</th><th>申込</th></tr>
+        </thead>
+        <tbody>"""
+    for c in cards:
+        rstr = f"<strong>{c['reward']}</strong>" if c.get("reward_highlight") else c["reward"]
+        html += f"""
+          <tr>
+            <td><a href="cards/{c['id']}.html"><strong>{c['name']}</strong></a></td>
+            <td><strong class="campaign-bonus">{c['bonus']}</strong></td>
+            <td>{c['annual_fee'].replace('永年', '')}</td>
+            <td>{rstr}</td>
+            <td><a href="{c['affiliate_url']}" target="_blank" rel="nofollow sponsored noopener" class="table-btn">申込む</a></td>
+          </tr>"""
+    html += """
+        </tbody>
+      </table>
+    </div>
+    <p class="table-scroll-hint">※入会特典は時期・条件により変動します。獲得条件（利用金額・期間等）は各公式サイトで必ずご確認ください。</p>
+    <div class="article-cta">
+      <h3>まずは自分に合う1枚から</h3>
+      <p>特典の大きさだけでなく、年会費・還元率・使う場所との相性で選ぶのがおすすめです。</p>
+      <a href="index.html#ranking" class="btn-primary">おすすめランキングを見る</a>
+    </div>
+  </div>
+</section>"""
+    html += footer(site)
+    write(os.path.join(BASE_DIR, "campaign.html"), html)
+
+
 def build_article_pages(data):
     site = data["site"]
     os.makedirs(os.path.join(BASE_DIR, "articles"), exist_ok=True)
@@ -957,10 +1101,23 @@ def build_article_pages(data):
 def build_legal_pages(data):
     site = data["site"]
     pages = {
-        "about.html": ("運営者情報", f"""
-    <h2>サイト名</h2><p class="review-text">{site['name']}</p>
-    <h2>運営方針</h2><p class="review-text">{site['name']}は、クレジットカードを検討している方が自分に合った1枚を見つけられるよう、年会費・ポイント還元率・特典などを公平に比較・紹介する情報メディアです。掲載情報は各カード発行会社の公式サイト等を元に編集部が調査しています。</p>
-    <h2>収益について</h2><p class="review-text">本サイトはアフィリエイトプログラムによる広告収入で運営されています。詳しくは免責事項をご覧ください。</p>"""),
+        "about.html": ("運営者情報・編集方針", f"""
+    <h2>サイト名</h2><p class="review-text">{site['name']}（{site.get('base_url','').replace('https://','')}）</p>
+    <h2>運営方針</h2><p class="review-text">{site['name']}は、クレジットカードを検討している方が自分に合った1枚を見つけられるよう、年会費・ポイント還元率・特典などを公平に比較・紹介する情報メディアです。「広告だから上位」ではなく、読者にとっての使いやすさ・お得さを基準に編集することを大切にしています。</p>
+    <h2>カードの選定・評価基準</h2>
+    <p class="review-text">当サイトのランキング・おすすめは、以下の6つの観点を編集部で総合的に評価して作成しています。</p>
+    <ol class="policy-list">
+      <li><strong>年会費</strong>：永年無料か、年会費に見合う特典があるか</li>
+      <li><strong>ポイント還元率</strong>：通常還元率と、店舗ごとの上乗せ還元のお得さ</li>
+      <li><strong>特典・付帯保険</strong>：旅行保険・ショッピング保険・優待などの充実度</li>
+      <li><strong>セキュリティ</strong>：ナンバーレスや不正利用補償など安心して使えるか</li>
+      <li><strong>入会キャンペーン</strong>：新規入会で受け取れる特典・ポイントの大きさ</li>
+      <li><strong>使いやすさ・評判</strong>：発行スピード・対応ブランド・利用者の評判</li>
+    </ol>
+    <h2>情報の正確性への取り組み</h2><p class="review-text">掲載している年会費・還元率・特典・キャンペーン等の情報は、各カード発行会社の公式サイトをはじめとする一次情報をもとに編集部が確認しています。サービス内容は変更されることがあるため、サイトは継続的に見直し・更新を行っていますが、お申し込みの際は必ず各カード公式サイトで最新情報をご確認ください。誤りを見つけられた場合は<a href="contact.html">お問い合わせ</a>からご指摘いただけると幸いです。</p>
+    <h2>広告・アフィリエイトの開示</h2><p class="review-text">本サイトはアフィリエイトプログラム（A8.net、afb、バリューコマース等）に参加しており、掲載リンクを経由してカードが発行された場合に、提携先から当サイトへ成果報酬が支払われることがあります。ただし、掲載順位や評価は報酬額のみで決定するものではなく、上記の選定基準に基づく編集部の判断で行っています。詳しくは<a href="disclaimer.html">免責事項</a>・<a href="privacy.html">プライバシーポリシー</a>をご覧ください。</p>
+    <h2>監修・口コミについて（透明性のための注記）</h2><p class="review-text">当サイトは、実在しない監修者名や、根拠のない口コミ・体験談を掲載しないことを編集方針としています。掲載しているのは、公式情報をもとにした編集部独自の比較・解説です。</p>
+    <h2>お問い合わせ</h2><p class="review-text">ご質問・掲載情報の誤りのご指摘・取材や提携のご依頼などは <a href="contact.html">お問い合わせページ</a>（📧 crecalabo.info@gmail.com）までご連絡ください。</p>"""),
         "privacy.html": ("プライバシーポリシー", """
     <h2>個人情報の取り扱い</h2><p class="review-text">当サイトでは、お問い合わせの際にお名前やメールアドレスなどの個人情報をご提供いただく場合があります。取得した個人情報はお問い合わせへの対応以外の目的では利用しません。</p>
     <h2>アクセス解析ツールについて</h2><p class="review-text">当サイトでは、Googleによるアクセス解析ツール「Googleアナリティクス（GA4）」を利用しています。Googleアナリティクスはトラフィックデータの収集のためにCookieを使用します。このデータは匿名で収集されており、個人を特定するものではありません。この機能はCookieを無効にすることで収集を拒否できますので、お使いのブラウザの設定をご確認ください。Googleによるデータの取り扱いの詳細は「<a href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">Googleのサービスを使用するサイトやアプリから収集した情報のGoogleによる使用</a>」および「<a href="https://marketingplatform.google.com/about/analytics/terms/jp/" target="_blank" rel="noopener">Googleアナリティクス利用規約</a>」をご覧ください。また、Googleアナリティクスによる計測を無効にしたい場合は「<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" target="_blank" rel="noopener">Googleアナリティクス オプトアウト アドオン</a>」をご利用いただけます。</p>
@@ -1279,12 +1436,83 @@ def tools_nav(active, depth=0):
     """3つのシミュレーターを相互リンクするツールバー"""
     p = "" if depth == 0 else "../"
     tools = [("simulator.html", "💳 還元シミュレーター"),
+             ("annualfee-simulator.html", "💰 年会費ペイ計算"),
              ("rivo-simulator.html", "⚠️ リボ手数料計算"),
              ("tsumitate-simulator.html", "📈 クレカ積立シミュ")]
     btns = "".join(
         f'<a href="{p}{u}" class="tool-tab{" active" if u == active else ""}">{label}</a>'
         for u, label in tools)
     return f'<div class="tool-tabs">{btns}</div>'
+
+
+def build_annualfee_simulator(data):
+    """年会費ペイ計算機（年会費ありカードが年間利用でペイできるか判定）。"""
+    site = data["site"]
+    html = head(site, f"年会費ペイ計算機｜ゴールドカードの元は取れる？｜{site['name']}",
+                "年会費・年間利用額・上乗せ還元率・特典価値を入力するだけで、年会費ありカード（ゴールド等）の元が取れるかを瞬時に判定できる無料計算機です。",
+                path="annualfee-simulator.html")
+    html += header(site)
+    html += """
+<section class="simulator-section">
+  <div class="container container-narrow">
+    <h1 class="section-title">年会費ペイ計算機</h1>
+    <p class="section-sub">ゴールドカードなど年会費がかかるカードでも、年間の利用額しだいで「元が取れる」ことがあります。あなたの場合はどうか計算してみましょう。</p>
+""" + tools_nav("annualfee-simulator.html") + """
+    <div class="sim-box">
+      <label class="sim-label" for="af-fee">カードの年会費（円）</label>
+      <input type="number" id="af-fee" class="sim-input" value="5500" min="0" step="100" inputmode="numeric">
+      <label class="sim-label" for="af-spend">年間のカード利用額（円）</label>
+      <input type="number" id="af-spend" class="sim-input" value="1200000" min="0" step="10000" inputmode="numeric">
+      <div class="sim-presets">
+        <button type="button" class="sim-preset" data-af="600000">年60万</button>
+        <button type="button" class="sim-preset" data-af="1200000">年120万</button>
+        <button type="button" class="sim-preset" data-af="2400000">年240万</button>
+      </div>
+      <label class="sim-label" for="af-rate">無料カードより上乗せされる還元率（％）</label>
+      <input type="number" id="af-rate" class="sim-input" value="0.5" min="0" step="0.1" inputmode="decimal">
+      <label class="sim-label" for="af-perk">特典の年間価値（円）<small>空港ラウンジ・旅行保険・優待などの価値</small></label>
+      <input type="number" id="af-perk" class="sim-input" value="0" min="0" step="1000" inputmode="numeric">
+      <button type="button" id="af-run" class="btn-primary sim-run">元が取れるか計算する</button>
+    </div>
+    <div id="af-result" class="sim-result"></div>
+    <p class="sim-note">※「上乗せ還元率」は、年会費無料カード（通常0.5〜1.0%）と比べてそのカードが追加で得られる還元率の目安です。特典価値は人によって異なります。あくまで概算で、最終判断は各公式サイトの最新情報でご確認ください。</p>
+  </div>
+</section>
+<script>
+const yen = n => Math.round(n).toLocaleString('ja-JP');
+function runAF(){
+  const fee = Math.max(0, parseFloat(document.getElementById('af-fee').value||'0'));
+  const spend = Math.max(0, parseFloat(document.getElementById('af-spend').value||'0'));
+  const rate = Math.max(0, parseFloat(document.getElementById('af-rate').value||'0'));
+  const perk = Math.max(0, parseFloat(document.getElementById('af-perk').value||'0'));
+  const rewardMerit = spend * rate / 100;
+  const totalMerit = rewardMerit + perk;
+  const net = totalMerit - fee;
+  const box = document.getElementById('af-result');
+  let head, cls;
+  if(net >= 0){ head = '✅ 元が取れます（年間 +' + yen(net) + '円のお得）'; cls = 'af-ok'; }
+  else { head = '⚠️ 現状ではペイしません（年間 ' + yen(net) + '円）'; cls = 'af-ng'; }
+  let breakeven = '';
+  if(rate > 0){
+    const need = Math.max(0, (fee - perk)) / (rate/100);
+    breakeven = '<p class="af-line">年会費を還元だけでペイするのに必要な年間利用額：<strong>' + yen(need) + '円</strong>（月 ' + yen(need/12) + '円）</p>';
+  }
+  box.innerHTML = '<div class="af-card ' + cls + '">'
+    + '<p class="af-head">' + head + '</p>'
+    + '<p class="af-line">年間の上乗せ還元：<strong>' + yen(rewardMerit) + '円</strong></p>'
+    + '<p class="af-line">特典の年間価値：<strong>' + yen(perk) + '円</strong></p>'
+    + '<p class="af-line">メリット合計 − 年会費：<strong>' + yen(totalMerit) + '円 − ' + yen(fee) + '円 = ' + yen(net) + '円</strong></p>'
+    + breakeven + '</div>';
+  box.style.display = 'block';
+}
+document.getElementById('af-run').addEventListener('click', runAF);
+document.querySelectorAll('.sim-preset').forEach(b => b.addEventListener('click', () => {
+  document.getElementById('af-spend').value = b.getAttribute('data-af'); runAF();
+}));
+runAF();
+</script>"""
+    html += footer(site)
+    write(os.path.join(BASE_DIR, "annualfee-simulator.html"), html)
 
 
 def build_rivo_simulator(data):
@@ -1588,10 +1816,11 @@ def build_sitemap(data):
     site = data["site"]
     base = site.get("base_url", "").rstrip("/")
     today = datetime.date.today().isoformat()
-    urls = [(u, today) for u in ["", "articles.html", "securities.html", "simulator.html", "rivo-simulator.html", "tsumitate-simulator.html", "glossary.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
+    urls = [(u, today) for u in ["", "articles.html", "campaign.html", "securities.html", "simulator.html", "annualfee-simulator.html", "rivo-simulator.html", "tsumitate-simulator.html", "glossary.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
     urls += [(f"{p['id']}.html", today) for p in data.get("pillars", [])]
     urls += [(f"cards/{c['id']}.html", today) for c in data["cards"]]
     urls += [(f"purpose/{p['id']}.html", today) for p in data["purposes"]]
+    urls += [(f"keizaiken/{kz['id']}.html", today) for kz in KEIZAIKEN]
     urls += [(f"articles/{a['id']}.html", article_date(a)) for a in data["articles"]]
     urls += [(f"securities/{b['id']}.html", today) for b in data.get("brokers", [])]
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -1624,9 +1853,12 @@ def main():
     build_index(data)
     build_card_pages(data)
     build_purpose_pages(data)
+    build_keizaiken_pages(data)
+    build_campaign(data)
     build_article_pages(data)
     build_securities(data)
     build_simulator(data)
+    build_annualfee_simulator(data)
     build_rivo_simulator(data)
     build_tsumitate_simulator(data)
     build_glossary(data)
