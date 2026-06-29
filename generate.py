@@ -12,6 +12,12 @@ import os
 import re
 import datetime
 
+try:
+    from PIL import Image, ImageDraw, ImageFont
+    _PIL_OK = True
+except Exception:
+    _PIL_OK = False
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "data", "cards.json")
 # アフィリエイトリンク上書き表（ASP承認後のリンクをここに入れると affiliate_url を差し替える）
@@ -329,10 +335,11 @@ def hero_card_svg():
 
 
 # ---------- 共通パーツ ----------
-def head(site, title, description, depth=0, path=""):
+def head(site, title, description, depth=0, path="", og_image=None):
     prefix = "" if depth == 0 else "../"
     base = site.get("base_url", "").rstrip("/")
     canonical_url = f"{base}/{path}" if path != "index.html" else f"{base}/"
+    og_img_url = f"{base}/{og_image}" if og_image else f"{base}/ogp.png"
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -346,13 +353,13 @@ def head(site, title, description, depth=0, path=""):
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}">
   <meta property="og:url" content="{canonical_url}">
-  <meta property="og:image" content="{base}/ogp.png">
+  <meta property="og:image" content="{og_img_url}">
   <meta property="og:site_name" content="{site['name']}">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{description}">
-  <meta name="twitter:image" content="{base}/ogp.png">
+  <meta name="twitter:image" content="{og_img_url}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
@@ -897,6 +904,155 @@ def build_purpose_pages(data):
         write(os.path.join(BASE_DIR, "purpose", f"{pp['id']}.html"), html)
 
 
+EYECATCH_DIR = os.path.join(BASE_DIR, "images", "ogp")
+_FONT_BOLD = r"C:\Windows\Fonts\meiryob.ttc"
+
+
+def _wrap_jp(text, n):
+    lines, cur = [], ""
+    for ch in text:
+        cur += ch
+        if len(cur) >= n:
+            lines.append(cur)
+            cur = ""
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def build_eyecatch(article, site):
+    """記事ごとのアイキャッチ(OGP)画像を生成。既存ならスキップ(キャッシュ)。相対パスを返す。"""
+    rel = f"images/ogp/{article['id']}.png"
+    out = os.path.join(EYECATCH_DIR, f"{article['id']}.png")
+    if os.path.exists(out):
+        return rel
+    if not _PIL_OK or not os.path.exists(_FONT_BOLD):
+        return None
+    W, H = 1200, 630
+    img = Image.new("RGB", (W, H), (26, 36, 86))
+    d = ImageDraw.Draw(img)
+    d.polygon([(0, H), (W, H), (W, H - 90)], fill=(40, 53, 147))
+    d.rectangle([0, 0, W, 12], fill=(255, 111, 0))
+    # ロゴマーク（カード型を図形で描画。絵文字はPILで豆腐化するため使わない）
+    d.rounded_rectangle([60, 54, 150, 118], radius=10, fill=(255, 111, 0))
+    d.rectangle([74, 74, 112, 84], fill=(255, 255, 255))
+    brand = ImageFont.truetype(_FONT_BOLD, 38)
+    d.text((168, 64), "クレカ比較Labo", font=brand, fill=(255, 255, 255))
+    title = article["title"].split("｜")[0]
+    fsize = 64 if len(title) <= 22 else 54
+    tf = ImageFont.truetype(_FONT_BOLD, fsize)
+    lines = _wrap_jp(title, 15 if fsize == 64 else 18)[:4]
+    lh = fsize + 18
+    y = (H - lh * len(lines)) // 2 + 20
+    last_y = y
+    for ln in lines:
+        w = d.textlength(ln, font=tf)
+        d.text(((W - w) // 2, y), ln, font=tf, fill=(255, 255, 255))
+        last_y = y + fsize
+        y += lh
+    d.rectangle([(W - 220) // 2, last_y + 14, (W + 220) // 2, last_y + 22], fill=(255, 111, 0))
+    sf = ImageFont.truetype(_FONT_BOLD, 30)
+    d.text((60, H - 70), site.get("base_url", "").replace("https://", ""), font=sf, fill=(200, 206, 235))
+    os.makedirs(EYECATCH_DIR, exist_ok=True)
+    img.save(out, "PNG")
+    return rel
+
+
+# ------------------------- 記事内の図解（オリジナルSVG・著作権セーフ） -------------------------
+
+def _svg_frame(inner, vb="0 0 560 260", label=""):
+    return (f'<svg viewBox="{vb}" xmlns="http://www.w3.org/2000/svg" role="img" '
+            f'aria-label="{label}"><rect width="100%" height="100%" rx="14" fill="#fafbff"/>{inner}</svg>')
+
+
+def diagram_reward_diff():
+    rows = [("0.5%", 5000, "#9aa3c7"), ("1.0%", 10000, "#3949ab"), ("2.0%", 20000, "#ff6f00")]
+    inner = ('<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">還元率の差＝1年でこれだけ変わる</text>'
+             '<text x="280" y="66" text-anchor="middle" font-size="14" fill="#8a90a8">年100万円を使った場合の年間ポイント</text>'
+             '<line x1="100" y1="215" x2="500" y2="215" stroke="#d5d9ec" stroke-width="2"/>')
+    x = 130
+    for label, v, color in rows:
+        h = int(v / 20000 * 120)
+        y = 215 - h
+        inner += f'<rect x="{x}" y="{y}" width="80" height="{h}" rx="6" fill="{color}"/>'
+        inner += f'<text x="{x+40}" y="{y-10}" text-anchor="middle" font-size="19" font-weight="700" fill="#283593">{v:,}円</text>'
+        inner += f'<text x="{x+40}" y="241" text-anchor="middle" font-size="17" fill="#3a3f5a">還元率{label}</text>'
+        x += 140
+    return _svg_frame(inner, label="還元率別の年間ポイント比較")
+
+
+def diagram_keizaiken():
+    zs = [("楽天", "#bf0000"), ("Vポイント", "#1f6fd0"), ("dポイント", "#cc0033"),
+          ("PayPay", "#ea4335"), ("Ponta", "#0b6cb0")]
+    inner = ('<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">ポイントは「1つの経済圏に集中」が正解</text>'
+             '<text x="280" y="66" text-anchor="middle" font-size="14" fill="#8a90a8">よく使うサービスに合わせてカードも揃える</text>')
+    x = 28
+    for name, color in zs:
+        inner += f'<rect x="{x}" y="105" width="98" height="62" rx="10" fill="#fff" stroke="{color}" stroke-width="2"/>'
+        inner += f'<text x="{x+49}" y="142" text-anchor="middle" font-size="15" font-weight="700" fill="{color}">{name}</text>'
+        x += 102
+    inner += '<text x="280" y="210" text-anchor="middle" font-size="15" fill="#3a3f5a">バラバラに貯めるより、還元がぐっと伸びます</text>'
+    return _svg_frame(inner, label="主要なポイント経済圏")
+
+
+def diagram_rivo():
+    rows = [("一括払い", 0, "0円", "#3949ab"), ("リボ払い", 15000, "約15,000円", "#d84315")]
+    inner = ('<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">リボ払いの手数料イメージ</text>'
+             '<text x="280" y="66" text-anchor="middle" font-size="14" fill="#8a90a8">10万円を年率15%・1年で支払った場合の概算</text>'
+             '<line x1="100" y1="215" x2="500" y2="215" stroke="#d5d9ec" stroke-width="2"/>')
+    x = 170
+    for label, v, vt, color in rows:
+        h = max(6, int(v / 15000 * 120))
+        y = 215 - h
+        inner += f'<rect x="{x}" y="{y}" width="90" height="{h}" rx="6" fill="{color}"/>'
+        inner += f'<text x="{x+45}" y="{y-10}" text-anchor="middle" font-size="19" font-weight="700" fill="#283593">{vt}</text>'
+        inner += f'<text x="{x+45}" y="241" text-anchor="middle" font-size="17" fill="#3a3f5a">{label}</text>'
+        x += 160
+    return _svg_frame(inner, label="一括払いとリボ払いの手数料比較")
+
+
+def diagram_tsumitate():
+    rows = [("1年", 6000), ("5年", 30000), ("10年", 60000)]
+    inner = ('<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">クレカ積立でもらえるポイント</text>'
+             '<text x="280" y="66" text-anchor="middle" font-size="14" fill="#8a90a8">月5万円を還元率1%でクレカ積立した場合</text>'
+             '<line x1="100" y1="215" x2="500" y2="215" stroke="#d5d9ec" stroke-width="2"/>')
+    x = 130
+    for label, v in rows:
+        h = int(v / 60000 * 120)
+        y = 215 - h
+        inner += f'<rect x="{x}" y="{y}" width="80" height="{h}" rx="6" fill="#3949ab"/>'
+        inner += f'<text x="{x+40}" y="{y-10}" text-anchor="middle" font-size="18" font-weight="700" fill="#283593">{v:,}円分</text>'
+        inner += f'<text x="{x+40}" y="241" text-anchor="middle" font-size="17" fill="#3a3f5a">{label}</text>'
+        x += 140
+    return _svg_frame(inner, label="クレカ積立で貯まるポイントの推移")
+
+
+def diagram_cardgrade():
+    tiers = [("一般", "年会費無料・基本の還元", "#3949ab"),
+             ("ゴールド", "空港ラウンジ・旅行保険・優待", "#c8a23a"),
+             ("プラチナ", "コンシェルジュ・高水準の特典", "#6b7280")]
+    inner = '<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">カードランクと特典のちがい</text>'
+    y = 70
+    for name, desc, color in tiers:
+        inner += f'<rect x="80" y="{y}" width="400" height="48" rx="10" fill="{color}"/>'
+        inner += f'<text x="104" y="{y+30}" font-size="18" font-weight="700" fill="#fff">{name}</text>'
+        inner += f'<text x="200" y="{y+30}" font-size="14" fill="#fff">{desc}</text>'
+        y += 60
+    return _svg_frame(inner, vb="0 0 560 260", label="一般・ゴールド・プラチナの違い")
+
+
+DIAGRAMS = {
+    "point-reward-ranking": (diagram_reward_diff, "還元率0.5%と1%・2%では、年間でこれだけポイントが変わります。"),
+    "high-reward-howto": (diagram_reward_diff, "還元率を上げるだけで、年間のポイントは大きく変わります。"),
+    "annual-fee-worth": (diagram_reward_diff, "還元率の差は、年会費を上回ることもあります。"),
+    "point-keizaiken": (diagram_keizaiken, "主要なポイント経済圏。よく使う1つに寄せるのが効率的です。"),
+    "revolving": (diagram_rivo, "リボ払いは手数料が大きい。支払いは一括が基本です。"),
+    "kureka-tsumitate": (diagram_tsumitate, "クレカ積立なら、投資しながらポイントも貯まります。"),
+    "point-investment": (diagram_tsumitate, "ポイント投資・クレカ積立で貯まるポイントの目安です。"),
+    "card-grade": (diagram_cardgrade, "カードのランクごとに、特典の手厚さが変わります。"),
+}
+
+
 def build_keizaiken_pages(data):
     """ポイント経済圏別おすすめページ（楽天/Vポイント/dポイント/PayPay/Ponta）。"""
     site = data["site"]
@@ -1016,7 +1172,9 @@ def build_article_pages(data):
 
     # 各記事
     for a in data["articles"]:
-        h = head(site, f"{a['title']}｜{site['name']}", a["description"], depth=1, path=f"articles/{a['id']}.html")
+        eyecatch = build_eyecatch(a, site)
+        h = head(site, f"{a['title']}｜{site['name']}", a["description"], depth=1,
+                 path=f"articles/{a['id']}.html", og_image=eyecatch)
         h += header(site, depth=1)
         linked = []  # 記事内で言及・リンクしたカードid（初出順）
         h += f"""
@@ -1026,6 +1184,14 @@ def build_article_pages(data):
     <h1 class="article-title">{a['title']}</h1>
     <p class="article-date">📅 {fmt_date(article_date(a))} 公開</p>
     <p class="article-lead">{link_cards(a['lead'], data['cards'], 1, linked)}</p>"""
+        # 記事内の図解（対象記事のみ・オリジナルSVG）
+        if a["id"] in DIAGRAMS:
+            dfunc, caption = DIAGRAMS[a["id"]]
+            h += f"""
+    <figure class="article-figure">
+      {dfunc()}
+      <figcaption>{caption}</figcaption>
+    </figure>"""
         secs = a["sections"]
         # 目次（見出し3つ以上のときだけ・アンカー内部リンクで構造化＆回遊性UP）
         if len(secs) >= 3:

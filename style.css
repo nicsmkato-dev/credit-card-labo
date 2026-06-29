@@ -409,6 +409,9 @@ img, svg { max-width: 100%; }
 .article-toc li { margin: 6px 0; font-size: 0.92rem; }
 .article-toc a { color: #3a3f5a; text-decoration: none; }
 .article-toc a:hover { color: #ff6f00; text-decoration: underline; }
+.article-figure { margin: 26px 0; text-align: center; }
+.article-figure svg { width: 100%; max-width: 560px; height: auto; border: 1px solid #ebedf7; border-radius: 14px; box-shadow: 0 6px 20px rgba(40,53,147,.08); }
+.article-figure figcaption { font-size: 0.85rem; color: #8a90a8; margin-top: 8px; }
 .article-cta { background: linear-gradient(135deg, #283593, #3949ab); color: #fff; border-radius: 20px; padding: 36px; text-align: center; margin-top: 50px; }
 .article-cta h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 10px; }
 .article-cta p { font-size: 0.9rem; opacity: .9; margin-bottom: 22px; }
