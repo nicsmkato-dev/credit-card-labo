@@ -124,6 +124,52 @@ def link_cards(text, cards, depth=1, linked_ids=None, skip_id=None):
     return rx.sub(repl, text)
 
 
+# 記事の関連度判定用キーワード（タイトル・説明・リードに含まれる語の共有数で関連記事を選ぶ）
+RELATED_VOCAB = [
+    "還元率", "ポイント", "年会費", "審査", "信用情報", "限度額", "延滞", "多重申込",
+    "NISA", "積立", "つみたて", "投資", "iDeCo", "証券", "ポイ活", "経済圏", "ポイントサイト",
+    "旅行", "マイル", "空港", "ラウンジ", "海外", "保険", "ふるさと納税",
+    "学生", "主婦", "女性", "シニア", "20代", "30代", "社会人",
+    "ナンバーレス", "セキュリティ", "不正利用", "3Dセキュア",
+    "公共料金", "税金", "家賃", "携帯", "スマホ", "サブスク", "コンビニ", "スーパー", "ガソリン", "ETC",
+    "国際ブランド", "VISA", "Mastercard", "JCB", "アメックス", "ダイナース",
+    "解約", "再発行", "家族カード", "デビット", "ゴールド", "プラチナ", "即日発行",
+    "Amazon", "コストコ", "タッチ決済", "Apple Pay", "Google Pay", "リボ払い",
+]
+_ARTICLE_KW_CACHE = {}
+
+
+def article_keywords(a):
+    """記事のタイトル＋説明＋リードから関連語の集合を返す（キャッシュ）。"""
+    cid = a.get("id")
+    if cid in _ARTICLE_KW_CACHE:
+        return _ARTICLE_KW_CACHE[cid]
+    text = (a.get("title", "") + " " + a.get("description", "") + " " + a.get("lead", "")).lower()
+    kw = set(k for k in RELATED_VOCAB if k.lower() in text)
+    _ARTICLE_KW_CACHE[cid] = kw
+    return kw
+
+
+def related_articles(a, arts, n=3):
+    """共有キーワード数が多い順に関連記事を返す。足りなければ新着で補完。"""
+    ak = article_keywords(a)
+    scored = []
+    for other in arts:
+        if other.get("id") == a.get("id"):
+            continue
+        score = len(ak & article_keywords(other))
+        scored.append((score, article_date(other), other))
+    scored.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    top = [o for s, d, o in scored if s > 0][:n]
+    if len(top) < n:  # 関連が足りなければ新着記事で穴埋め
+        for s, d, o in scored:
+            if o not in top:
+                top.append(o)
+            if len(top) >= n:
+                break
+    return top[:n]
+
+
 CARD_IMG_EXTS = (".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif")
 
 
@@ -836,9 +882,22 @@ def build_article_pages(data):
     <h1 class="article-title">{a['title']}</h1>
     <p class="article-date">📅 {fmt_date(article_date(a))} 公開</p>
     <p class="article-lead">{link_cards(a['lead'], data['cards'], 1, linked)}</p>"""
-        for s in a["sections"]:
+        secs = a["sections"]
+        # 目次（見出し3つ以上のときだけ・アンカー内部リンクで構造化＆回遊性UP）
+        if len(secs) >= 3:
+            h += """
+    <nav class="article-toc" aria-label="目次">
+      <p class="toc-title">📑 目次</p>
+      <ol>"""
+            for i, s in enumerate(secs):
+                h += f"""
+        <li><a href="#sec-{i}">{s['h']}</a></li>"""
+            h += """
+      </ol>
+    </nav>"""
+        for i, s in enumerate(secs):
             h += f"""
-    <h2>{s['h']}</h2>
+    <h2 id="sec-{i}">{s['h']}</h2>
     <p class="review-text">{link_cards(s['p'], data['cards'], 1, linked)}</p>"""
         # 記事で紹介したカードの詳細リンク（本文で言及されたカードを末尾にまとめる）
         if linked:
@@ -854,10 +913,8 @@ def build_article_pages(data):
             h += """
       </ul>
     </div>"""
-        # 関連記事(リスト上の前後3本・内部リンク強化)
-        arts = data["articles"]
-        idx = arts.index(a)
-        related = [arts[(idx + k) % len(arts)] for k in (1, 2, 3)]
+        # 関連記事（トピック関連度＝共有キーワード数で選定・内部リンク最適化）
+        related = related_articles(a, data["articles"], n=3)
         h += """
     <div class="related-articles">
       <h2>関連記事</h2>"""
