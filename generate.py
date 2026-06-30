@@ -965,7 +965,7 @@ def _svg_frame(inner, vb="0 0 560 260", label=""):
             f'aria-label="{label}"><rect width="100%" height="100%" rx="14" fill="#fafbff"/>{inner}</svg>')
 
 
-def diagram_reward_diff():
+def diagram_reward_diff(data=None):
     rows = [("0.5%", 5000, "#9aa3c7"), ("1.0%", 10000, "#3949ab"), ("2.0%", 20000, "#ff6f00")]
     inner = ('<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">還元率の差＝1年でこれだけ変わる</text>'
              '<text x="280" y="66" text-anchor="middle" font-size="14" fill="#8a90a8">年100万円を使った場合の年間ポイント</text>'
@@ -981,7 +981,7 @@ def diagram_reward_diff():
     return _svg_frame(inner, label="還元率別の年間ポイント比較")
 
 
-def diagram_keizaiken():
+def diagram_keizaiken(data=None):
     zs = [("楽天", "#bf0000"), ("Vポイント", "#1f6fd0"), ("dポイント", "#cc0033"),
           ("PayPay", "#ea4335"), ("Ponta", "#0b6cb0")]
     inner = ('<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">ポイントは「1つの経済圏に集中」が正解</text>'
@@ -995,7 +995,7 @@ def diagram_keizaiken():
     return _svg_frame(inner, label="主要なポイント経済圏")
 
 
-def diagram_rivo():
+def diagram_rivo(data=None):
     rows = [("一括払い", 0, "0円", "#3949ab"), ("リボ払い", 15000, "約15,000円", "#d84315")]
     inner = ('<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">リボ払いの手数料イメージ</text>'
              '<text x="280" y="66" text-anchor="middle" font-size="14" fill="#8a90a8">10万円を年率15%・1年で支払った場合の概算</text>'
@@ -1011,7 +1011,7 @@ def diagram_rivo():
     return _svg_frame(inner, label="一括払いとリボ払いの手数料比較")
 
 
-def diagram_tsumitate():
+def diagram_tsumitate(data=None):
     rows = [("1年", 6000), ("5年", 30000), ("10年", 60000)]
     inner = ('<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">クレカ積立でもらえるポイント</text>'
              '<text x="280" y="66" text-anchor="middle" font-size="14" fill="#8a90a8">月5万円を還元率1%でクレカ積立した場合</text>'
@@ -1027,7 +1027,7 @@ def diagram_tsumitate():
     return _svg_frame(inner, label="クレカ積立で貯まるポイントの推移")
 
 
-def diagram_cardgrade():
+def diagram_cardgrade(data=None):
     tiers = [("一般", "年会費無料・基本の還元", "#3949ab"),
              ("ゴールド", "空港ラウンジ・旅行保険・優待", "#c8a23a"),
              ("プラチナ", "コンシェルジュ・高水準の特典", "#6b7280")]
@@ -1041,6 +1041,71 @@ def diagram_cardgrade():
     return _svg_frame(inner, vb="0 0 560 260", label="一般・ゴールド・プラチナの違い")
 
 
+def _reward_float(s):
+    """還元率文字列から基本還元率の数値を取得（例: '1.0%〜3.0%' → 1.0）"""
+    m = re.search(r"(\d+\.?\d*)\s*%", s or "")
+    return float(m.group(1)) if m else 0.5
+
+
+# カードブランドカラー（generate.py内CSS変数に合わせた代表色）
+_BRAND_COLOR = {
+    "smbc-card": "#1f6fd0", "olive-card": "#2e7d32", "rakuten-card": "#bf0000",
+    "epos-card": "#b71c1c", "recruit-card": "#1565c0", "jcb-card-w": "#1a237e",
+    "aeon-card": "#00695c", "d-card": "#c62828", "smbc-gold-nl": "#b8860b",
+    "jcb-gold": "#4a148c", "paypay-card": "#ea4335", "saison-int": "#0277bd",
+    "uc-card": "#37474f", "life-card": "#e65100",
+}
+
+
+def diagram_card_vs(data, c1_id, c2_id):
+    c1 = card_by_id(data, c1_id) if data else None
+    c2 = card_by_id(data, c2_id) if data else None
+    if not c1 or not c2:
+        return ""
+    col1 = _BRAND_COLOR.get(c1_id, "#3949ab")
+    col2 = _BRAND_COLOR.get(c2_id, "#c8a23a")
+    r1 = _reward_float(c1.get("reward", ""))
+    r2 = _reward_float(c2.get("reward", ""))
+    fee1 = c1.get("annual_fee", "永年無料")
+    fee2 = c2.get("annual_fee", "永年無料")
+    maxr = max(r1, r2, 1.0)
+    bw, bh, by = 100, 80, 170
+    b1h = max(8, int(r1 / maxr * bh))
+    b2h = max(8, int(r2 / maxr * bh))
+    inner = (
+        # 背景パネル左
+        f'<rect x="10" y="10" width="240" height="240" rx="12" fill="{col1}" opacity="0.08"/>'
+        # 背景パネル右
+        f'<rect x="310" y="10" width="240" height="240" rx="12" fill="{col2}" opacity="0.08"/>'
+        # VS バッジ
+        f'<circle cx="280" cy="130" r="28" fill="#fff" stroke="#d5d9ec" stroke-width="2"/>'
+        f'<text x="280" y="137" text-anchor="middle" font-size="18" font-weight="700" fill="#3a3f5a">VS</text>'
+        # カード名
+        f'<text x="130" y="42" text-anchor="middle" font-size="16" font-weight="700" fill="{col1}">{c1["name"]}</text>'
+        f'<text x="430" y="42" text-anchor="middle" font-size="16" font-weight="700" fill="{col2}">{c2["name"]}</text>'
+        # 年会費ラベル
+        f'<text x="130" y="70" text-anchor="middle" font-size="12" fill="#8a90a8">年会費</text>'
+        f'<text x="430" y="70" text-anchor="middle" font-size="12" fill="#8a90a8">年会費</text>'
+        f'<text x="130" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#283593">{fee1}</text>'
+        f'<text x="430" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#283593">{fee2}</text>'
+        # 還元率ラベル
+        f'<text x="130" y="118" text-anchor="middle" font-size="12" fill="#8a90a8">基本還元率</text>'
+        f'<text x="430" y="118" text-anchor="middle" font-size="12" fill="#8a90a8">基本還元率</text>'
+        # 棒グラフ（ベースライン y=250）
+        f'<line x1="30" y1="250" x2="240" y2="250" stroke="#d5d9ec" stroke-width="1"/>'
+        f'<line x1="320" y1="250" x2="530" y2="250" stroke="#d5d9ec" stroke-width="1"/>'
+        f'<rect x="{130 - bw//2}" y="{250 - b1h}" width="{bw}" height="{b1h}" rx="6" fill="{col1}"/>'
+        f'<rect x="{430 - bw//2}" y="{250 - b2h}" width="{bw}" height="{b2h}" rx="6" fill="{col2}"/>'
+        f'<text x="130" y="{250 - b1h - 8}" text-anchor="middle" font-size="20" font-weight="700" fill="{col1}">{r1:.1f}%</text>'
+        f'<text x="430" y="{250 - b2h - 8}" text-anchor="middle" font-size="20" font-weight="700" fill="{col2}">{r2:.1f}%</text>'
+    )
+    return _svg_frame(inner, vb="0 0 560 270", label=f"{c1['name']}と{c2['name']}の比較")
+
+
+def _vs(c1, c2):
+    return lambda data: diagram_card_vs(data, c1, c2)
+
+
 DIAGRAMS = {
     "point-reward-ranking": (diagram_reward_diff, "還元率0.5%と1%・2%では、年間でこれだけポイントが変わります。"),
     "high-reward-howto": (diagram_reward_diff, "還元率を上げるだけで、年間のポイントは大きく変わります。"),
@@ -1050,6 +1115,18 @@ DIAGRAMS = {
     "kureka-tsumitate": (diagram_tsumitate, "クレカ積立なら、投資しながらポイントも貯まります。"),
     "point-investment": (diagram_tsumitate, "ポイント投資・クレカ積立で貯まるポイントの目安です。"),
     "card-grade": (diagram_cardgrade, "カードのランクごとに、特典の手厚さが変わります。"),
+    # 比較記事（公開済み）
+    "vs-rakuten-smbc":   (_vs("rakuten-card", "smbc-card"),   "楽天カードと三井住友カード(NL)の基本還元率比較。"),
+    "vs-rakuten-jcbw":   (_vs("rakuten-card", "jcb-card-w"),  "楽天カードとJCB CARD Wの基本還元率比較。"),
+    "vs-smbc-epos":      (_vs("smbc-card", "epos-card"),      "三井住友カード(NL)とエポスカードの基本還元率比較。"),
+    "vs-recruit-rakuten":(_vs("recruit-card", "rakuten-card"),"リクルートカードと楽天カードの基本還元率比較。"),
+    "vs-jcbw-recruit":   (_vs("jcb-card-w", "recruit-card"),  "JCB CARD Wとリクルートカードの基本還元率比較。"),
+    "vs-aeon-rakuten":   (_vs("aeon-card", "rakuten-card"),   "イオンカードと楽天カードの基本還元率比較。"),
+    # 比較記事（キュー）
+    "vs-smbcgold-jcbgold":(_vs("smbc-gold-nl", "jcb-gold"),  "三井住友ゴールド(NL)とJCBゴールドの基本還元率比較。"),
+    "vs-epos-jcbw":      (_vs("epos-card", "jcb-card-w"),     "エポスカードとJCB CARD Wの基本還元率比較。"),
+    "vs-dcard-rakuten":  (_vs("d-card", "rakuten-card"),      "dカードと楽天カードの基本還元率比較。"),
+    "vs-smbc-recruit":   (_vs("smbc-card", "recruit-card"),   "三井住友カード(NL)とリクルートカードの基本還元率比較。"),
 }
 
 
@@ -1187,9 +1264,11 @@ def build_article_pages(data):
         # 記事内の図解（対象記事のみ・オリジナルSVG）
         if a["id"] in DIAGRAMS:
             dfunc, caption = DIAGRAMS[a["id"]]
-            h += f"""
+            svg = dfunc(data)
+            if svg:
+                h += f"""
     <figure class="article-figure">
-      {dfunc()}
+      {svg}
       <figcaption>{caption}</figcaption>
     </figure>"""
         secs = a["sections"]
