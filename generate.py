@@ -1260,6 +1260,7 @@ def build_article_pages(data):
     <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <a href="../articles.html">記事一覧</a> ＞ <span>{a['title']}</span></nav>
     <h1 class="article-title">{a['title']}</h1>
     <p class="article-date">📅 {fmt_date(article_date(a))} 公開</p>
+    <p class="article-byline">✍️ 監修・執筆：<a href="../about.html">{site['name']}編集部</a>（金融業界歴20年以上・元クレジットカード会社実務）</p>
     <p class="article-lead">{link_cards(a['lead'], data['cards'], 1, linked)}</p>"""
         # 記事内の図解（対象記事のみ・オリジナルSVG）
         if a["id"] in DIAGRAMS:
@@ -1348,6 +1349,17 @@ def build_legal_pages(data):
     pages = {
         "about.html": ("運営者情報・編集方針", f"""
     <h2>サイト名</h2><p class="review-text">{site['name']}（{site.get('base_url','').replace('https://','')}）</p>
+    <h2>運営者・編集責任者について</h2>
+    <div class="author-profile">
+      <p class="review-text">当サイトは、<strong>金融業界で20年以上の実務経験を持つ編集者</strong>が責任者として運営しています。キャリアの出発点は<strong>クレジットカード会社での実務（2004年〜2006年）</strong>。カードの発行・審査・ポイントプログラムといった仕組みを事業者側の立場で経験してきました。その後も一貫して金融分野に携わり、家計・資産形成の相談対応にも取り組んでいます。</p>
+      <p class="review-text">「カードは発行する側の理屈も、使う側のお得も、両方わかっている」——この視点を強みに、クレジットカード・ポイ活・新NISAといった“お金まわり”のテーマを、生活者の目線でわかりやすく解説することを目指しています。編集責任者自身も複数枚のカードを保有・使い分け、ポイント還元やクレカ積立を日常的に活用しています。</p>
+      <ul class="policy-list">
+        <li><strong>専門分野</strong>：クレジットカード（発行・審査・ポイント設計の実務経験）／ポイント経済圏／新NISA・つみたて投資／家計の見直し</li>
+        <li><strong>経歴</strong>：2004年〜2006年 クレジットカード会社にて実務／2006年〜現在 金融分野に従事（実務経験20年以上）</li>
+        <li><strong>運営スタンス</strong>：特定の発行会社に偏らず、読者にとっての実利を基準に比較・評価</li>
+      </ul>
+      <p class="review-text" style="font-size:0.9em;color:#8a90a8;">※プライバシー保護および中立性の観点から、編集責任者の氏名は非公開としています。取材・監修・提携等のご依頼は<a href="contact.html">お問い合わせ</a>より承ります。</p>
+    </div>
     <h2>運営方針</h2><p class="review-text">{site['name']}は、クレジットカードを検討している方が自分に合った1枚を見つけられるよう、年会費・ポイント還元率・特典などを公平に比較・紹介する情報メディアです。「広告だから上位」ではなく、読者にとっての使いやすさ・お得さを基準に編集することを大切にしています。</p>
     <h2>カードの選定・評価基準</h2>
     <p class="review-text">当サイトのランキング・おすすめは、以下の6つの観点を編集部で総合的に評価して作成しています。</p>
