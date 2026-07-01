@@ -1331,10 +1331,33 @@ def build_article_pages(data):
 </article>"""
         base = site.get("base_url", "").rstrip("/")
         iso = article_date(a)
-        h += f"""
-<script type="application/ld+json">
-{{"@context":"https://schema.org","@type":"Article","headline":"{a['title']}","description":"{a['description']}","datePublished":"{iso}","dateModified":"{iso}","inLanguage":"ja","author":{{"@type":"Organization","name":"{site['name']}編集部"}},"publisher":{{"@type":"Organization","name":"{site['name']}"}},"mainEntityOfPage":"{base}/articles/{a['id']}.html"}}
-</script>"""
+        author = {
+            "@type": "Person",
+            "name": f"{site['name']} 編集責任者",
+            "jobTitle": "編集責任者",
+            "description": "金融業界で20年以上の実務経験を持つ編集者。クレジットカード会社での発行・審査・ポイント設計・加盟店開拓の実務を経て、一貫して金融分野に従事。",
+            "knowsAbout": ["クレジットカード", "ポイント還元", "ポイ活", "新NISA", "つみたて投資", "家計管理"],
+            "url": f"{base}/about.html",
+            "worksFor": {"@type": "Organization", "name": site["name"]},
+        }
+        article_ld = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": a["title"],
+            "description": a["description"],
+            "datePublished": iso,
+            "dateModified": iso,
+            "inLanguage": "ja",
+            "image": f"{base}/{eyecatch}" if eyecatch else f"{base}/ogp.png",
+            "author": author,
+            "publisher": {
+                "@type": "Organization",
+                "name": site["name"],
+                "logo": {"@type": "ImageObject", "url": f"{base}/ogp.png"},
+            },
+            "mainEntityOfPage": f"{base}/articles/{a['id']}.html",
+        }
+        h += '\n<script type="application/ld+json">\n' + json.dumps(article_ld, ensure_ascii=False) + '\n</script>'
         bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
             {"@type": "ListItem", "position": 2, "name": "記事一覧", "item": f"{base}/articles.html"},
