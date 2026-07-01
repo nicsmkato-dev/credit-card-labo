@@ -1260,7 +1260,7 @@ def build_article_pages(data):
     <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <a href="../articles.html">記事一覧</a> ＞ <span>{a['title']}</span></nav>
     <h1 class="article-title">{a['title']}</h1>
     <p class="article-date">📅 {fmt_date(article_date(a))} 公開</p>
-    <p class="article-byline">✍️ 監修・執筆：<a href="../about.html">{site['name']}編集部</a>（金融業界歴20年以上・元クレジットカード会社実務）</p>
+    <p class="article-byline">✍️ 監修・執筆：<a href="../about.html">{site['name']} 編集責任者</a>（金融業界歴20年以上・元クレジットカード会社実務）</p>
     <p class="article-lead">{link_cards(a['lead'], data['cards'], 1, linked)}</p>"""
         # 記事内の図解（対象記事のみ・オリジナルSVG）
         if a["id"] in DIAGRAMS:
