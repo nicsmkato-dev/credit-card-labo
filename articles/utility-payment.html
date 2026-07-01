@@ -30,6 +30,28 @@
     gtag('js', new Date());
     gtag('config', 'G-4SP91V4T07');
   </script>
+  <!-- アフィリエイト申込リンクのクリックを計測（affiliate_click） -->
+  <script>
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a[rel~="sponsored"]');
+      if (!a) return;
+      var name = '';
+      var box = a.closest('.card-item, .detail-page, tr');
+      if (box) {
+        var t = box.querySelector('h1, h3, td a strong');
+        if (t) name = t.textContent.trim();
+      }
+      if (!name) name = (a.textContent || '').trim();
+      var dest = '';
+      try { dest = new URL(a.href).hostname; } catch (err) { dest = a.href; }
+      gtag('event', 'affiliate_click', {
+        card_name: name.slice(0, 100),
+        link_url: a.href,
+        link_domain: dest,
+        page_path: location.pathname
+      });
+    }, true);
+  </script>
 </head>
 <body>
 <header class="site-header">
