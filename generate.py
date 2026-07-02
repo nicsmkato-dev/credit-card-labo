@@ -1063,6 +1063,103 @@ def diagram_cardgrade(data=None):
     return _svg_frame(inner, vb="0 0 560 260", label="一般・ゴールド・プラチナの違い")
 
 
+def diagram_store_matrix(data=None):
+    """利用先×主要カードの還元率マトリクス（tako_pay型の保存版マップ）。"""
+    cols = ["三井住友NL", "JCB CARD W", "楽天カード", "イオンカード"]
+    rows = [
+        ("コンビニ", ["最大7%", "1%", "1%", "0.5%"]),
+        ("ネット通販", ["0.5%", "Amazon 2%", "楽天市場 3%", "0.5%"]),
+        ("イオン系", ["0.5%", "1%", "1%", "1%+優待"]),
+        ("基本還元", ["0.5%", "1%", "1%", "0.5%"]),
+    ]
+
+    def cell_style(v):
+        m = re.search(r"(\d+\.?\d*)", v)
+        n = float(m.group(1)) if m else 0
+        if n >= 3:
+            return "#ff6f00", "#fff"
+        if n >= 2:
+            return "#ff9800", "#fff"
+        if n >= 1:
+            return "#3949ab", "#fff"
+        return "#eef0fa", "#5a6079"
+
+    inner = ('<text x="280" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#283593">どこで使う？×どのカード？ 還元率マップ</text>')
+    x0, y0, lw, cw, rh = 20, 52, 96, 106, 44
+    # ヘッダー行
+    for i, c in enumerate(cols):
+        x = x0 + lw + i * cw
+        inner += f'<rect x="{x}" y="{y0}" width="{cw-4}" height="30" rx="6" fill="#283593"/>'
+        inner += f'<text x="{x+(cw-4)/2}" y="{y0+20}" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">{c}</text>'
+    # データ行
+    for r, (label, cells) in enumerate(rows):
+        y = y0 + 34 + r * rh
+        inner += f'<text x="{x0+lw-10}" y="{y+rh/2+5}" text-anchor="end" font-size="13" font-weight="700" fill="#3a3f5a">{label}</text>'
+        for i, v in enumerate(cells):
+            x = x0 + lw + i * cw
+            bg, fg = cell_style(v)
+            fs = 15 if len(v) <= 5 else 11
+            inner += f'<rect x="{x}" y="{y}" width="{cw-4}" height="{rh-6}" rx="8" fill="{bg}"/>'
+            inner += f'<text x="{x+(cw-4)/2}" y="{y+rh/2+3}" text-anchor="middle" font-size="{fs}" font-weight="700" fill="{fg}">{v}</text>'
+    inner += f'<text x="280" y="{y0+34+4*rh+22}" text-anchor="middle" font-size="11" fill="#8a90a8">※タッチ決済・特約店等の条件あり。最新の還元条件は各公式サイトで。</text>'
+    return _svg_frame(inner, vb="0 0 560 300", label="利用先別のカード還元率マトリクス")
+
+
+def diagram_double_route(data=None):
+    """ポイント二重取りのルート図（クレカ→チャージ→支払い）。"""
+    inner = (
+        '<defs><marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#ff6f00"/></marker></defs>'
+        '<text x="280" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#283593">ポイント二重取りの基本ルート</text>'
+        # クレカ
+        '<rect x="30" y="86" width="140" height="60" rx="12" fill="#3949ab"/>'
+        '<text x="100" y="122" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">クレジットカード</text>'
+        # 矢印1
+        '<line x1="172" y1="116" x2="222" y2="116" stroke="#ff6f00" stroke-width="3" marker-end="url(#arw)"/>'
+        '<text x="197" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ff6f00">チャージ</text>'
+        '<text x="197" y="144" text-anchor="middle" font-size="12" font-weight="700" fill="#d84315">+0.5〜1%</text>'
+        # 電子マネー/Pay
+        '<rect x="228" y="86" width="140" height="60" rx="12" fill="#1f6fd0"/>'
+        '<text x="298" y="112" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">電子マネー</text>'
+        '<text x="298" y="132" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">スマホ決済</text>'
+        # 矢印2
+        '<line x1="370" y1="116" x2="420" y2="116" stroke="#ff6f00" stroke-width="3" marker-end="url(#arw)"/>'
+        '<text x="395" y="100" text-anchor="middle" font-size="12" font-weight="700" fill="#ff6f00">支払い</text>'
+        '<text x="395" y="144" text-anchor="middle" font-size="12" font-weight="700" fill="#d84315">+0.5〜1%</text>'
+        # お店
+        '<rect x="426" y="86" width="104" height="60" rx="12" fill="#2e7d32"/>'
+        '<text x="478" y="122" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">お店</text>'
+        # 合計と三重取り
+        '<rect x="120" y="176" width="320" height="34" rx="10" fill="#fff4e5"/>'
+        '<text x="280" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#d84315">合計 1〜2%（ポイントカード提示で三重取りも）</text>'
+        '<text x="280" y="232" text-anchor="middle" font-size="11" fill="#8a90a8">※チャージでポイントが付くカードの組み合わせが前提。付与対象は変更されることがあります。</text>'
+    )
+    return _svg_frame(inner, vb="0 0 560 250", label="ポイント二重取りの仕組み")
+
+
+def diagram_tsumitate_route(data=None):
+    """クレカ積立の「カード×証券」ペアのルート図。"""
+    pairs = [
+        ("楽天カード", "楽天証券", "#bf0000"),
+        ("三井住友カード(NL)", "SBI証券", "#1f6fd0"),
+        ("マネックスカード", "マネックス証券", "#00897b"),
+    ]
+    inner = (
+        '<defs><marker id="arw2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#ff6f00"/></marker></defs>'
+        '<text x="280" y="36" text-anchor="middle" font-size="19" font-weight="700" fill="#283593">クレカ積立は「カード×証券」の組み合わせ</text>'
+    )
+    y = 62
+    for card, broker, color in pairs:
+        inner += f'<rect x="40" y="{y}" width="180" height="46" rx="10" fill="#fff" stroke="{color}" stroke-width="2"/>'
+        inner += f'<text x="130" y="{y+29}" text-anchor="middle" font-size="13" font-weight="700" fill="{color}">{card}</text>'
+        inner += f'<line x1="226" y1="{y+23}" x2="306" y2="{y+23}" stroke="#ff6f00" stroke-width="3" marker-end="url(#arw2)"/>'
+        inner += f'<text x="266" y="{y+12}" text-anchor="middle" font-size="11" font-weight="700" fill="#ff6f00">積立</text>'
+        inner += f'<rect x="312" y="{y}" width="180" height="46" rx="10" fill="{color}"/>'
+        inner += f'<text x="402" y="{y+29}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">{broker}</text>'
+        y += 58
+    inner += f'<text x="280" y="{y+16}" text-anchor="middle" font-size="13" font-weight="700" fill="#d84315">積立するだけで決済額の0.5〜1%前後のポイントが毎月貯まる</text>'
+    return _svg_frame(inner, vb="0 0 560 270", label="クレカ積立のカードと証券会社の組み合わせ")
+
+
 def _reward_float(s):
     """還元率文字列から基本還元率の数値を取得（例: '1.0%〜3.0%' → 1.0）"""
     m = re.search(r"(\d+\.?\d*)\s*%", s or "")
@@ -1149,6 +1246,12 @@ DIAGRAMS = {
     "vs-epos-jcbw":      (_vs("epos-card", "jcb-card-w"),     "エポスカードとJCB CARD Wの基本還元率比較。"),
     "vs-dcard-rakuten":  (_vs("d-card", "rakuten-card"),      "dカードと楽天カードの基本還元率比較。"),
     "vs-smbc-recruit":   (_vs("smbc-card", "recruit-card"),   "三井住友カード(NL)とリクルートカードの基本還元率比較。"),
+    # マトリクス・ルート図解
+    "konbini-card":      (diagram_store_matrix, "カードによって「得意な場所」が違います。コンビニ利用が多いなら対象店高還元カードを。"),
+    "supermarket-card":  (diagram_store_matrix, "よく行くお店に合わせてカードを選ぶと、同じ支出でも貯まり方が変わります。"),
+    "point-double":      (diagram_double_route, "チャージと支払いの両方でポイントが付くのが「二重取り」の基本形です。"),
+    "emoney-charge":     (diagram_double_route, "チャージでポイントが付くカードを選ぶのが二重取りのコツです。"),
+    "nisa-card-combo":   (diagram_tsumitate_route, "同じ経済圏の「カード×証券」ペアで選ぶと、ポイントが効率よく貯まります。"),
 }
 
 
