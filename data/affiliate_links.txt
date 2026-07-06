@@ -49,6 +49,6 @@ rakuten-card         https://hb.afl.rakuten.co.jp/hgc/553a3a45.fc15b05d.553a3a46
 # ---- 証券 ----
 # rakuten-sec           # 楽天証券（未反映・公式URLにフォールバック）
 # sbi-sec               # SBI証券（未反映・公式URLにフォールバック）
-# monex-sec             # マネックス証券（未反映・公式URLにフォールバック）
+monex-sec            https://h.accesstrade.net/sp/cc?rk=0100pe6z00ouvh    # マネックス証券（AT承認 2026-07-06・口座開設申込3,000円）
 matsui-sec           https://px.a8.net/svt/ejp?a8mat=4B5RS9+2A5U9E+3XCC+64C3M    # 松井証券
 # smartplus-sec         # 三菱UFJ eスマート証券（未反映・公式URLにフォールバック）
