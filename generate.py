@@ -335,10 +335,18 @@ def hero_card_svg():
 
 
 # ---------- 共通パーツ ----------
+def pretty_path(path):
+    """Cloudflare Pagesの正規URL（拡張子なし）に合わせる。.htmlは308リダイレクトされるため、
+    canonical/サイトマップ/JSON-LDは拡張子なしで統一する。index.htmlはルートに。"""
+    if not path or path == "index.html":
+        return ""
+    return path[:-5] if path.endswith(".html") else path
+
+
 def head(site, title, description, depth=0, path="", og_image=None):
     prefix = "" if depth == 0 else "../"
     base = site.get("base_url", "").rstrip("/")
-    canonical_url = f"{base}/{path}" if path != "index.html" else f"{base}/"
+    canonical_url = f"{base}/{pretty_path(path)}"
     og_img_url = f"{base}/{og_image}" if og_image else f"{base}/ogp.png"
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -896,7 +904,7 @@ def build_card_pages(data):
         cbase = site.get("base_url", "").rstrip("/")
         cbc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{cbase}/"},
-            {"@type": "ListItem", "position": 2, "name": c["name"], "item": f"{cbase}/cards/{c['id']}.html"}]}
+            {"@type": "ListItem", "position": 2, "name": c["name"], "item": f"{cbase}/cards/{c['id']}"}]}
         html += '\n<script type="application/ld+json">\n' + json.dumps(cbc, ensure_ascii=False) + '\n</script>'
         html += footer(site, depth=1)
         write(os.path.join(BASE_DIR, "cards", f"{c['id']}.html"), html)
@@ -1292,7 +1300,7 @@ def build_keizaiken_pages(data):
         base = site.get("base_url", "").rstrip("/")
         bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
-            {"@type": "ListItem", "position": 2, "name": f"{kz['name']}経済圏", "item": f"{base}/keizaiken/{kz['id']}.html"}]}
+            {"@type": "ListItem", "position": 2, "name": f"{kz['name']}経済圏", "item": f"{base}/keizaiken/{kz['id']}"}]}
         html += '\n<script type="application/ld+json">\n' + json.dumps(bc, ensure_ascii=False) + '\n</script>'
         html += footer(site, depth=1)
         write(os.path.join(BASE_DIR, "keizaiken", f"{kz['id']}.html"), html)
@@ -1462,7 +1470,7 @@ def build_article_pages(data):
             "jobTitle": "編集責任者",
             "description": "金融業界で20年以上の実務経験を持つ編集者。クレジットカード会社での発行・審査・ポイント設計・加盟店開拓の実務を経て、一貫して金融分野に従事。",
             "knowsAbout": ["クレジットカード", "ポイント還元", "ポイ活", "新NISA", "つみたて投資", "家計管理"],
-            "url": f"{base}/about.html",
+            "url": f"{base}/about",
             "worksFor": {"@type": "Organization", "name": site["name"]},
         }
         article_ld = {
@@ -1480,13 +1488,13 @@ def build_article_pages(data):
                 "name": site["name"],
                 "logo": {"@type": "ImageObject", "url": f"{base}/ogp.png"},
             },
-            "mainEntityOfPage": f"{base}/articles/{a['id']}.html",
+            "mainEntityOfPage": f"{base}/articles/{a['id']}",
         }
         h += '\n<script type="application/ld+json">\n' + json.dumps(article_ld, ensure_ascii=False) + '\n</script>'
         bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
-            {"@type": "ListItem", "position": 2, "name": "記事一覧", "item": f"{base}/articles.html"},
-            {"@type": "ListItem", "position": 3, "name": a["title"], "item": f"{base}/articles/{a['id']}.html"}]}
+            {"@type": "ListItem", "position": 2, "name": "記事一覧", "item": f"{base}/articles"},
+            {"@type": "ListItem", "position": 3, "name": a["title"], "item": f"{base}/articles/{a['id']}"}]}
         h += '\n<script type="application/ld+json">\n' + json.dumps(bc, ensure_ascii=False) + '\n</script>'
         h += footer(site, depth=1)
         write(os.path.join(BASE_DIR, "articles", f"{a['id']}.html"), h)
@@ -1716,8 +1724,8 @@ SEC_FAQ_PLACEHOLDER
 </article>"""
         bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
-            {"@type": "ListItem", "position": 2, "name": "ネット証券・NISA", "item": f"{base}/securities.html"},
-            {"@type": "ListItem", "position": 3, "name": b["name"], "item": f"{base}/securities/{b['id']}.html"}]}
+            {"@type": "ListItem", "position": 2, "name": "ネット証券・NISA", "item": f"{base}/securities"},
+            {"@type": "ListItem", "position": 3, "name": b["name"], "item": f"{base}/securities/{b['id']}"}]}
         h += '\n<script type="application/ld+json">\n' + json.dumps(bc, ensure_ascii=False) + '\n</script>'
         h += footer(site, depth=1)
         write(os.path.join(BASE_DIR, "securities", f"{b['id']}.html"), h)
@@ -2100,7 +2108,7 @@ def build_pillars(data):
 </article>"""
         bc = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{base}/"},
-            {"@type": "ListItem", "position": 2, "name": pl["title"], "item": f"{base}/{pl['id']}.html"}]}
+            {"@type": "ListItem", "position": 2, "name": pl["title"], "item": f"{base}/{pl['id']}"}]}
         html += '\n<script type="application/ld+json">\n' + json.dumps(bc, ensure_ascii=False) + '\n</script>'
         html += footer(site)
         write(os.path.join(BASE_DIR, f"{pl['id']}.html"), html)
@@ -2173,7 +2181,7 @@ def build_glossary(data):
     base = site.get("base_url", "").rstrip("/")
     dts = {"@context": "https://schema.org", "@type": "DefinedTermSet",
            "name": f"クレジットカード用語集｜{site['name']}",
-           "url": f"{base}/glossary.html",
+           "url": f"{base}/glossary",
            "hasDefinedTerm": [{"@type": "DefinedTerm", "name": t["term"], "description": t["def"]} for t in terms]}
     html += '\n<script type="application/ld+json">\n' + json.dumps(dts, ensure_ascii=False) + '\n</script>'
     html += footer(site)
@@ -2231,7 +2239,7 @@ def build_sitemap(data):
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for u, lastmod in urls:
-        loc = f"{base}/{u}" if base else u
+        loc = f"{base}/{pretty_path(u)}" if base else u
         xml += f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod></url>\n"
     xml += "</urlset>\n"
     write(os.path.join(BASE_DIR, "sitemap.xml"), xml)
