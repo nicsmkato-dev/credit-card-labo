@@ -381,6 +381,14 @@ def head(site, title, description, depth=0, path="", og_image=None):
     gtag('js', new Date());
     gtag('config', 'G-4SP91V4T07');
   </script>
+  <!-- Microsoft Clarity（ヒートマップ・セッション録画） -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){{
+        c[a]=c[a]||function(){{(c[a].q=c[a].q||[]).push(arguments)}};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    }})(window, document, "clarity", "script", "xi3cekaj64");
+  </script>
   <!-- アフィリエイト申込リンクのクリックを計測（affiliate_click） -->
   <script>
     document.addEventListener('click', function(e) {{
