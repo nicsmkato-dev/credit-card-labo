@@ -1,0 +1,23 @@
+# クレカ比較Labo
+
+> 2026年最新！クレジットカード比較ランキング。ポイント還元率・年会費・特典を徹底比較して、あなたにぴったりのカードを見つけよう。
+
+金融業界で20年以上の実務経験（クレジットカード会社での発行・審査・ポイント設計・加盟店開拓を含む）を持つ編集責任者が運営する、クレジットカード・ポイ活・新NISAの比較情報メディアです。掲載情報は各社公式サイトの一次情報に基づき、毎日自動更新されています。
+
+## 主要ページ
+
+- [おすすめクレジットカードランキング](https://creca-labo.com/): 主要38枚を年会費・還元率・特典で比較
+- [入会キャンペーンまとめ](https://creca-labo.com/campaign): 各カードの入会特典を毎日更新
+- [ネット証券・NISA比較](https://creca-labo.com/securities): クレカ積立対応の証券会社6社を比較
+- [お役立ち記事一覧](https://creca-labo.com/articles): クレカ・ポイ活・新NISAの解説記事87本
+- [ポイント還元シミュレーター](https://creca-labo.com/simulator): 月の利用額から年間ポイントを試算
+- [用語集](https://creca-labo.com/glossary): クレジットカード用語30語の解説
+- [運営者情報・編集方針](https://creca-labo.com/about): 編集責任者の経歴と評価基準
+
+## ガイド
+
+- [クレジットカード完全ガイド](https://creca-labo.com/credit-card-guide)
+- [ポイ活完全ガイド](https://creca-labo.com/poikatsu-guide)
+- [新NISA完全ガイド](https://creca-labo.com/nisa-guide)
+
+サイトマップ: https://creca-labo.com/sitemap.xml / RSS: https://creca-labo.com/rss.xml

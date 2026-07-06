@@ -356,6 +356,7 @@ def head(site, title, description, depth=0, path="", og_image=None):
   <meta name="description" content="{description}">
   <title>{title}</title>
   <link rel="canonical" href="{canonical_url}">
+  <link rel="alternate" type="application/rss+xml" title="{site['name']} 新着記事" href="{base}/rss.xml">
   <link rel="icon" href="{prefix}favicon.svg" type="image/svg+xml">
   <meta property="og:type" content="website">
   <meta property="og:title" content="{title}">
@@ -2259,6 +2260,51 @@ def write(path, content):
     print(f"  生成: {os.path.relpath(path, BASE_DIR)}")
 
 
+def build_feeds(data):
+    """rss.xml（新着記事フィード）と llms.txt（AIクローラー向けサイト案内）を生成。"""
+    site = data["site"]
+    base = site.get("base_url", "").rstrip("/")
+
+    # ---- rss.xml（最新20記事）----
+    def rfc822(iso):
+        d = datetime.date.fromisoformat(iso)
+        wd = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][d.weekday()]
+        mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][d.month - 1]
+        return f"{wd}, {d.day:02d} {mo} {d.year} 06:00:00 +0900"
+
+    arts = sorted(data["articles"], key=article_date, reverse=True)[:20]
+    items = ""
+    for a in arts:
+        link = f"{base}/articles/{a['id']}"
+        items += (f"  <item>\n    <title>{a['title']}</title>\n    <link>{link}</link>\n"
+                  f"    <guid>{link}</guid>\n    <description>{a['description']}</description>\n"
+                  f"    <pubDate>{rfc822(article_date(a))}</pubDate>\n  </item>\n")
+    rss = (f'<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n'
+           f"  <title>{site['name']}</title>\n  <link>{base}/</link>\n"
+           f"  <description>{site['description']}</description>\n  <language>ja</language>\n"
+           f"{items}</channel>\n</rss>\n")
+    write(os.path.join(BASE_DIR, "rss.xml"), rss)
+
+    # ---- llms.txt ----
+    lines = [f"# {site['name']}", "",
+             f"> {site['description']}", "",
+             "金融業界で20年以上の実務経験（クレジットカード会社での発行・審査・ポイント設計・加盟店開拓を含む）を持つ編集責任者が運営する、クレジットカード・ポイ活・新NISAの比較情報メディアです。掲載情報は各社公式サイトの一次情報に基づき、毎日自動更新されています。", "",
+             "## 主要ページ", "",
+             f"- [おすすめクレジットカードランキング]({base}/): 主要{len(data['cards'])}枚を年会費・還元率・特典で比較",
+             f"- [入会キャンペーンまとめ]({base}/campaign): 各カードの入会特典を毎日更新",
+             f"- [ネット証券・NISA比較]({base}/securities): クレカ積立対応の証券会社{len(data.get('brokers', []))}社を比較",
+             f"- [お役立ち記事一覧]({base}/articles): クレカ・ポイ活・新NISAの解説記事{len(data['articles'])}本",
+             f"- [ポイント還元シミュレーター]({base}/simulator): 月の利用額から年間ポイントを試算",
+             f"- [用語集]({base}/glossary): クレジットカード用語30語の解説",
+             f"- [運営者情報・編集方針]({base}/about): 編集責任者の経歴と評価基準", "",
+             "## ガイド", "",
+             f"- [クレジットカード完全ガイド]({base}/credit-card-guide)",
+             f"- [ポイ活完全ガイド]({base}/poikatsu-guide)",
+             f"- [新NISA完全ガイド]({base}/nisa-guide)", "",
+             f"サイトマップ: {base}/sitemap.xml / RSS: {base}/rss.xml", ""]
+    write(os.path.join(BASE_DIR, "llms.txt"), "\n".join(lines))
+
+
 def main():
     print(f"=== サイト自動生成開始 {today_str()} ===")
     data = load_data()
@@ -2279,6 +2325,7 @@ def main():
     build_legal_pages(data)
     build_404(data)
     build_sitemap(data)
+    build_feeds(data)
     n = 6 + len(data["cards"]) + len(data["purposes"]) + len(data["articles"])
     print(f"=== 完了: 約{n}ページを生成しました ===")
 
