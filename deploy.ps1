@@ -51,6 +51,9 @@ if ($hasRemote) {
         Log "ERROR: git push exited $LASTEXITCODE (check credentials / network)"
     } else {
         Log "push OK; Cloudflare Pages will redeploy in a few minutes"
+        Log "[4/4] pinging IndexNow (Bing) with changed URLs..."
+        & $Python "$SiteDir\indexnow_ping.py" 2>&1 | Out-Null
+        if ($LASTEXITCODE -ne 0) { Log "WARN: indexnow_ping.py exited $LASTEXITCODE (non-fatal)" }
     }
 } else {
     Log "ERROR: no git remote configured"

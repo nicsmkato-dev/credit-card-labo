@@ -10,6 +10,19 @@ gen_x_neta.py
 gen_x_neta.log
 x_neta_auto.txt
 post_note.py
+
+# 自動化スクリプト・ログ（公開しない）
+indexnow_ping.py
+indexnow.log
+check_affiliate_links.py
+link_check.log
+link_check_alert.txt
+gen_x_zukai.py
+gen_x_matrix.py
+x_zukai_state.txt
+x_zukai.log
+x_matrix.png
+x_zukai_*.png
 profile_x.png
 header_x.png
 note_header.png
