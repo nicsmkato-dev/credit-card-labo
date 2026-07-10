@@ -130,6 +130,52 @@ def link_cards(text, cards, depth=1, linked_ids=None, skip_id=None):
     return rx.sub(repl, text)
 
 
+_BROKER_LINK_CACHE = {}
+# 証券会社名の表記ゆれ（本文で使われうる別名）→ broker id
+BROKER_ALIASES = {
+    "dmm-kabu": ["DMM株", "DMM 株"],
+}
+
+
+def _broker_link_regex(brokers):
+    """証券会社名（正式名＋別名）→id の正規表現。長い表記優先。カード名とは部分一致しないので併用安全。"""
+    key = id(brokers)
+    if key not in _BROKER_LINK_CACHE:
+        pairs = [(b["name"], b["id"]) for b in brokers]
+        for bid, aliases in BROKER_ALIASES.items():
+            for a in aliases:
+                pairs.append((a, bid))
+        pairs.sort(key=lambda x: len(x[0]), reverse=True)
+        text_to_id = {t: i for t, i in pairs}
+        pat = "|".join(re.escape(t) for t, _ in pairs)
+        _BROKER_LINK_CACHE[key] = (re.compile(pat), text_to_id)
+    return _BROKER_LINK_CACHE[key]
+
+
+def link_brokers(text, brokers, depth=1, linked_ids=None, skip_id=None):
+    """本文中の証券会社名を、その証券の詳細ページ(securities/<id>)へのリンクに置換する。
+    link_cards と同じ設計。カード名と証券名は部分一致しないため順不同で併用可。
+    linked_ids で各証券の初出1回のみリンク（過剰リンク防止）。"""
+    if not text or not brokers:
+        return text
+    rx, text_to_id = _broker_link_regex(brokers)
+    p = "" if depth == 0 else "../"
+
+    def repl(m):
+        matched = m.group(0)
+        bid = text_to_id[matched]
+        if bid == skip_id:
+            return matched
+        if linked_ids is not None:
+            if bid in linked_ids:
+                return matched
+            linked_ids.append(bid)
+        return (f'<a href="{p}securities/{bid}.html" '
+                f'class="card-inline-link">{matched}</a>')
+
+    return rx.sub(repl, text)
+
+
 # 記事の関連度判定用キーワード（タイトル・説明・リードに含まれる語の共有数で関連記事を選ぶ）
 RELATED_VOCAB = [
     "還元率", "ポイント", "年会費", "審査", "信用情報", "限度額", "延滞", "多重申込",
@@ -1396,6 +1442,7 @@ def build_article_pages(data):
                  path=f"articles/{a['id']}.html", og_image=eyecatch)
         h += header(site, depth=1)
         linked = []  # 記事内で言及・リンクしたカードid（初出順）
+        linked_b = []  # 記事内で言及・リンクした証券id（初出順・過剰リンク防止）
         h += f"""
 <article class="detail-page">
   <div class="container container-narrow">
@@ -1403,7 +1450,7 @@ def build_article_pages(data):
     <h1 class="article-title">{a['title']}</h1>
     <p class="article-date">📅 {fmt_date(article_date(a))} 公開</p>
     <p class="article-byline">✍️ 監修・執筆：<a href="../about.html">{site['name']} 編集責任者</a>（金融業界歴20年以上・元クレジットカード会社実務）</p>
-    <p class="article-lead">{link_cards(a['lead'], data['cards'], 1, linked)}</p>"""
+    <p class="article-lead">{link_brokers(link_cards(a['lead'], data['cards'], 1, linked), data.get('brokers', []), 1, linked_b)}</p>"""
         # 記事内の図解（対象記事のみ・オリジナルSVG）
         if a["id"] in DIAGRAMS:
             dfunc, caption = DIAGRAMS[a["id"]]
@@ -1430,7 +1477,7 @@ def build_article_pages(data):
         for i, s in enumerate(secs):
             h += f"""
     <h2 id="sec-{i}">{s['h']}</h2>
-    <p class="review-text">{link_cards(s['p'], data['cards'], 1, linked)}</p>"""
+    <p class="review-text">{link_brokers(link_cards(s['p'], data['cards'], 1, linked), data.get('brokers', []), 1, linked_b)}</p>"""
         # 記事で紹介したカードの詳細リンク（本文で言及されたカードを末尾にまとめる）
         if linked:
             h += """
