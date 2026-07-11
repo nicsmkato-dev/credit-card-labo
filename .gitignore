@@ -14,6 +14,8 @@ post_note.py
 # 自動化スクリプト・ログ（公開しない）
 indexnow_ping.py
 indexnow.log
+check_post_health.py
+post_health.log
 check_affiliate_links.py
 link_check.log
 link_check_alert.txt
