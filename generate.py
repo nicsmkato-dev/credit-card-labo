@@ -948,8 +948,24 @@ def build_card_pages(data):
     </ul>
 
     <h2>こんな人におすすめ</h2>
-    <p class="review-text">👤 {c['target']}</p>
-
+    <p class="review-text">👤 {c['target']}</p>"""
+        # 追加解説セクション（惜しいクエリ加筆用・任意。s['p']=段落 or s['html']=ブロックHTML）
+        for i, s in enumerate(c.get("sections", [])):
+            body = s.get("html") or f"""<p class="review-text">{s['p']}</p>"""
+            html += f"""
+    <h2 id="sec-{i}">{s['h']}</h2>
+    {body}"""
+        # よくある質問（任意・FAQ構造化データは後段で出力）
+        if c.get("faq"):
+            html += """
+    <h2>よくある質問</h2>
+    <div class="faq-list">"""
+            for fq in c["faq"]:
+                html += f"""
+      <div class="faq-item"><p class="faq-q">Q. {fq['q']}</p><p class="faq-a">A. {fq['a']}</p></div>"""
+            html += """
+    </div>"""
+        html += f"""
     <div class="apply-cta">
       <a href="{c['affiliate_url']}" class="btn-apply" target="_blank" rel="nofollow sponsored noopener">公式サイトで申し込む（無料）</a>
       <a href="../index.html#ranking" class="btn-detail">他のカードと比較する</a>
@@ -961,6 +977,11 @@ def build_card_pages(data):
             {"@type": "ListItem", "position": 1, "name": "ホーム", "item": f"{cbase}/"},
             {"@type": "ListItem", "position": 2, "name": c["name"], "item": f"{cbase}/cards/{c['id']}"}]}
         html += '\n<script type="application/ld+json">\n' + json.dumps(cbc, ensure_ascii=False) + '\n</script>'
+        if c.get("faq"):
+            faq_ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+                {"@type": "Question", "name": fq["q"],
+                 "acceptedAnswer": {"@type": "Answer", "text": fq["a"]}} for fq in c["faq"]]}
+            html += '\n<script type="application/ld+json">\n' + json.dumps(faq_ld, ensure_ascii=False) + '\n</script>'
         html += footer(site, depth=1)
         write(os.path.join(BASE_DIR, "cards", f"{c['id']}.html"), html)
 
