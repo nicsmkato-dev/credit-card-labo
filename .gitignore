@@ -32,6 +32,7 @@ X投稿ネタ.txt
 __pycache__/
 *.pyc
 
+a8_sync.py
 # A8自動取得（認証情報・ログイン用Chromeプロファイル・ログ）
 config/a8_config.json
 a8_profile/
@@ -47,3 +48,4 @@ X投稿ネタ.txt
 
 # SNS運用チーム（内部運用ファイル・公開しない）
 sns_team/
+_note_thumb.png
