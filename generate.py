@@ -260,6 +260,12 @@ def article_date(a):
     return a.get("published", datetime.date.today().isoformat())
 
 
+def article_modified(a):
+    """記事の最終更新日(ISO)。加筆時にcards.jsonへ modified を付与するとサイトマップの
+    lastmod と JSON-LD の dateModified に反映され、Googleへの再クロール誘導になる。"""
+    return a.get("modified") or article_date(a)
+
+
 def publish_from_queue(data):
     """記事キューから1日1本だけ自動公開する。公開したらcards.jsonへ書き戻す"""
     queue = data.get("article_queue", [])
@@ -899,6 +905,32 @@ def build_index(data):
     write(os.path.join(BASE_DIR, "index.html"), html)
 
 
+# GSCで検索実績があるのに他ページへのリンクが無い「行き止まり」カードページの回遊先。
+# 需要はあるが換金案件が無いカード（JAL/アメックス/ヒルトン等）から、換金可能カードや関連記事へ誘導する。
+CARD_RELATED_LINKS = {
+    "jal-card": [
+        ("../articles/mile-beginner.html", "マイルの貯め方入門｜陸マイラーの始め方"),
+        ("ana-card.html", "ANAカード（一般）と比較する"),
+        ("rakuten-card.html", "汎用の高還元で貯めるなら楽天カード"),
+    ],
+    "amex-gold": [
+        ("smbc-gold-nl.html", "年会費を抑えるなら三井住友カード ゴールド（NL）"),
+        ("epos-gold.html", "条件達成で年会費無料になるエポスゴールドカード"),
+        ("../articles/gold-card.html", "ゴールドカードは年会費に見合う？"),
+    ],
+    "hilton-amex": [
+        ("marriott-amex.html", "マリオット派ならマリオットボンヴォイ・アメックス"),
+        ("../purpose/hotel.html", "ホテル系カードの比較を見る"),
+        ("../articles/airport-lounge.html", "空港ラウンジが無料になる仕組み"),
+    ],
+    "paypay-gold": [
+        ("paypay-card.html", "まず年会費無料のPayPayカードと比較する"),
+        ("../keizaiken/paypay.html", "PayPay経済圏のおすすめ構成"),
+        ("rakuten-card.html", "楽天経済圏なら楽天カード"),
+    ],
+}
+
+
 def build_card_pages(data):
     site = data["site"]
     cards = data["cards"]
@@ -963,6 +995,16 @@ def build_card_pages(data):
             for fq in c["faq"]:
                 html += f"""
       <div class="faq-item"><p class="faq-q">Q. {fq['q']}</p><p class="faq-a">A. {fq['a']}</p></div>"""
+            html += """
+    </div>"""
+        # 行き止まり解消: 検索需要のあるページから関連カード/記事へ回遊させる
+        if c["id"] in CARD_RELATED_LINKS:
+            html += """
+    <div class="related-articles">
+      <h2>あわせてチェック</h2>"""
+            for href, label in CARD_RELATED_LINKS[c["id"]]:
+                html += f"""
+      <a href="{href}" class="related-link">👉 {label}</a>"""
             html += """
     </div>"""
         html += f"""
@@ -1244,6 +1286,42 @@ def diagram_tsumitate_route(data=None):
     return _svg_frame(inner, vb="0 0 560 270", label="クレカ積立のカードと証券会社の組み合わせ")
 
 
+def diagram_senior_setup(data=None):
+    """シニアのカード整理: メイン1枚＋予備1枚＋家族と共有の3ボックス。"""
+    boxes = [
+        ("メイン1枚", "よく行くスーパーに強い / 利用通知ON", "#3949ab"),
+        ("予備1枚", "別ブランドで備える（メイン障害時用）", "#1f6fd0"),
+        ("家族と共有", "カード一覧メモ（番号・暗証は書かない）", "#2e7d32"),
+    ]
+    inner = '<text x="280" y="40" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">シニアのカード整理は「メイン1枚＋予備1枚」</text>'
+    y = 70
+    for name, desc, color in boxes:
+        inner += f'<rect x="60" y="{y}" width="440" height="50" rx="12" fill="{color}"/>'
+        inner += f'<text x="90" y="{y+31}" font-size="17" font-weight="700" fill="#fff">{name}</text>'
+        inner += f'<text x="215" y="{y+31}" font-size="12.5" fill="#fff">{desc}</text>'
+        y += 62
+    return _svg_frame(inner, vb="0 0 560 270", label="シニアのカード整理の基本形")
+
+
+def diagram_family_card(data=None):
+    """家族カード: 親カード+家族カード→明細ひとつ（見守り）の流れ図。"""
+    inner = (
+        '<defs><marker id="arwf" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#ff6f00"/></marker></defs>'
+        '<text x="280" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#283593">家族カードは「明細がひとつ」＝見守りになる</text>'
+        '<rect x="50" y="70" width="180" height="54" rx="12" fill="#3949ab"/>'
+        '<text x="140" y="103" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">本会員（親）</text>'
+        '<rect x="50" y="140" width="180" height="54" rx="12" fill="#1f6fd0"/>'
+        '<text x="140" y="173" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">家族カード（子）</text>'
+        '<line x1="236" y1="97" x2="316" y2="125" stroke="#ff6f00" stroke-width="3" marker-end="url(#arwf)"/>'
+        '<line x1="236" y1="167" x2="316" y2="140" stroke="#ff6f00" stroke-width="3" marker-end="url(#arwf)"/>'
+        '<rect x="326" y="100" width="184" height="66" rx="12" fill="#2e7d32"/>'
+        '<text x="418" y="127" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">明細はひとつに</text>'
+        '<text x="418" y="149" text-anchor="middle" font-size="12" fill="#fff">利用通知で家族が気づける</text>'
+        '<text x="280" y="225" text-anchor="middle" font-size="13" fill="#3a3f5a">支払い責任は本会員に集約。限度額は家族カード側で低めに設定できる</text>'
+    )
+    return _svg_frame(inner, vb="0 0 560 250", label="家族カードの見守りの仕組み")
+
+
 def _reward_float(s):
     """還元率文字列から基本還元率の数値を取得（例: '1.0%〜3.0%' → 1.0）"""
     m = re.search(r"(\d+\.?\d*)\s*%", s or "")
@@ -1330,6 +1408,11 @@ DIAGRAMS = {
     "vs-epos-jcbw":      (_vs("epos-card", "jcb-card-w"),     "エポスカードとJCB CARD Wの基本還元率比較。"),
     "vs-dcard-rakuten":  (_vs("d-card", "rakuten-card"),      "dカードと楽天カードの基本還元率比較。"),
     "vs-smbc-recruit":   (_vs("smbc-card", "recruit-card"),   "三井住友カード(NL)とリクルートカードの基本還元率比較。"),
+    # シニア系（note/GA4最人気領域）＋需要実証済み記事
+    "senior-card":       (diagram_senior_setup, "シニア期は「メイン1枚＋予備1枚」に絞ると、管理がラクで安全です。"),
+    "senior-family-card":(diagram_family_card, "家族カードの利用分は本会員の明細にまとまる＝家族の見守りに使えます。"),
+    "gold-card":         (diagram_cardgrade, "一般・ゴールド・プラチナで、特典の手厚さと年会費が変わります。"),
+    "google-pay-card":   (diagram_double_route, "Google Pay経由でも「チャージ×支払い」の二重取りが基本です。"),
     # マトリクス・ルート図解
     "konbini-card":      (diagram_store_matrix, "カードによって「得意な場所」が違います。コンビニ利用が多いなら対象店高還元カードを。"),
     "supermarket-card":  (diagram_store_matrix, "よく行くお店に合わせてカードを選ぶと、同じ支出でも貯まり方が変わります。"),
@@ -1469,7 +1552,7 @@ def build_article_pages(data):
   <div class="container container-narrow">
     <nav class="breadcrumb"><a href="../index.html">ホーム</a> ＞ <a href="../articles.html">記事一覧</a> ＞ <span>{a['title']}</span></nav>
     <h1 class="article-title">{a['title']}</h1>
-    <p class="article-date">📅 {fmt_date(article_date(a))} 公開</p>
+    <p class="article-date">📅 {fmt_date(article_date(a))} 公開{f'（{fmt_date(a["modified"])} 更新）' if a.get('modified') and a['modified'] != article_date(a) else ''}</p>
     <p class="article-byline">✍️ 監修・執筆：<a href="../about.html">{site['name']} 編集責任者</a>（金融業界歴20年以上・元クレジットカード会社実務）</p>
     <p class="article-lead">{link_brokers(link_cards(a['lead'], data['cards'], 1, linked), data.get('brokers', []), 1, linked_b)}</p>"""
         # 記事内の図解（対象記事のみ・オリジナルSVG）
@@ -1556,7 +1639,7 @@ def build_article_pages(data):
             "headline": a["title"],
             "description": a["description"],
             "datePublished": iso,
-            "dateModified": iso,
+            "dateModified": article_modified(a),
             "inLanguage": "ja",
             "image": f"{base}/{eyecatch}" if eyecatch else f"{base}/ogp.png",
             "author": author,
@@ -2306,18 +2389,24 @@ def build_sitemap(data):
     site = data["site"]
     base = site.get("base_url", "").rstrip("/")
     today = datetime.date.today().isoformat()
-    urls = [(u, today) for u in ["", "articles.html", "campaign.html", "securities.html", "simulator.html", "annualfee-simulator.html", "rivo-simulator.html", "tsumitate-simulator.html", "glossary.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
-    urls += [(f"{p['id']}.html", today) for p in data.get("pillars", [])]
-    urls += [(f"cards/{c['id']}.html", today) for c in data["cards"]]
-    urls += [(f"purpose/{p['id']}.html", today) for p in data["purposes"]]
-    urls += [(f"keizaiken/{kz['id']}.html", today) for kz in KEIZAIKEN]
-    urls += [(f"articles/{a['id']}.html", article_date(a)) for a in data["articles"]]
-    urls += [(f"securities/{b['id']}.html", today) for b in data.get("brokers", [])]
+    # lastmodの方針: 正確な日付を出せるものだけ出す（不正確なlastmodはGoogleに無視されるため）
+    #   ・トップ/キャンペーン = 実際に毎日内容が変わる → today
+    #   ・記事 = modified(加筆日) or published
+    #   ・その他（カード/目的別/法的ページ等）= lastmod省略（sitemapではオプション項目）
+    urls = [("", today), ("campaign.html", today)]
+    urls += [(u, None) for u in ["articles.html", "securities.html", "simulator.html", "annualfee-simulator.html", "rivo-simulator.html", "tsumitate-simulator.html", "glossary.html", "about.html", "privacy.html", "disclaimer.html", "contact.html"]]
+    urls += [(f"{p['id']}.html", None) for p in data.get("pillars", [])]
+    urls += [(f"cards/{c['id']}.html", None) for c in data["cards"]]
+    urls += [(f"purpose/{p['id']}.html", None) for p in data["purposes"]]
+    urls += [(f"keizaiken/{kz['id']}.html", None) for kz in KEIZAIKEN]
+    urls += [(f"articles/{a['id']}.html", article_modified(a)) for a in data["articles"]]
+    urls += [(f"securities/{b['id']}.html", None) for b in data.get("brokers", [])]
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     for u, lastmod in urls:
         loc = f"{base}/{pretty_path(u)}" if base else u
-        xml += f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod></url>\n"
+        lm = f"<lastmod>{lastmod}</lastmod>" if lastmod else ""
+        xml += f"  <url><loc>{loc}</loc>{lm}</url>\n"
     xml += "</urlset>\n"
     write(os.path.join(BASE_DIR, "sitemap.xml"), xml)
     # Search Consoleの「取得できませんでした」張り付き対策として別名でも同内容を出力
