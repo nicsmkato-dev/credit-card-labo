@@ -542,6 +542,7 @@ def footer(site, depth=0):
         <a href="{p}privacy.html">プライバシーポリシー</a>
         <a href="{p}disclaimer.html">免責事項</a>
         <a href="{p}contact.html">お問い合わせ</a>
+        <a href="https://money.blogmura.com/poikatsu/ranking/in?p_cid=11216749" target="_blank" rel="nofollow noopener">にほんブログ村</a>
       </div>
     </div>
     <div class="footer-bottom">
