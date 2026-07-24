@@ -1046,6 +1046,17 @@ def build_purpose_pages(data):
             c = card_by_id(data, cid)
             if c:
                 html += card_block(c, rank=i, depth=1)
+        # 関連記事（purposeに article_ids があるときだけ）＝テーマのハブとして記事群も束ねる
+        arts = [a for a in data["articles"] if a["id"] in pp.get("article_ids", [])]
+        if arts:
+            html += """
+    <div class="related-articles">
+      <h2>くわしく知りたい方へ</h2>"""
+            for a in arts:
+                html += f"""
+      <a href="../articles/{a['id']}.html" class="related-link">📄 {a['title']}</a>"""
+            html += """
+    </div>"""
         html += """
   </div>
 </section>"""
@@ -1512,6 +1523,28 @@ def build_campaign(data):
     write(os.path.join(BASE_DIR, "campaign.html"), html)
 
 
+# 記事一覧のカテゴリタブ（判定は上から順に最初にマッチしたもの／どれにも該当しなければ basic）
+# キーワードはタイトル＋説明に対して照合する。
+ARTICLE_CATEGORIES = [
+    ("compare", "カード比較", ["vs ", "vs-", "どっち", "比較", "対決"]),
+    ("senior", "シニア", ["シニア", "60代", "年金", "終活", "相続"]),
+    ("nisa", "新NISA・投資", ["NISA", "積立", "投資", "iDeCo", "証券"]),
+    ("poikatsu", "ポイ活", ["ポイ活", "ポイント", "還元", "経済圏", "マイル", "二重取り", "ポイントサイト"]),
+    ("payment", "支払い・決済", ["決済", "タッチ", "Apple Pay", "Google Pay", "電子マネー", "QR", "チャージ", "リボ", "支払い", "分割", "引き落とし", "明細"]),
+    ("trouble", "審査・トラブル", ["審査", "信用情報", "延滞", "不正", "セキュリティ", "紛失", "再発行", "解約", "限度額", "3Dセキュア", "多重申込"]),
+    ("scene", "使う場面", ["コンビニ", "スーパー", "旅行", "海外", "ラウンジ", "税金", "家賃", "公共料金", "医療費", "ふるさと納税", "Amazon", "コストコ", "ガソリン", "ETC", "新幹線", "サブスク", "保険"]),
+    ("basic", "基礎知識", []),
+]
+
+
+def article_category(a):
+    text = f"{a.get('title','')} {a.get('description','')} {a.get('id','')}"
+    for key, _label, kws in ARTICLE_CATEGORIES:
+        if any(k.lower() in text.lower() for k in kws):
+            return key
+    return "basic"
+
+
 def build_article_pages(data):
     site = data["site"]
     os.makedirs(os.path.join(BASE_DIR, "articles"), exist_ok=True)
@@ -1519,16 +1552,30 @@ def build_article_pages(data):
     html = head(site, f"クレジットカード お役立ち記事一覧｜{site['name']}",
                 "クレジットカードの選び方・還元率・年会費などお役立ち情報をまとめた記事一覧です。", path="articles.html")
     html += header(site)
+    arts_sorted = sorted(data["articles"], key=article_date, reverse=True)
+    counts = {k: 0 for k, _, _ in ARTICLE_CATEGORIES}
+    for a in arts_sorted:
+        counts[article_category(a)] += 1
     html += """
 <section class="article-list-section">
   <div class="container">
     <h1 class="section-title">お役立ち記事一覧</h1>
-    <p class="section-sub">クレジットカード選びに役立つ情報をお届けします。</p>
+    <p class="section-sub">クレジットカード選びに役立つ情報をお届けします。テーマで絞り込めます。</p>
+    <div class="table-filters article-filters">
+      <button class="filter-btn active" data-cat="all">すべて（{n}）</button>""".replace("{n}", str(len(arts_sorted)))
+    for key, label, _ in ARTICLE_CATEGORIES:
+        if counts[key]:
+            html += f"""
+      <button class="filter-btn" data-cat="{key}">{label}（{counts[key]}）</button>"""
+    html += """
+    </div>
     <div class="article-grid">"""
-    for a in sorted(data["articles"], key=article_date, reverse=True):
+    for a in arts_sorted:
+        cat = article_category(a)
+        label = dict((k, l) for k, l, _ in ARTICLE_CATEGORIES)[cat]
         html += f"""
-      <a href="articles/{a['id']}.html" class="article-card">
-        <div class="article-meta"><span class="article-tag">記事</span><span class="article-card-date">📅 {fmt_date(article_date(a))} 公開</span></div>
+      <a href="articles/{a['id']}.html" class="article-card" data-cat="{cat}">
+        <div class="article-meta"><span class="article-tag">{label}</span><span class="article-card-date">📅 {fmt_date(article_date(a))} 公開</span></div>
         <h3>{a['title']}</h3>
         <p>{a['description']}</p>
         <span class="read-more">続きを読む →</span>
@@ -1536,7 +1583,23 @@ def build_article_pages(data):
     html += """
     </div>
   </div>
-</section>"""
+</section>
+<script>
+(function(){
+  var btns = document.querySelectorAll('.article-filters .filter-btn');
+  var cards = document.querySelectorAll('.article-grid .article-card');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var cat = b.getAttribute('data-cat');
+      btns.forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+      cards.forEach(function(c){
+        c.style.display = (cat === 'all' || c.getAttribute('data-cat') === cat) ? '' : 'none';
+      });
+    });
+  });
+})();
+</script>"""
     html += footer(site)
     write(os.path.join(BASE_DIR, "articles.html"), html)
 

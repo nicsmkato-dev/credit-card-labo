@@ -1297,6 +1297,22 @@
         "smbc-business"
       ],
       "intro": "個人事業主・法人向けに、経費管理がラクになるビジネスカードを紹介します。"
+    },
+    {
+      "id": "senior",
+      "icon": "🧓",
+      "title": "60代・シニア世代",
+      "desc": "年金生活でも作れて、日常で使いやすい1枚",
+      "card_ids": [
+        "aeon-card",
+        "smbc-card",
+        "rakuten-card"
+      ],
+      "intro": "定年後・年金生活でもクレジットカードは作れます。シニア世代は「よく行くスーパーや薬局で使えること」「不正利用に強いこと」「管理がシンプルなこと」を基準に選ぶと、毎日の支払いがラクで安全になります。",
+      "article_ids": [
+        "senior-card",
+        "senior-family-card"
+      ]
     }
   ],
   "articles": [
