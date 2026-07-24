@@ -406,6 +406,9 @@ img, svg { max-width: 100%; }
 .article-byline a { color: #283593; font-weight: 600; text-decoration: none; }
 .article-byline a:hover { text-decoration: underline; }
 .author-profile { background: #fafbff; border: 1px solid #e3e6f4; border-left: 4px solid #283593; border-radius: 12px; padding: 20px 24px; margin: 14px 0 30px; }
+.owner-review { background: #fff9ee; border: 1px solid #f5e3c0; border-left: 4px solid #f0a500; border-radius: 12px; padding: 20px 24px; margin: 22px 0 30px; }
+.owner-review h2 { border-left: none; padding-left: 0; margin: 0 0 8px; font-size: 1.2rem; }
+.owner-review-badge { font-size: 0.82rem; color: #a07000; margin-bottom: 10px; }
 .author-profile .policy-list { margin: 12px 0; }
 .article-lead { font-size: 1rem; color: #3a3f5a; background: linear-gradient(135deg, #f5f6fb, #eef0fa); border-radius: 14px; padding: 22px; margin-bottom: 12px; }
 .article-toc { background: #fafbff; border: 1px solid #e3e6f4; border-left: 4px solid #283593; border-radius: 12px; padding: 18px 22px; margin: 18px 0 30px; }
